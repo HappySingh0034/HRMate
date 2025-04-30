@@ -1,0 +1,18 @@
+function FormSwitch(e) {
+    debugger;
+    var formContext = e.getFormContext();
+    var FormItem = formContext.ui.formSelector.getCurrentItem().getId();
+    var type = formContext.getAttribute("new_type").getValue();
+    var formid1 = '13b43036-5793-ee11-be37-000d3a0aa9fb';
+    var formid2 = '499c8888-fe93-ee11-be37-000d3a0aa9fb';
+    if (type == 871840000) {
+        if (FormItem != formid1) {
+            formContext.ui.formSelector.items.get(formid1).navigate();
+        }
+    }
+    else if (type == 871840001) {
+        if (FormItem != formid2) {
+            formContext.ui.formSelector.items.get(formid2).navigate();
+        }
+    }
+}

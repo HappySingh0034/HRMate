@@ -1,0 +1,10 @@
+<botcomponent schemaname="cr80b_metaorangeCopilot.topic.Untitled1">
+  <componenttype>9</componenttype>
+  <iscustomizable>0</iscustomizable>
+  <name>Untitled1</name>
+  <parentbotid>
+    <schemaname>cr80b_metaorangeCopilot</schemaname>
+  </parentbotid>
+  <statecode>1</statecode>
+  <statuscode>2</statuscode>
+</botcomponent>

@@ -1,0 +1,3 @@
+new_ageyears: =RoundDown(DateDiff(new_dateofbirth,UTCNow(),TimeUnit.Years),0)
+new_currentdate: =UTCToday()
+new_probationlastdate: =DateAdd(new_dateofjoining,new_probationmnth,TimeUnit.Months)

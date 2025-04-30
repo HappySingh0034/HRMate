@@ -1,0 +1,11 @@
+<botcomponent schemaname="cr80b_metaorangeCopilot.gpt.default">
+  <componenttype>15</componenttype>
+  <description>HR Assistant</description>
+  <iscustomizable>0</iscustomizable>
+  <name>HR MATE</name>
+  <parentbotid>
+    <schemaname>cr80b_metaorangeCopilot</schemaname>
+  </parentbotid>
+  <statecode>0</statecode>
+  <statuscode>1</statuscode>
+</botcomponent>

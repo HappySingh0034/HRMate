@@ -1,0 +1,420 @@
+{
+  "properties": {
+    "connectionReferences": {
+      "shared_visualstudioteamservices_1": {
+        "runtimeSource": "invoker",
+        "connection": {
+          "connectionReferenceLogicalName": "qs_sharedvisualstudioteamservices_b4447"
+        },
+        "api": {
+          "name": "shared_visualstudioteamservices"
+        }
+      }
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$connections": {
+          "defaultValue": {},
+          "type": "Object"
+        },
+        "$authentication": {
+          "defaultValue": {},
+          "type": "SecureObject"
+        }
+      },
+      "triggers": {
+        "manual": {
+          "metadata": {
+            "operationMetadataId": "b8f61c18-7224-4f8a-9c5f-72fbce5df764"
+          },
+          "type": "Request",
+          "kind": "Skills",
+          "inputs": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "text": {
+                  "title": "ProjectName",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter your input",
+                  "x-ms-content-hint": "TEXT"
+                },
+                "text_1": {
+                  "title": "ItemType",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter your input",
+                  "x-ms-content-hint": "TEXT"
+                }
+              },
+              "required": [
+                "text",
+                "text_1"
+              ]
+            }
+          }
+        }
+      },
+      "actions": {
+        "Respond_to_Copilot": {
+          "runAfter": {
+            "Compose_2": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "81c94f73-dd52-465c-ad3b-a4686da63cc3"
+          },
+          "type": "Response",
+          "kind": "Skills",
+          "inputs": {
+            "statusCode": 200,
+            "body": {
+              "listofitems": "@{outputs('Compose_2')}"
+            },
+            "schema": {
+              "type": "object",
+              "properties": {
+                "listofitems": {
+                  "title": "ListOfitems",
+                  "x-ms-dynamically-added": true,
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "Send_an_HTTP_request_to_Azure_DevOps": {
+          "runAfter": {
+            "Initialize_variable": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "b2188cd1-e825-4d92-b913-f4b4ef2077c2"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_visualstudioteamservices_1",
+              "operationId": "HttpRequest",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_visualstudioteamservices"
+            },
+            "parameters": {
+              "account": "qservicesindia",
+              "parameters/Method": "POST",
+              "parameters/Uri": "@{triggerBody()['text']}/_apis/wit/wiql?api-version=7.0",
+              "parameters/Headers": {
+                "Content-Type": "application/json"
+              },
+              "parameters/Body": "{\n  \"query\": \"SELECT [System.Id], [System.Title], [System.State], [System.AssignedTo] FROM workitems WHERE [System.WorkItemType] = '@{triggerBody()['text_1']}' AND [System.TeamProject] = '@{triggerBody()['text']}'\"\n}\n"
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        },
+        "Parse_JSON": {
+          "runAfter": {
+            "Send_an_HTTP_request_to_Azure_DevOps": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "e848e263-401b-4aba-8c40-5f10c9c1dd46"
+          },
+          "type": "ParseJson",
+          "inputs": {
+            "content": "@body('Send_an_HTTP_request_to_Azure_DevOps')",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "queryType": {
+                  "type": "string"
+                },
+                "queryResultType": {
+                  "type": "string"
+                },
+                "asOf": {
+                  "type": "string"
+                },
+                "columns": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "referenceName": {
+                        "type": "string"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "url": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "referenceName",
+                      "name",
+                      "url"
+                    ]
+                  }
+                },
+                "workItems": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "integer"
+                      },
+                      "url": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "url"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "Apply_to_each": {
+          "foreach": "@body('Parse_JSON')?['workItems']",
+          "actions": {
+            "Get_work_item_details": {
+              "runAfter": {},
+              "metadata": {
+                "operationMetadataId": "3006f2da-c001-4908-8318-e0a2fe4b063d"
+              },
+              "type": "OpenApiConnection",
+              "inputs": {
+                "host": {
+                  "connectionName": "shared_visualstudioteamservices_1",
+                  "operationId": "GetWorkItemDetails",
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_visualstudioteamservices"
+                },
+                "parameters": {
+                  "account": "qservicesindia",
+                  "project": "@triggerBody()['text']",
+                  "typeName": "@triggerBody()['text_1']",
+                  "id": "@items('Apply_to_each')?['id']"
+                },
+                "authentication": {
+                  "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']",
+                  "type": "Raw"
+                }
+              }
+            },
+            "Parse_JSON_2": {
+              "runAfter": {
+                "Get_work_item_details": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "895a836b-a018-46de-85ee-a7cf06c2fab7"
+              },
+              "type": "ParseJson",
+              "inputs": {
+                "content": "@body('Get_work_item_details')",
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer"
+                    },
+                    "rev": {
+                      "type": "integer"
+                    },
+                    "url": {
+                      "type": "string"
+                    },
+                    "fields": {
+                      "type": "object",
+                      "properties": {
+                        "System_Id": {
+                          "type": "integer"
+                        },
+                        "System_AreaId": {
+                          "type": "integer"
+                        },
+                        "System_AreaPath": {
+                          "type": "string"
+                        },
+                        "System_TeamProject": {
+                          "type": "string"
+                        },
+                        "System_NodeName": {
+                          "type": "string"
+                        },
+                        "System_AreaLevel1": {
+                          "type": "string"
+                        },
+                        "System_Rev": {
+                          "type": "integer"
+                        },
+                        "System_AuthorizedDate": {
+                          "type": "string"
+                        },
+                        "System_RevisedDate": {
+                          "type": "string"
+                        },
+                        "System_IterationId": {
+                          "type": "integer"
+                        },
+                        "System_IterationPath": {
+                          "type": "string"
+                        },
+                        "System_IterationLevel1": {
+                          "type": "string"
+                        },
+                        "System_WorkItemType": {
+                          "type": "string"
+                        },
+                        "System_State": {
+                          "type": "string"
+                        },
+                        "System_Reason": {
+                          "type": "string"
+                        },
+                        "System_AssignedTo": {
+                          "type": "string"
+                        },
+                        "System_CreatedDate": {
+                          "type": "string"
+                        },
+                        "System_CreatedBy": {
+                          "type": "string"
+                        },
+                        "System_ChangedDate": {
+                          "type": "string"
+                        },
+                        "System_ChangedBy": {
+                          "type": "string"
+                        },
+                        "System_AuthorizedAs": {
+                          "type": "string"
+                        },
+                        "System_PersonId": {
+                          "type": "integer"
+                        },
+                        "System_Watermark": {
+                          "type": "integer"
+                        },
+                        "System_CommentCount": {
+                          "type": "integer"
+                        },
+                        "System_Title": {
+                          "type": "string"
+                        },
+                        "Microsoft_VSTS_Common_StateChangeDate": {
+                          "type": "string"
+                        },
+                        "Custom_TestCasesMade": {
+                          "type": "boolean"
+                        },
+                        "System_Description": {
+                          "type": "string"
+                        },
+                        "Microsoft_VSTS_Common_AcceptanceCriteria": {
+                          "type": "string"
+                        },
+                        "Vsts_AssignedToEmail": {
+                          "type": "string"
+                        },
+                        "Vsts_WorkItemUrl": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "Compose": {
+              "runAfter": {
+                "Parse_JSON_2": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "517ef2b5-864e-433c-b6dc-fb5db4e1d951"
+              },
+              "type": "Compose",
+              "inputs": {
+                "WorkItemId": "@{body('Parse_JSON_2')?['fields']?['System_Id']}",
+                "WorkItemName": "@{body('Parse_JSON_2')?['fields']?['System_Title']}",
+                "url": "@{body('Parse_JSON_2')?['fields']?['Vsts_WorkItemUrl']}",
+                "IterationPath": "@body('Parse_JSON_2')?['fields']?['System_IterationPath']"
+              }
+            },
+            "Append_to_array_variable": {
+              "runAfter": {
+                "Compose": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "9eb815b7-103f-474c-bce4-faa15e7f16a9"
+              },
+              "type": "AppendToArrayVariable",
+              "inputs": {
+                "name": "WorkItems",
+                "value": "@outputs('Compose')"
+              }
+            }
+          },
+          "runAfter": {
+            "Parse_JSON": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "0f3ed7db-b54e-4333-a7fb-44855ea1b201"
+          },
+          "type": "Foreach",
+          "runtimeConfiguration": {
+            "concurrency": {
+              "repetitions": 15
+            }
+          }
+        },
+        "Initialize_variable": {
+          "runAfter": {},
+          "metadata": {
+            "operationMetadataId": "97a61228-0021-4049-88a0-21477009b14a"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "WorkItems",
+                "type": "array"
+              }
+            ]
+          }
+        },
+        "Compose_2": {
+          "runAfter": {
+            "Apply_to_each": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "c0a95fdd-7544-4f78-a42f-3c71d9ce553d"
+          },
+          "type": "Compose",
+          "inputs": "@variables('WorkItems')"
+        }
+      },
+      "outputs": {}
+    },
+    "templateName": ""
+  },
+  "schemaVersion": "1.0.0.0"
+}

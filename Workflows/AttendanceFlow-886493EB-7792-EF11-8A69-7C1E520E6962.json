@@ -1,0 +1,853 @@
+{
+  "properties": {
+    "connectionReferences": {
+      "shared_commondataserviceforapps": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "cr80b_metaorangeCopilot.cr.KeQrU1hy"
+        },
+        "api": {
+          "name": "shared_commondataserviceforapps"
+        }
+      },
+      "shared_teams_1": {
+        "runtimeSource": "invoker",
+        "connection": {
+          "connectionReferenceLogicalName": "mo_sharedteams_866f1"
+        },
+        "api": {
+          "name": "shared_teams"
+        }
+      },
+      "shared_commondataserviceforapps_1": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "new_sharedcommondataserviceforapps_c6dc4"
+        },
+        "api": {
+          "name": "shared_commondataserviceforapps"
+        }
+      },
+      "shared_teams_3": {
+        "runtimeSource": "invoker",
+        "connection": {
+          "connectionReferenceLogicalName": "mo_sharedteams_5a512"
+        },
+        "api": {
+          "name": "shared_teams"
+        }
+      }
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$connections": {
+          "defaultValue": {},
+          "type": "Object"
+        },
+        "$authentication": {
+          "defaultValue": {},
+          "type": "SecureObject"
+        }
+      },
+      "triggers": {
+        "manual": {
+          "metadata": {
+            "operationMetadataId": "ee51126c-b4c8-4384-aa9e-b1d081a840d2"
+          },
+          "type": "Request",
+          "kind": "Skills",
+          "inputs": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "text": {
+                  "title": "From",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter your input",
+                  "x-ms-content-hint": "TEXT"
+                },
+                "text_1": {
+                  "title": "ToDate",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter your input",
+                  "x-ms-content-hint": "TEXT"
+                },
+                "text_2": {
+                  "title": "Email",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter your input",
+                  "x-ms-content-hint": "TEXT"
+                }
+              },
+              "required": [
+                "text",
+                "text_1",
+                "text_2"
+              ]
+            }
+          }
+        }
+      },
+      "actions": {
+        "Respond_to_Copilot": {
+          "runAfter": {
+            "Condition": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "6c566e2d-0b93-4874-a9ca-4b31a6bcaae5"
+          },
+          "type": "Response",
+          "kind": "Skills",
+          "inputs": {
+            "statusCode": 200,
+            "body": {
+              "output": "test"
+            },
+            "schema": {
+              "type": "object",
+              "properties": {
+                "output": {
+                  "title": "Output",
+                  "x-ms-dynamically-added": true,
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "Initialize_variable": {
+          "runAfter": {},
+          "metadata": {
+            "operationMetadataId": "b9044d10-77bb-436e-baac-6bc423e57288"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "ArrayTable",
+                "type": "array"
+              }
+            ]
+          }
+        },
+        "Initialize_variable_2": {
+          "runAfter": {
+            "Initialize_variable": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "418d7d67-dec8-4eef-9463-87b26be51016"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "CreatedOn Date",
+                "type": "string"
+              }
+            ]
+          }
+        },
+        "Initialize_variable_3": {
+          "runAfter": {
+            "Initialize_variable_2": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "e976939a-c9a5-45e4-8db2-4623815b8837"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "Clockin Date",
+                "type": "string"
+              }
+            ]
+          }
+        },
+        "Initialize_variable_4": {
+          "runAfter": {
+            "Initialize_variable_3": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "922be3c2-c685-4007-baec-e505b448e668"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "Clockout Date",
+                "type": "string"
+              }
+            ]
+          }
+        },
+        "Initialize_variable_5": {
+          "runAfter": {
+            "Initialize_variable_4": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "058f34ce-6019-4d60-aad3-2703724594d0"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "Attendance Status",
+                "type": "string"
+              }
+            ]
+          }
+        },
+        "Initialize_variable_6": {
+          "runAfter": {
+            "Initialize_variable_5": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "095e2fed-3b83-4510-8d52-df1b38625868"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "Need Reg",
+                "type": "boolean"
+              }
+            ]
+          }
+        },
+        "List_Employees": {
+          "runAfter": {
+            "Initialize_variable_6": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "eb96ddef-3f8f-47a8-96bb-e3837ba83087"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps",
+              "operationId": "ListRecords",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "entityName": "new_enployeeinfos",
+              "$filter": "new_email eq '@{triggerBody()['text_2']}' and statecode eq 0"
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        },
+        "Condition": {
+          "actions": {
+            "Apply_to_each": {
+              "foreach": "@outputs('List_Employees')?['body/value']",
+              "actions": {
+                "List_Attendance": {
+                  "runAfter": {},
+                  "metadata": {
+                    "operationMetadataId": "180ae83d-1790-455d-bdbe-5ee24ae3c388"
+                  },
+                  "type": "OpenApiConnection",
+                  "inputs": {
+                    "host": {
+                      "connectionName": "shared_commondataserviceforapps",
+                      "operationId": "ListRecords",
+                      "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                    },
+                    "parameters": {
+                      "entityName": "new_dailyattendancedetailses",
+                      "$filter": "(createdon ge @{triggerBody()['text']} and createdon le @{triggerBody()['text_1']} and _new_employeeid_value eq @{items('Apply_to_each')?['new_enployeeinfoid']} and statecode eq 0)",
+                      "$orderby": "createdon asc"
+                    },
+                    "authentication": "@parameters('$authentication')"
+                  }
+                },
+                "Apply_to_each_2": {
+                  "foreach": "@outputs('List_Attendance')?['body/value']",
+                  "actions": {
+                    "Switch": {
+                      "runAfter": {},
+                      "cases": {
+                        "Case": {
+                          "case": 1,
+                          "actions": {
+                            "Set_variable": {
+                              "runAfter": {},
+                              "metadata": {
+                                "operationMetadataId": "d872b70a-28fd-4dec-b9c5-83be03b45d59"
+                              },
+                              "type": "SetVariable",
+                              "inputs": {
+                                "name": "Attendance Status",
+                                "value": "Present"
+                              }
+                            }
+                          }
+                        },
+                        "Case_2": {
+                          "case": 2,
+                          "actions": {
+                            "Set_variable_2": {
+                              "runAfter": {},
+                              "metadata": {
+                                "operationMetadataId": "35544277-5aa5-4ad9-bdc1-1882fbc24e05"
+                              },
+                              "type": "SetVariable",
+                              "inputs": {
+                                "name": "Attendance Status",
+                                "value": "Absent"
+                              }
+                            }
+                          }
+                        },
+                        "Case_3": {
+                          "case": 3,
+                          "actions": {
+                            "Set_variable_3": {
+                              "runAfter": {},
+                              "metadata": {
+                                "operationMetadataId": "f8936ee4-7408-4246-81cd-3c1748f345b4"
+                              },
+                              "type": "SetVariable",
+                              "inputs": {
+                                "name": "Attendance Status",
+                                "value": "Leave"
+                              }
+                            }
+                          }
+                        },
+                        "Case_4": {
+                          "case": 871840001,
+                          "actions": {
+                            "Set_variable_4": {
+                              "runAfter": {},
+                              "metadata": {
+                                "operationMetadataId": "1f3c1499-c460-471a-8de1-4907cd05a592"
+                              },
+                              "type": "SetVariable",
+                              "inputs": {
+                                "name": "Attendance Status",
+                                "value": "Weekend"
+                              }
+                            }
+                          }
+                        },
+                        "Case_5": {
+                          "case": 871840003,
+                          "actions": {
+                            "Set_variable_5": {
+                              "runAfter": {},
+                              "metadata": {
+                                "operationMetadataId": "e0a03826-648c-4665-a2df-518e83bc9fec"
+                              },
+                              "type": "SetVariable",
+                              "inputs": {
+                                "name": "Attendance Status",
+                                "value": "National Holiday"
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "default": {
+                        "actions": {}
+                      },
+                      "expression": "@items('Apply_to_each_2')?['new_attendancestatus']",
+                      "metadata": {
+                        "operationMetadataId": "c262bbd0-5f5b-4cad-8113-98ba2a9c971e"
+                      },
+                      "type": "Switch"
+                    },
+                    "Set_variable_6": {
+                      "runAfter": {
+                        "Switch": [
+                          "Succeeded"
+                        ]
+                      },
+                      "metadata": {
+                        "operationMetadataId": "5d30a865-767c-482e-b0e6-b49ac08180ca"
+                      },
+                      "type": "SetVariable",
+                      "inputs": {
+                        "name": "Need Reg",
+                        "value": "@items('Apply_to_each_2')?['new_needregularization']"
+                      }
+                    },
+                    "Set_variable_7": {
+                      "runAfter": {
+                        "Set_variable_6": [
+                          "Succeeded"
+                        ]
+                      },
+                      "metadata": {
+                        "operationMetadataId": "c4f383ef-17dd-4a28-8c53-f22622f32c60"
+                      },
+                      "type": "SetVariable",
+                      "inputs": {
+                        "name": "Clockout Date",
+                        "value": "@items('Apply_to_each_2')?['new_lastclockout']"
+                      }
+                    },
+                    "Set_variable_8": {
+                      "runAfter": {
+                        "Set_variable_7": [
+                          "Succeeded"
+                        ]
+                      },
+                      "metadata": {
+                        "operationMetadataId": "4efa8b07-e1ff-4699-964f-7eb27f63eab9"
+                      },
+                      "type": "SetVariable",
+                      "inputs": {
+                        "name": "Clockin Date",
+                        "value": "@items('Apply_to_each_2')?['new_firstclockin']"
+                      }
+                    },
+                    "Compose": {
+                      "runAfter": {
+                        "Set_variable_8": [
+                          "Succeeded"
+                        ]
+                      },
+                      "metadata": {
+                        "operationMetadataId": "a6d686ef-cf66-4367-bd3f-8b9783b79a3c"
+                      },
+                      "type": "Compose",
+                      "inputs": {
+                        "Date": "@formatDateTime(variables('Clockin Date'),'dd/MM/yyyy')",
+                        "Clock-In": "@formatDateTime(variables('Clockin Date'),'hh:mm')",
+                        "Clock-Out": "@formatDateTime(variables('Clockout Date'),'hh:mm')",
+                        "Attendance Status": "@variables('Attendance Status')",
+                        "Need Regularization": "@if(variables('Need Reg'),'Yes','No')"
+                      }
+                    },
+                    "Append_to_array_variable": {
+                      "runAfter": {
+                        "Compose": [
+                          "Succeeded"
+                        ]
+                      },
+                      "metadata": {
+                        "operationMetadataId": "0051e923-b9f9-4abf-97f9-24b85bf9e2a4"
+                      },
+                      "type": "AppendToArrayVariable",
+                      "inputs": {
+                        "name": "ArrayTable",
+                        "value": "@outputs('Compose')"
+                      }
+                    }
+                  },
+                  "runAfter": {
+                    "List_Attendance": [
+                      "Succeeded"
+                    ]
+                  },
+                  "metadata": {
+                    "operationMetadataId": "cc62d596-52ef-418a-a021-759d50e966e6"
+                  },
+                  "type": "Foreach"
+                },
+                "Create_HTML_table": {
+                  "runAfter": {
+                    "Apply_to_each_2": [
+                      "Succeeded"
+                    ]
+                  },
+                  "metadata": {
+                    "operationMetadataId": "501e120c-4372-4a8a-88ab-6b7f54a91890"
+                  },
+                  "type": "Table",
+                  "inputs": {
+                    "from": "@variables('ArrayTable')",
+                    "format": "HTML"
+                  }
+                },
+                "Post_message_in_a_chat_or_channel": {
+                  "runAfter": {
+                    "Create_HTML_table": [
+                      "Succeeded"
+                    ]
+                  },
+                  "metadata": {
+                    "operationMetadataId": "72dda504-e5ac-4f0e-8a5b-7c5b6ab5cbba"
+                  },
+                  "type": "OpenApiConnection",
+                  "inputs": {
+                    "host": {
+                      "connectionName": "shared_teams_1",
+                      "operationId": "PostMessageToConversation",
+                      "apiId": "/providers/Microsoft.PowerApps/apis/shared_teams"
+                    },
+                    "parameters": {
+                      "poster": "Power Virtual Agents",
+                      "location": "powerva",
+                      "body/bot": "cr80b_metaorangeCopilot",
+                      "body/recipient": "@{items('Apply_to_each')?['new_email']};",
+                      "body/messageBody": "<p>@{body('Create_HTML_table')}<br>\n<br>\nYou can also check attendance Logs using Metaconnect App.<br>\n1. Open metaconnect application.<br>\n2. Navigate to \"My Space\".<br>\n3. Navigate to \"Attendance Log\" section.<br>\n4. Select month for which you want to view attendance logs.</p>",
+                      "body/attribution": true,
+                      "body/activeChat": "Send",
+                      "body/installedError": "Fail"
+                    },
+                    "authentication": "@parameters('$authentication')"
+                  }
+                }
+              },
+              "runAfter": {},
+              "metadata": {
+                "operationMetadataId": "bde0cce4-3de1-4d6d-8fe5-39b3970d5f19"
+              },
+              "type": "Foreach"
+            }
+          },
+          "runAfter": {
+            "List_Employees": [
+              "Succeeded"
+            ]
+          },
+          "else": {
+            "actions": {
+              "List_rows": {
+                "runAfter": {},
+                "metadata": {
+                  "operationMetadataId": "ab01e7cb-53dc-4add-ab47-af7e42dddbd3"
+                },
+                "type": "OpenApiConnection",
+                "inputs": {
+                  "host": {
+                    "connectionName": "shared_commondataserviceforapps_1",
+                    "operationId": "ListRecords",
+                    "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                  },
+                  "parameters": {
+                    "entityName": "new_interns",
+                    "$filter": "(new_emailid eq '@{triggerBody()['text_2']}' and statecode eq 0)"
+                  },
+                  "authentication": "@parameters('$authentication')"
+                }
+              },
+              "Apply_to_each_3": {
+                "foreach": "@outputs('List_rows')?['body/value']",
+                "actions": {
+                  "List_rows_2": {
+                    "runAfter": {},
+                    "metadata": {
+                      "operationMetadataId": "04ad2cc7-fad0-43d3-b6c4-ac736196dce1"
+                    },
+                    "type": "OpenApiConnection",
+                    "inputs": {
+                      "host": {
+                        "connectionName": "shared_commondataserviceforapps_1",
+                        "operationId": "ListRecords",
+                        "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                      },
+                      "parameters": {
+                        "entityName": "new_dailyattendancedetailses",
+                        "$filter": "(createdon ge @{triggerBody()['text']} and createdon le @{triggerBody()['text_1']} and _new_internid_value eq @{items('Apply_to_each_3')?['new_internid']}  and statecode eq 0)"
+                      },
+                      "authentication": "@parameters('$authentication')"
+                    }
+                  },
+                  "Apply_to_each_4": {
+                    "foreach": "@outputs('List_rows_2')?['body/value']",
+                    "actions": {
+                      "Switch_2": {
+                        "runAfter": {},
+                        "cases": {
+                          "Case": {
+                            "case": 1,
+                            "actions": {
+                              "Set_variable_9": {
+                                "runAfter": {},
+                                "metadata": {
+                                  "operationMetadataId": "d872b70a-28fd-4dec-b9c5-83be03b45d59"
+                                },
+                                "type": "SetVariable",
+                                "inputs": {
+                                  "name": "Attendance Status",
+                                  "value": "Present"
+                                }
+                              }
+                            }
+                          },
+                          "Case_2": {
+                            "case": 2,
+                            "actions": {
+                              "Set_variable_10": {
+                                "runAfter": {},
+                                "metadata": {
+                                  "operationMetadataId": "35544277-5aa5-4ad9-bdc1-1882fbc24e05"
+                                },
+                                "type": "SetVariable",
+                                "inputs": {
+                                  "name": "Attendance Status",
+                                  "value": "Absent"
+                                }
+                              }
+                            }
+                          },
+                          "Case_3": {
+                            "case": 3,
+                            "actions": {
+                              "Set_variable_11": {
+                                "runAfter": {},
+                                "metadata": {
+                                  "operationMetadataId": "f8936ee4-7408-4246-81cd-3c1748f345b4"
+                                },
+                                "type": "SetVariable",
+                                "inputs": {
+                                  "name": "Attendance Status",
+                                  "value": "Leave"
+                                }
+                              }
+                            }
+                          },
+                          "Case_4": {
+                            "case": 871840001,
+                            "actions": {
+                              "Set_variable_12": {
+                                "runAfter": {},
+                                "metadata": {
+                                  "operationMetadataId": "1f3c1499-c460-471a-8de1-4907cd05a592"
+                                },
+                                "type": "SetVariable",
+                                "inputs": {
+                                  "name": "Attendance Status",
+                                  "value": "Weekend"
+                                }
+                              }
+                            }
+                          },
+                          "Case_5": {
+                            "case": 871840003,
+                            "actions": {
+                              "Set_variable_13": {
+                                "runAfter": {},
+                                "metadata": {
+                                  "operationMetadataId": "e0a03826-648c-4665-a2df-518e83bc9fec"
+                                },
+                                "type": "SetVariable",
+                                "inputs": {
+                                  "name": "Attendance Status",
+                                  "value": "National Holiday"
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "default": {
+                          "actions": {}
+                        },
+                        "expression": "@items('Apply_to_each_4')?['new_attendancestatus']",
+                        "metadata": {
+                          "operationMetadataId": "c262bbd0-5f5b-4cad-8113-98ba2a9c971e"
+                        },
+                        "type": "Switch"
+                      },
+                      "Set_variable_14": {
+                        "runAfter": {
+                          "Switch_2": [
+                            "Succeeded"
+                          ]
+                        },
+                        "metadata": {
+                          "operationMetadataId": "1021b4ce-279d-47de-bab7-6c767a6b7918"
+                        },
+                        "type": "SetVariable",
+                        "inputs": {
+                          "name": "Need Reg",
+                          "value": "@items('Apply_to_each_4')?['new_needregularization']"
+                        }
+                      },
+                      "Set_variable_15": {
+                        "runAfter": {
+                          "Set_variable_14": [
+                            "Succeeded"
+                          ]
+                        },
+                        "metadata": {
+                          "operationMetadataId": "df4300bf-083f-4990-be70-2e1e5ca0c850"
+                        },
+                        "type": "SetVariable",
+                        "inputs": {
+                          "name": "Clockout Date",
+                          "value": "@items('Apply_to_each_4')?['new_lastclockout']"
+                        }
+                      },
+                      "Set_variable_16": {
+                        "runAfter": {
+                          "Set_variable_15": [
+                            "Succeeded"
+                          ]
+                        },
+                        "metadata": {
+                          "operationMetadataId": "bbcc08af-1364-42c2-92fa-5339d1b2f376"
+                        },
+                        "type": "SetVariable",
+                        "inputs": {
+                          "name": "Clockin Date",
+                          "value": "@items('Apply_to_each_4')?['new_firstclockin']"
+                        }
+                      },
+                      "Set_variable_17": {
+                        "runAfter": {
+                          "Set_variable_16": [
+                            "Succeeded"
+                          ]
+                        },
+                        "metadata": {
+                          "operationMetadataId": "1d5aa1eb-fca6-4c5e-98ce-b9c801d9e726"
+                        },
+                        "type": "SetVariable",
+                        "inputs": {
+                          "name": "CreatedOn Date",
+                          "value": "@items('Apply_to_each_4')?['createdon']"
+                        }
+                      },
+                      "Compose_3": {
+                        "runAfter": {
+                          "Set_variable_17": [
+                            "Succeeded"
+                          ]
+                        },
+                        "metadata": {
+                          "operationMetadataId": "292ca706-ce7a-454f-a5e0-ae78fea80bfc"
+                        },
+                        "type": "Compose",
+                        "inputs": {
+                          "Date": "@formatDateTime(variables('Clockin Date'),'dd/MM/yyyy')",
+                          "Clock-In": "@formatDateTime(variables('Clockin Date'),'hh:mm')",
+                          "Clock-Out": "@formatDateTime(variables('Clockout Date'),'hh:mm')",
+                          "Attendance Status": "@variables('Attendance Status')",
+                          "Need Regularization": "@if(variables('Need Reg'),'Yes','No')"
+                        }
+                      },
+                      "Append_to_array_variable_2": {
+                        "runAfter": {
+                          "Compose_3": [
+                            "Succeeded"
+                          ]
+                        },
+                        "metadata": {
+                          "operationMetadataId": "6eca2d13-4023-48ec-aa0a-3d44d81a6565"
+                        },
+                        "type": "AppendToArrayVariable",
+                        "inputs": {
+                          "name": "ArrayTable",
+                          "value": "@outputs('Compose_3')"
+                        }
+                      }
+                    },
+                    "runAfter": {
+                      "List_rows_2": [
+                        "Succeeded"
+                      ]
+                    },
+                    "metadata": {
+                      "operationMetadataId": "4ffee402-6330-438f-9740-910ad8f4c345"
+                    },
+                    "type": "Foreach"
+                  },
+                  "Create_HTML_table_2": {
+                    "runAfter": {
+                      "Apply_to_each_4": [
+                        "Succeeded"
+                      ]
+                    },
+                    "metadata": {
+                      "operationMetadataId": "8ea2abbf-360e-4055-b0e6-1c8792443bed"
+                    },
+                    "type": "Table",
+                    "inputs": {
+                      "from": "@variables('ArrayTable')",
+                      "format": "HTML"
+                    }
+                  },
+                  "Post_message_in_a_chat_or_channel_2": {
+                    "runAfter": {
+                      "Compose_2": [
+                        "Succeeded"
+                      ]
+                    },
+                    "metadata": {
+                      "operationMetadataId": "4ea6b389-7ff4-4f91-9bff-b56b46ab3277"
+                    },
+                    "type": "OpenApiConnection",
+                    "inputs": {
+                      "host": {
+                        "connectionName": "shared_teams_3",
+                        "operationId": "PostMessageToConversation",
+                        "apiId": "/providers/Microsoft.PowerApps/apis/shared_teams"
+                      },
+                      "parameters": {
+                        "poster": "Power Virtual Agents",
+                        "location": "powerva",
+                        "body/bot": "cr80b_metaorangeCopilot",
+                        "body/recipient": "happy.s@qservicesit.com;",
+                        "body/messageBody": "<p>Dear Happy Singh,<br>\n<br>\nYou can also check attendance Logs using Metaconnect App.<br>\n1. Open metaconnect application.<br>\n2. Navigate to \"My Space\".<br>\n3. Navigate to \"Attendance Log\" section.<br>\n4. Select month for which you want to view attendance logs.</p>",
+                        "body/attribution": true,
+                        "body/activeChat": "Send",
+                        "body/installedError": "Succeed"
+                      },
+                      "authentication": "@parameters('$authentication')"
+                    }
+                  },
+                  "Compose_2": {
+                    "runAfter": {
+                      "Create_HTML_table_2": [
+                        "Succeeded"
+                      ]
+                    },
+                    "metadata": {
+                      "operationMetadataId": "419d19fd-0513-4409-bb74-670d97310f35"
+                    },
+                    "type": "Compose",
+                    "inputs": "@toLower(triggerBody()['text_2'])"
+                  }
+                },
+                "runAfter": {
+                  "List_rows": [
+                    "Succeeded"
+                  ]
+                },
+                "metadata": {
+                  "operationMetadataId": "cc2364f1-0a71-4e2f-b849-ea3d4cad6cf2"
+                },
+                "type": "Foreach"
+              }
+            }
+          },
+          "expression": {
+            "greaterOrEquals": [
+              "@length(outputs('List_Employees')?['body/value'])",
+              1
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "e3664dfb-129b-499b-83ca-04f688c896f0"
+          },
+          "type": "If"
+        }
+      }
+    },
+    "templateName": ""
+  },
+  "schemaVersion": "1.0.0.0"
+}

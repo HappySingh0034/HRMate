@@ -1,0 +1,234 @@
+kind: AdaptiveDialog
+modelDescription: Hello, Hi , Good Morning, Attendance
+beginDialog:
+  kind: OnRecognizedIntent
+  id: main
+  intent: {}
+  actions:
+    - kind: AdaptiveCardPrompt
+      id: OjQCWP
+      repeatCount: 0
+      card: |-
+        {
+          "type": "AdaptiveCard",
+          "body": [
+            {
+              "type": "TextBlock",
+              "text": "Please select an option:",
+              "weight": "Bolder",
+              "size": "Medium"
+            },
+            {
+              "type": "ActionSet",
+              "actions": [
+                {
+                  "type": "Action.Submit",
+                  "title": "Personal Details",
+                  "data": {
+                    "choice": "PersonalDetails"
+                  }
+                }
+              ]
+            },
+            {
+              "type": "ActionSet",
+              "actions": [
+                {
+                  "type": "Action.Submit",
+                  "title": "Attendance",
+                  "data": {
+                    "choice": "Attendance"
+                  }
+                }
+              ]
+            },
+            {
+              "type": "ActionSet",
+              "actions": [
+                {
+                  "type": "Action.Submit",
+                  "title": "Leaves",
+                  "data": {
+                    "choice": "Leaves"
+                  }
+                }
+              ]
+            },
+            {
+              "type": "ActionSet",
+              "actions": [
+                {
+                  "type": "Action.Submit",
+                  "title": "Timesheets",
+                  "data": {
+                    "choice": "Timesheets"
+                  }
+                }
+              ]
+            },
+            {
+              "type": "ActionSet",
+              "actions": [
+                {
+                  "type": "Action.Submit",
+                  "title": "Salary",
+                  "data": {
+                    "choice": "Salary"
+                  }
+                }
+              ]
+            },
+            {
+              "type": "ActionSet",
+              "actions": [
+                {
+                  "type": "Action.Submit",
+                  "title": "Policies",
+                  "data": {
+                    "choice": "Policies"
+                  }
+                }
+              ]
+            },
+            {
+              "type": "ActionSet",
+              "actions": [
+                {
+                  "type": "Action.Submit",
+                  "title": "Manage Projects",
+                  "data": {
+                    "choice": "Manage Projects"
+                  }
+                }
+              ]
+            }
+          ],
+          "$schema": "https://adaptivecards.io/schemas/adaptive-card.json",
+          "version": "1.5"
+        }
+      output:
+        binding:
+          actionSubmitId: Topic.actionSubmitId
+          choice: Topic.choice
+
+      outputType:
+        properties:
+          actionSubmitId: String
+          choice: String
+
+    - kind: ConditionGroup
+      id: conditionGroup_uiLqm8
+      conditions:
+        - id: conditionItem_Eyd2kr
+          condition: =IsBlank(Global.EmployeeType)
+          actions:
+            - kind: Question
+              id: question_cLftbf
+              interruptionPolicy:
+                allowInterruption: true
+
+              variable: Global.EmployeeType
+              prompt: Please select suitable option...
+              entity:
+                kind: EmbeddedEntity
+                definition:
+                  kind: ClosedListEntity
+                  items:
+                    - id: Employee
+                      displayName: Employee
+
+                    - id: Intern
+                      displayName: Intern
+
+        - id: conditionItem_NmuCrj
+          condition: =!IsBlank(Global.EmployeeType)
+
+    - kind: ConditionGroup
+      id: conditionGroup_yqDK9z
+      conditions:
+        - id: conditionItem_L8X1vA
+          condition: =Topic.choice = "PersonalDetails"
+          actions:
+            - kind: ConditionGroup
+              id: conditionGroup_Vf6IYj
+              conditions:
+                - id: conditionItem_yu000v
+                  condition: =Global.EmployeeType = 'cr80b_metaorangeCopilot.topic.Untitled.main.question_cLftbf'.Employee
+                  actions:
+                    - kind: BeginDialog
+                      id: mcVLOz
+                      dialog: cr80b_metaorangeCopilot.topic.PersonalDetails
+
+                - id: conditionItem_tfj6RS
+                  condition: =Global.EmployeeType = 'cr80b_metaorangeCopilot.topic.Untitled.main.question_cLftbf'.Intern
+                  actions:
+                    - kind: BeginDialog
+                      id: 6ePj8O
+                      dialog: cr80b_metaorangeCopilot.topic.GetPersonalDetailsIntern
+
+        - id: conditionItem_9RKDsG
+          condition: =Topic.choice = "Attendance"
+          actions:
+            - kind: SetVariable
+              id: setVariable_igRqpy
+              variable: Global.GlobalTrigger
+              value: Attendance
+
+            - kind: BeginDialog
+              id: LsXi7Y
+              dialog: cr80b_metaorangeCopilot.topic.AttendanceFlow
+
+        - id: conditionItem_uE7Blf
+          condition: =Topic.choice = "Leaves"
+          actions:
+            - kind: SetVariable
+              id: setVariable_ACy9wI
+              variable: Global.GlobalTrigger
+              value: Leaves
+
+            - kind: BeginDialog
+              id: yjF3Uv
+              dialog: cr80b_metaorangeCopilot.topic.Leaves
+
+        - id: conditionItem_sZxBhH
+          condition: =Topic.choice = "Timesheets"
+          actions:
+            - kind: SetVariable
+              id: setVariable_QvoIHk
+              variable: Global.GlobalTrigger
+              value: Timesheet
+
+            - kind: BeginDialog
+              id: T3lC5M
+              dialog: cr80b_metaorangeCopilot.topic.TimeSheet
+
+        - id: conditionItem_BuEdFv
+          condition: =Topic.choice = "Policies"
+          actions:
+            - kind: SetVariable
+              id: setVariable_QG5B8W
+              variable: Global.GlobalTrigger
+              value: Policy
+
+            - kind: BeginDialog
+              id: a15xIS
+              dialog: cr80b_metaorangeCopilot.topic.Untitled_9me
+
+        - id: conditionItem_ybGvN1
+          condition: =Topic.choice = "Salary"
+          actions:
+            - kind: SetVariable
+              id: setVariable_LK13ZP
+              variable: Global.GlobalTrigger
+              value: Salary
+
+            - kind: BeginDialog
+              id: uyl5YD
+              dialog: cr80b_metaorangeCopilot.topic.Salary
+
+        - id: conditionItem_wCoRZn
+          condition: =Topic.choice = "Manage Projects"
+          actions:
+            - kind: BeginDialog
+              id: tfU0NN
+              dialog: cr80b_metaorangeCopilot.topic.ManageProjects

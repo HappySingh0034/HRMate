@@ -1,0 +1,50 @@
+<botcomponent_workflowset>
+  <botcomponent_workflow botcomponentid.schemaname="cr80b_metaorangeCopilot.topic.AttendanceFlow" workflowid.workflowid="886493eb-7792-ef11-8a69-7c1e520e6962">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_workflow>
+  <botcomponent_workflow botcomponentid.schemaname="cr80b_metaorangeCopilot.topic.Clock" workflowid.workflowid="a2a72fbc-d0c1-ef11-b8e9-7c1e520e6962">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_workflow>
+  <botcomponent_workflow botcomponentid.schemaname="cr80b_metaorangeCopilot.topic.ClockIN" workflowid.workflowid="a2a72fbc-d0c1-ef11-b8e9-7c1e520e6962">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_workflow>
+  <botcomponent_workflow botcomponentid.schemaname="cr80b_metaorangeCopilot.topic.CreateSubTask" workflowid.workflowid="8b506cc6-291c-f011-998a-000d3aca4339">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_workflow>
+  <botcomponent_workflow botcomponentid.schemaname="cr80b_metaorangeCopilot.topic.CreateTask" workflowid.workflowid="8b506cc6-291c-f011-998a-000d3aca4339">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_workflow>
+  <botcomponent_workflow botcomponentid.schemaname="cr80b_metaorangeCopilot.topic.CreateTask" workflowid.workflowid="e9ee170a-1606-f011-bae2-000d3aca4339">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_workflow>
+  <botcomponent_workflow botcomponentid.schemaname="cr80b_metaorangeCopilot.topic.CreateUserStory" workflowid.workflowid="efc40c85-1206-f011-bae2-000d3aca4339">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_workflow>
+  <botcomponent_workflow botcomponentid.schemaname="cr80b_metaorangeCopilot.topic.GetProjectList" workflowid.workflowid="6c7b7e0c-6d05-f011-bae2-000d3aca4339">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_workflow>
+  <botcomponent_workflow botcomponentid.schemaname="cr80b_metaorangeCopilot.topic.Leaves" workflowid.workflowid="d2f58129-89c2-ef11-b8e9-7c1e520e6962">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_workflow>
+  <botcomponent_workflow botcomponentid.schemaname="cr80b_metaorangeCopilot.topic.TimeSheet" workflowid.workflowid="722287da-a09d-ef11-8a6a-7c1e520e6962">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_workflow>
+  <botcomponent_workflow botcomponentid.schemaname="cr80b_metaorangeCopilot.topic.Untitled2" workflowid.workflowid="92614929-6290-ef11-8a6a-7c1e520e6962">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_workflow>
+  <botcomponent_workflow botcomponentid.schemaname="cr80b_metaorangeCopilot.topic.UpdateTask" workflowid.workflowid="a2d17963-7508-f011-bae3-000d3aca4339">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_workflow>
+  <botcomponent_workflow botcomponentid.schemaname="cr80b_metaorangeCopilot.topic.UpdateTask" workflowid.workflowid="e9ee170a-1606-f011-bae2-000d3aca4339">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_workflow>
+  <botcomponent_workflow botcomponentid.schemaname="cr80b_metaorangeCopilot.topic.UpdateUserStory" workflowid.workflowid="bb134fdb-2d09-f011-bae3-000d3aca4339">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_workflow>
+  <botcomponent_workflow botcomponentid.schemaname="cr80b_metaorangeCopilot.topic.UpdateUserStory" workflowid.workflowid="efc40c85-1206-f011-bae2-000d3aca4339">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_workflow>
+  <botcomponent_workflow botcomponentid.schemaname="cr80b_metaorangeCopilot.topic.ViewRegularization" workflowid.workflowid="9986a397-dac1-ef11-b8e9-7c1e520e6962">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_workflow>
+</botcomponent_workflowset>

@@ -1,0 +1,1 @@
+new_totalhourlycost: =Sum(Decimal(new_employeecost),Decimal(new_interncost),Decimal(new_contractorcost))

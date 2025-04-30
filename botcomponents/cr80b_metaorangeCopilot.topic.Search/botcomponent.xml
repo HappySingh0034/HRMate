@@ -1,0 +1,11 @@
+<botcomponent schemaname="cr80b_metaorangeCopilot.topic.Search">
+  <componenttype>9</componenttype>
+  <description>Create generative answers from data sources.</description>
+  <iscustomizable>0</iscustomizable>
+  <name>Conversational boosting</name>
+  <parentbotid>
+    <schemaname>cr80b_metaorangeCopilot</schemaname>
+  </parentbotid>
+  <statecode>0</statecode>
+  <statuscode>1</statuscode>
+</botcomponent>

@@ -1,0 +1,39 @@
+kind: AdaptiveDialog
+beginDialog:
+  kind: OnRecognizedIntent
+  id: main
+  intent: {}
+  actions:
+    - kind: InvokeAIBuilderModelAction
+      id: invokeAIBuilderModelAction_FR59es
+      input:
+        binding:
+          Email: =System.User.Email
+
+      output:
+        binding:
+          predictionOutput: Topic.Var1
+
+      aIModelId: c8dbe6ac-b365-4d7e-a37b-a56a6473ef92
+
+    - kind: SendActivity
+      id: sendActivity_3qxDhJ
+      activity: |-
+        - Name : {Topic.Var1.structuredOutput.Intern.Full_0028e00cdf71fa7cc76882846b180305bb5}
+        - Intern ID : {Topic.Var1.structuredOutput.Intern.Intern_054988f3ce7af91bf79daa1dfa9eb0c79}
+        - Email : {Topic.Var1.structuredOutput.Intern.Email}
+        - Mobile No. : {Topic.Var1.structuredOutput.Intern.Mobile_034975ecb9b9a043eef4b765cca0d951f}
+        - Alternate Email :{Topic.Var1.structuredOutput.Intern.Alternat02ff83cc80fddc1ef97622e74f36fdcc}
+        - Adhaar Number : {Topic.Var1.structuredOutput.Intern.Adhaar_08881727b2b07c1ac341f38dbf624cd93}
+        - PAN Number :{Topic.Var1.structuredOutput.Intern.PAN_0020461bf0265e27938401910f8aeee775cb}
+        
+        You can check and edit personal details using Metaconnect App.
+        
+        1. Open metaconnect application.
+        2. Navigate to "Home".
+        3. Click on profile picture.
+        4. Click on edit button to Edit details.
+
+    - kind: BeginDialog
+      id: WTbbyN
+      dialog: cr80b_metaorangeCopilot.topic.Untitled

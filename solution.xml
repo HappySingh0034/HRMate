@@ -1,0 +1,249 @@
+<ImportExportXml version="9.2.25042.190" SolutionPackageVersion="9.2" languagecode="1033" generatedBy="CrmLive" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" OrganizationVersion="9.2.25042.190" OrganizationSchemaType="Standard" CRMServerServiceabilityVersion="9.2.25042.00190">
+  <SolutionManifest>
+    <UniqueName>HRMATE</UniqueName>
+    <LocalizedNames>
+      <LocalizedName description="HR MATE" languagecode="1033" />
+    </LocalizedNames>
+    <Descriptions />
+    <Version>1.0.0.4</Version>
+    <Managed>0</Managed>
+    <Publisher>
+      <UniqueName>HappySingh</UniqueName>
+      <LocalizedNames>
+        <LocalizedName description="Happy Singh" languagecode="1033" />
+      </LocalizedNames>
+      <Descriptions />
+      <EMailAddress xsi:nil="true"></EMailAddress>
+      <SupportingWebsiteUrl xsi:nil="true"></SupportingWebsiteUrl>
+      <CustomizationPrefix>mo</CustomizationPrefix>
+      <CustomizationOptionValuePrefix>12466</CustomizationOptionValuePrefix>
+      <Addresses>
+        <Address>
+          <AddressNumber>1</AddressNumber>
+          <AddressTypeCode>1</AddressTypeCode>
+          <City xsi:nil="true"></City>
+          <County xsi:nil="true"></County>
+          <Country xsi:nil="true"></Country>
+          <Fax xsi:nil="true"></Fax>
+          <FreightTermsCode xsi:nil="true"></FreightTermsCode>
+          <ImportSequenceNumber xsi:nil="true"></ImportSequenceNumber>
+          <Latitude xsi:nil="true"></Latitude>
+          <Line1 xsi:nil="true"></Line1>
+          <Line2 xsi:nil="true"></Line2>
+          <Line3 xsi:nil="true"></Line3>
+          <Longitude xsi:nil="true"></Longitude>
+          <Name xsi:nil="true"></Name>
+          <PostalCode xsi:nil="true"></PostalCode>
+          <PostOfficeBox xsi:nil="true"></PostOfficeBox>
+          <PrimaryContactName xsi:nil="true"></PrimaryContactName>
+          <ShippingMethodCode>1</ShippingMethodCode>
+          <StateOrProvince xsi:nil="true"></StateOrProvince>
+          <Telephone1 xsi:nil="true"></Telephone1>
+          <Telephone2 xsi:nil="true"></Telephone2>
+          <Telephone3 xsi:nil="true"></Telephone3>
+          <TimeZoneRuleVersionNumber xsi:nil="true"></TimeZoneRuleVersionNumber>
+          <UPSZone xsi:nil="true"></UPSZone>
+          <UTCOffset xsi:nil="true"></UTCOffset>
+          <UTCConversionTimeZoneCode xsi:nil="true"></UTCConversionTimeZoneCode>
+        </Address>
+        <Address>
+          <AddressNumber>2</AddressNumber>
+          <AddressTypeCode>1</AddressTypeCode>
+          <City xsi:nil="true"></City>
+          <County xsi:nil="true"></County>
+          <Country xsi:nil="true"></Country>
+          <Fax xsi:nil="true"></Fax>
+          <FreightTermsCode xsi:nil="true"></FreightTermsCode>
+          <ImportSequenceNumber xsi:nil="true"></ImportSequenceNumber>
+          <Latitude xsi:nil="true"></Latitude>
+          <Line1 xsi:nil="true"></Line1>
+          <Line2 xsi:nil="true"></Line2>
+          <Line3 xsi:nil="true"></Line3>
+          <Longitude xsi:nil="true"></Longitude>
+          <Name xsi:nil="true"></Name>
+          <PostalCode xsi:nil="true"></PostalCode>
+          <PostOfficeBox xsi:nil="true"></PostOfficeBox>
+          <PrimaryContactName xsi:nil="true"></PrimaryContactName>
+          <ShippingMethodCode>1</ShippingMethodCode>
+          <StateOrProvince xsi:nil="true"></StateOrProvince>
+          <Telephone1 xsi:nil="true"></Telephone1>
+          <Telephone2 xsi:nil="true"></Telephone2>
+          <Telephone3 xsi:nil="true"></Telephone3>
+          <TimeZoneRuleVersionNumber xsi:nil="true"></TimeZoneRuleVersionNumber>
+          <UPSZone xsi:nil="true"></UPSZone>
+          <UTCOffset xsi:nil="true"></UTCOffset>
+          <UTCConversionTimeZoneCode xsi:nil="true"></UTCConversionTimeZoneCode>
+        </Address>
+      </Addresses>
+    </Publisher>
+    <RootComponents>
+      <RootComponent type="1" schemaName="cr80b_roles" behavior="0" />
+      <RootComponent type="1" schemaName="cr80b_variablepay" behavior="0" />
+      <RootComponent type="1" schemaName="crbad_tickets" behavior="0" />
+      <RootComponent type="1" schemaName="new_activityeffort" behavior="0" />
+      <RootComponent type="1" schemaName="new_actualhourlycost" behavior="0" />
+      <RootComponent type="1" schemaName="new_attendance" behavior="0" />
+      <RootComponent type="1" schemaName="new_attendanceregularization" behavior="0" />
+      <RootComponent type="1" schemaName="new_backendactivity" behavior="0" />
+      <RootComponent type="1" schemaName="new_candidates" behavior="0" />
+      <RootComponent type="1" schemaName="new_categoryandreasons" behavior="0" />
+      <RootComponent type="1" schemaName="new_cinvoice" behavior="0" />
+      <RootComponent type="1" schemaName="new_clientapprovedeffort" behavior="0" />
+      <RootComponent type="1" schemaName="new_contractor" behavior="0" />
+      <RootComponent type="1" schemaName="new_dailyattendancedetails" behavior="0" />
+      <RootComponent type="1" schemaName="new_department" behavior="0" />
+      <RootComponent type="1" schemaName="new_designation" behavior="0" />
+      <RootComponent type="1" schemaName="new_document" behavior="0" />
+      <RootComponent type="1" schemaName="new_domain" behavior="0" />
+      <RootComponent type="1" schemaName="new_employeeassignedquestions" behavior="0" />
+      <RootComponent type="1" schemaName="new_employeeokr" behavior="0" />
+      <RootComponent type="1" schemaName="new_enployeeinfo" behavior="0" />
+      <RootComponent type="1" schemaName="new_eodstatus" behavior="0" />
+      <RootComponent type="1" schemaName="new_exitinterviewquestion" behavior="0" />
+      <RootComponent type="1" schemaName="new_exitprocess" behavior="0" />
+      <RootComponent type="1" schemaName="new_holiday" behavior="0" />
+      <RootComponent type="1" schemaName="new_hourlycost" behavior="0" />
+      <RootComponent type="1" schemaName="new_intern" behavior="0" />
+      <RootComponent type="1" schemaName="new_interviewquestiontemp" behavior="0" />
+      <RootComponent type="1" schemaName="new_invoice" behavior="0" />
+      <RootComponent type="1" schemaName="new_item" behavior="0" />
+      <RootComponent type="1" schemaName="new_leaverules" behavior="0" />
+      <RootComponent type="1" schemaName="new_leaves" behavior="0" />
+      <RootComponent type="1" schemaName="new_mailattachment" behavior="0" />
+      <RootComponent type="1" schemaName="new_mailrecord" behavior="0" />
+      <RootComponent type="1" schemaName="new_milestone" behavior="0" />
+      <RootComponent type="1" schemaName="new_monthlyattendancedetail" behavior="0" />
+      <RootComponent type="1" schemaName="new_okr" behavior="0" />
+      <RootComponent type="1" schemaName="new_okrinformation" behavior="0" />
+      <RootComponent type="1" schemaName="new_okrs" behavior="0" />
+      <RootComponent type="1" schemaName="new_payout" behavior="0" />
+      <RootComponent type="1" schemaName="new_plannedeffort" behavior="0" />
+      <RootComponent type="1" schemaName="new_policy" behavior="0" />
+      <RootComponent type="1" schemaName="new_probationperiod" behavior="0" />
+      <RootComponent type="1" schemaName="new_profilechanges" behavior="0" />
+      <RootComponent type="1" schemaName="new_projects" behavior="0" />
+      <RootComponent type="1" schemaName="new_projecttemplate" behavior="0" />
+      <RootComponent type="1" schemaName="new_projecttypes" behavior="0" />
+      <RootComponent type="1" schemaName="new_p_invoice" behavior="0" />
+      <RootComponent type="1" schemaName="new_quarterokr" behavior="0" />
+      <RootComponent type="1" schemaName="new_questionnaire" behavior="0" />
+      <RootComponent type="1" schemaName="new_questiontype" behavior="0" />
+      <RootComponent type="1" schemaName="new_referencetimesheet" behavior="0" />
+      <RootComponent type="1" schemaName="new_report" behavior="0" />
+      <RootComponent type="1" schemaName="new_resignationreasons" behavior="0" />
+      <RootComponent type="1" schemaName="new_rfp" behavior="0" />
+      <RootComponent type="1" schemaName="new_salarypackage" behavior="0" />
+      <RootComponent type="1" schemaName="new_source" behavior="0" />
+      <RootComponent type="1" schemaName="new_suggestions" behavior="0" />
+      <RootComponent type="1" schemaName="new_timesheet" behavior="0" />
+      <RootComponent type="1" schemaName="new_workshift" behavior="0" />
+      <RootComponent type="1" schemaName="new_year" behavior="0" />
+      <RootComponent type="9" schemaName="cr80b_bloodgroup" behavior="0" />
+      <RootComponent type="9" schemaName="cr80b_educationlevel" behavior="0" />
+      <RootComponent type="9" schemaName="cr80b_frequency1" behavior="0" />
+      <RootComponent type="9" schemaName="cr80b_newchoice" behavior="0" />
+      <RootComponent type="9" schemaName="cr80b_statusofinterns" behavior="0" />
+      <RootComponent type="9" schemaName="new_attendanceregularization" behavior="0" />
+      <RootComponent type="9" schemaName="new_attendancestatus" behavior="0" />
+      <RootComponent type="9" schemaName="new_category" behavior="0" />
+      <RootComponent type="9" schemaName="new_contractorcompetency" behavior="0" />
+      <RootComponent type="9" schemaName="new_durationperiod" behavior="0" />
+      <RootComponent type="9" schemaName="new_employeetype" behavior="0" />
+      <RootComponent type="9" schemaName="new_gender" behavior="0" />
+      <RootComponent type="9" schemaName="new_leavestatus" behavior="0" />
+      <RootComponent type="9" schemaName="new_location" behavior="0" />
+      <RootComponent type="9" schemaName="new_time" behavior="0" />
+      <RootComponent type="9" schemaName="new_timesheetstatus" behavior="0" />
+      <RootComponent type="9" schemaName="new_year" behavior="0" />
+      <RootComponent type="29" id="{6c7b7e0c-6d05-f011-bae2-000d3aca4339}" behavior="0" />
+      <RootComponent type="29" id="{722287da-a09d-ef11-8a6a-7c1e520e6962}" behavior="0" />
+      <RootComponent type="29" id="{886493eb-7792-ef11-8a69-7c1e520e6962}" behavior="0" />
+      <RootComponent type="29" id="{8b506cc6-291c-f011-998a-000d3aca4339}" behavior="0" />
+      <RootComponent type="29" id="{92614929-6290-ef11-8a6a-7c1e520e6962}" behavior="0" />
+      <RootComponent type="29" id="{9986a397-dac1-ef11-b8e9-7c1e520e6962}" behavior="0" />
+      <RootComponent type="29" id="{a2a72fbc-d0c1-ef11-b8e9-7c1e520e6962}" behavior="0" />
+      <RootComponent type="29" id="{a2d17963-7508-f011-bae3-000d3aca4339}" behavior="0" />
+      <RootComponent type="29" id="{bb134fdb-2d09-f011-bae3-000d3aca4339}" behavior="0" />
+      <RootComponent type="29" id="{d2f58129-89c2-ef11-b8e9-7c1e520e6962}" behavior="0" />
+      <RootComponent type="29" id="{e9ee170a-1606-f011-bae2-000d3aca4339}" behavior="0" />
+      <RootComponent type="29" id="{efc40c85-1206-f011-bae2-000d3aca4339}" behavior="0" />
+      <RootComponent type="61" schemaName="cr80b_/JScript/TearValidation.js" behavior="0" />
+      <RootComponent type="61" schemaName="cr80b_FormSwitch.js" behavior="0" />
+      <RootComponent type="61" schemaName="cr80b_SetDefaultfixedvalue.js" behavior="0" />
+      <RootComponent type="61" schemaName="cr80b_SetEndDateValidation" behavior="0" />
+      <RootComponent type="61" schemaName="cr80b_SetMileStoneID" behavior="0" />
+      <RootComponent type="61" schemaName="new_/JScript/AltPhoneValidation.js" behavior="0" />
+      <RootComponent type="61" schemaName="new_/JScript/Candidate.js" behavior="0" />
+      <RootComponent type="61" schemaName="new_/JScript/candidateform1.js" behavior="0" />
+      <RootComponent type="61" schemaName="new_/JScript/JDCreation.js" behavior="0" />
+      <RootComponent type="61" schemaName="new_/JScript/PhoneValidation.js" behavior="0" />
+      <RootComponent type="61" schemaName="new_/JScript/Project.js" behavior="0" />
+      <RootComponent type="61" schemaName="new_Candidate_Logo" behavior="0" />
+      <RootComponent type="61" schemaName="new_InternFullName" behavior="0" />
+      <RootComponent type="61" schemaName="new_InternLeaveBalance" behavior="0" />
+      <RootComponent type="61" schemaName="new_LeaveBalance" behavior="0" />
+      <RootComponent type="61" schemaName="new_PassingYear.js" behavior="0" />
+      <RootComponent type="61" schemaName="new_Project_logo" behavior="0" />
+      <RootComponent type="61" schemaName="new_SetStartdateValidation" behavior="0" />
+      <RootComponent type="61" schemaName="new_Validtoo.js" behavior="0" />
+      <RootComponent type="62" schemaName="mo_HRBackend" behavior="0" />
+      <RootComponent type="80" schemaName="mo_HRBackend" behavior="0" />
+      <RootComponent type="401" id="{407d4b8a-f776-4234-92d3-712c732f16d3}" behavior="0" />
+      <RootComponent type="401" id="{478aa949-0e1a-4b3f-8caf-84cff0ba73a9}" behavior="0" />
+      <RootComponent type="401" id="{64246ca2-2080-4fcb-8b79-5fc9736f17fa}" behavior="0" />
+      <RootComponent type="401" id="{9a8acab2-dce8-41e4-9aa1-52a9029b9fbc}" behavior="0" />
+      <RootComponent type="401" id="{c8dbe6ac-b365-4d7e-a37b-a56a6473ef92}" behavior="0" />
+      <RootComponent type="401" id="{d8915fb8-d25d-4215-a14a-873fac6897bc}" behavior="0" />
+    </RootComponents>
+    <MissingDependencies>
+      <MissingDependency>
+        <Required type="61" schemaName="msdyn_/Images/AppModule_Default_Icon.png" displayName="msdyn_/Images/AppModule_Default_Icon.png" solution="AppModuleWebResources (2.5)">
+          <package appName="AppModule Web Resources Package" version="2.5">AppModuleWebResources (2.5)</package>
+        </Required>
+        <Dependent type="80" schemaName="mo_HRBackend" displayName="HR Backend" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="66" schemaName="MscrmControls.Canvas.CanvasControl" displayName="MscrmControls.Canvas.CanvasControl" solution="BaseCustomControlsCore (9.0.2504.2009)">
+          <package appName="Base Custom Controls" version="9.0.2504.2009">BaseCustomControlsCore (9.0.2504.2009)</package>
+        </Required>
+        <Dependent type="60" displayName="Basic Detail" parentDisplayName="Candidates" id="{90bd6acd-92f3-4b04-b61a-0b2f7cddfae7}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="66" schemaName="MscrmControls.Rating.StarRatingControl" displayName="MscrmControls.Rating.StarRatingControl" solution="CustomControlsCore (9.2.25042.00190)">
+          <package appName="Custom Controls Package" version="9.2.25042.00190">CustomControlsCore (9.2.25042.00190)</package>
+        </Required>
+        <Dependent type="60" displayName="Professional Detail" parentDisplayName="Candidates" id="{95591a72-edd1-ed11-a7c7-000d3a0aa9fb}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="66" schemaName="vso_VictorSanchez.MultiselectRecordsEntity" displayName="vso_VictorSanchez.MultiselectRecordsEntity" solution="MultiselectRecords_Solution (1.0.0.13)" />
+        <Dependent type="60" displayName="Personal Detail" parentDisplayName="Intern" id="{0d65831a-7d58-448c-9728-e6559edfdeb7}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="66" schemaName="vso_VictorSanchez.MultiselectRecordsEntity" displayName="vso_VictorSanchez.MultiselectRecordsEntity" solution="MultiselectRecords_Solution (1.0.0.13)" />
+        <Dependent type="60" displayName="Opportunity quick create form" parentDisplayName="Opportunity" id="{88f92f21-7821-ee11-9cbc-000d3a0aa9fb}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="66" schemaName="vso_VictorSanchez.MultiselectRecordsEntity" displayName="vso_VictorSanchez.MultiselectRecordsEntity" solution="MultiselectRecords_Solution (1.0.0.13)" />
+        <Dependent type="60" displayName="Information" parentDisplayName="Opportunity" id="{f07dcf29-9860-47f1-9380-7a0826dac577}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="9" schemaName="msdyn_flow_approval_priority" displayName="Priority" solution="msdyn_FlowApprovalsCore (2.1.7.0)">
+          <package appName="msdyn_FlowApprovals" version="2.1.7.0">msdyn_FlowApprovals (2.1.7.0)</package>
+        </Required>
+        <Dependent type="2" schemaName="crbad_priority" displayName="Priority " parentSchemaName="crbad_tickets" parentDisplayName="Tickets" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="9" schemaName="yearlymonth_options" displayName="Month" solution="msdynce_ActivitiesPatch (9.0.25041.250403000)">
+          <package appName="msdynce_Activities" version="9.0.25036.250331000">msdynce_EnableUCIByDefault (9.0.25036.250331000)</package>
+        </Required>
+        <Dependent type="2" schemaName="cr80b_invoicemonth" displayName="Invoice Month" parentSchemaName="new_invoice" parentDisplayName="Contractor Invoice" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="SettingDefinition" displayName="AppChannel" solution="msdyn_AppFrameworkInfraExtensions (1.0.0.13)" id.uniquename="AppChannel">
+          <package appName="PowerAppsAppFramework Package" version="1.0.0.18">PowerAppsAppFramework_Anchor (1.0.0.18)</package>
+        </Required>
+        <Dependent type="AppSetting" displayName="parentappmoduleid.uniquename=mo_HRBackend,settingdefinitionid.uniquename=AppChannel" id.parentappmoduleid.uniquename="mo_HRBackend" id.settingdefinitionid.uniquename="AppChannel" />
+      </MissingDependency>
+    </MissingDependencies>
+  </SolutionManifest>
+</ImportExportXml>

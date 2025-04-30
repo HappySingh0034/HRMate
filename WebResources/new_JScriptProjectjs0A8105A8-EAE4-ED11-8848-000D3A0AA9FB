@@ -1,0 +1,71 @@
+"use strict"
+if (typeof RecruitmentManagement === "undefined") {
+    var RecruitmentManagement = { _namespace: true };
+}
+if (typeof RecruitmentManagement.Project === "undefined") {
+    RecruitmentManagement.Project = { _namespace: true }
+}
+RecruitmentManagement.Project.Form =
+{   
+    _formContext: null,
+    Initialize: function (executionContext)
+    {
+        try {
+            this._formContext = executionContext.getFormContext();
+        } catch (e) {
+            Xrm.Navigation.openErrorDialog(e);
+        }
+    },
+    OnLoad: function ()
+    {
+        try {
+           
+        } catch (e) {
+            Xrm.Navigation.openErrorDialog(e);
+        }
+    },
+    OnSave: function ()
+    {
+        try {
+            this._DisableNoofPosition();
+           
+        } catch (e) {
+            Xrm.Navigation.openErrorDialog(e);
+        }
+    },
+    OnChange: function () {
+        try {
+            this._projectSumm();
+        } catch (e) {
+            Xrm.Navigation.openErrorDialog(e);
+        }
+    },
+    _DisableNoofPosition: function () {
+        try {
+            this._formContext.getControl("new_numberofpositions").setDisabled(true);
+        } catch (e) {
+            Xrm.Navigation.openErrorDialog(e);
+        }
+    },
+    _projectSumm: function () {
+        try {
+            // var formContext = executionContext.getFormContext();
+            const date = new Date();
+            var status = this._formContext.getAttribute("statuscode").getValue();
+            if (status == 871840004) {
+                this._formContext.getAttribute("new_completedon").setValue(date);
+            }
+            else if (status == 871840005) {
+                this._formContext.getAttribute("new_closedon").setValue(date);
+            }
+            else if (status == 871840001) {
+                this._formContext.getAttribute("new_inprogressdate").setValue(date);
+            }
+            else {
+                console.log("status is some thing else");
+            }
+        } catch (e) {
+            Xrm.Navigation.openErrorDialog(e);
+        }
+    }
+}

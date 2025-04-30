@@ -1,0 +1,2 @@
+new_year: =Year(new_startdate)
+new_yearfx: =Year(new_startdate)

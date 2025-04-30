@@ -1,0 +1,14 @@
+function PhoneValidation(executionContext) {
+    var formContext = executionContext.getFormContext();
+    var Phone = formContext.getAttribute("new_phonenumber").getValue();
+    if (Phone != null) {
+        var length = Phone.toString().length;
+        if (length != 10) {
+            formContext.getControl("new_phonenumber").setNotification("Phone Number Must be 10 Digit", "UID1");
+        }
+        else {
+
+            formContext.getControl("new_phonenumber").clearNotification("UID1")
+        }
+    }
+}

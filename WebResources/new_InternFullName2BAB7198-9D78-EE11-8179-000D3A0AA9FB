@@ -1,0 +1,15 @@
+function FullName(executionContext) {
+    debugger;
+    var formContext = executionContext.getFormContext();
+    var FirstName = formContext.getAttribute("new_firstname").getValue();
+    var MidName = formContext.getAttribute("new_middlename").getValue();
+    var LastName = formContext.getAttribute("new_lastname").getValue();
+    if (MidName != null)
+        formContext.getAttribute("cr80b_fullname").setValue(FirstName + " " + MidName + " " + LastName);
+
+    if (MidName == null)
+        formContext.getAttribute("cr80b_fullname").setValue(FirstName + " " + LastName);
+
+
+
+}

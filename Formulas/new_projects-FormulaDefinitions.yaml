@@ -1,0 +1,5 @@
+new_projectprofitonearningdecimal: =Decimal(new_projectearningcurrency)-Decimal(new_actualcostofproject)
+new_projectprofitonearningpercentage: =(new_projectprofitonearningdecimal/ Decimal(new_projectearningcurrency))*100
+new_remainingeffort: =new_clientapprovedeffort- new_relatedstime
+new_remainingefforthrs: =new_currentplannedeffort - new_relatedstime
+new_remainingeffortpercent: =(new_relatedstime/new_clientapprovedeffort)*100

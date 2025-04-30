@@ -1,0 +1,16 @@
+crbad_annualctc: =Decimal(new_totalctc)-(new_annualvariablesalary)
+crbad_basicsalary: =Decimal(crbad_monthlybasicsalary)*12
+crbad_fixctc: =Decimal(new_monthlyfixedsalary)*12
+crbad_fixtax: =Decimal(crbad_tax)/12
+crbad_monthlybasicsalary: =Decimal(crbad_monthlysalary)*0.50
+crbad_monthlysalary: =Decimal(crbad_annualctc)/12
+crbad_quarterlypay: =Decimal(new_annualvariablesalary)/4
+crbad_specialallowance: =Decimal(crbad_monthlysalary)*0.50
+crbad_tax: =Decimal(crbad_basicsalary)*(new_monthlytax/100)
+crbad_totalspecialallowance: =Decimal(crbad_specialallowance)*12
+new_annualbonus: =Decimal(new_totalctc)*(new_bonus/100)
+new_annualfixedsalary: =Decimal(new_totalctc)*(new_fixedsalary/100)
+new_annualvariablesalary: =Decimal(new_totalctc)*(new_variablesalary/100)
+new_monthlysal: =Decimal(new_monthlyctc)
+new_monthlytax_new: =Decimal(crbad_tax)/12
+new_variablesalary: =100-new_fixedsalary

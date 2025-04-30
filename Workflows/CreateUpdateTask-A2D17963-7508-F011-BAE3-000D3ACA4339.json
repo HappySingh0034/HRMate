@@ -1,0 +1,294 @@
+{
+  "properties": {
+    "connectionReferences": {
+      "shared_visualstudioteamservices": {
+        "runtimeSource": "invoker",
+        "connection": {
+          "connectionReferenceLogicalName": "qs_sharedvisualstudioteamservices_b4447"
+        },
+        "api": {
+          "name": "shared_visualstudioteamservices"
+        }
+      }
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$connections": {
+          "defaultValue": {},
+          "type": "Object"
+        },
+        "$authentication": {
+          "defaultValue": {},
+          "type": "SecureObject"
+        }
+      },
+      "triggers": {
+        "manual": {
+          "metadata": {
+            "operationMetadataId": "b8f61c18-7224-4f8a-9c5f-72fbce5df764"
+          },
+          "type": "Request",
+          "kind": "Skills",
+          "inputs": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "text": {
+                  "title": "ProjectName",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter your input",
+                  "x-ms-content-hint": "TEXT"
+                },
+                "text_1": {
+                  "title": "ItemType",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter your input",
+                  "x-ms-content-hint": "TEXT"
+                },
+                "text_2": {
+                  "title": "Title",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter your input",
+                  "x-ms-content-hint": "TEXT"
+                },
+                "text_3": {
+                  "title": "Description",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter your input",
+                  "x-ms-content-hint": "TEXT"
+                },
+                "text_4": {
+                  "title": "Priority",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter your input",
+                  "x-ms-content-hint": "TEXT"
+                },
+                "text_5": {
+                  "title": "Efforts",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter your input",
+                  "x-ms-content-hint": "TEXT"
+                },
+                "email": {
+                  "title": "Assigned To",
+                  "type": "string",
+                  "format": "email",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter an e-mail address",
+                  "x-ms-content-hint": "EMAIL"
+                },
+                "text_6": {
+                  "title": "Acceptance Criteria",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter your input",
+                  "x-ms-content-hint": "TEXT"
+                },
+                "date": {
+                  "title": "EX_StarDate",
+                  "type": "string",
+                  "format": "date",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter or select a date (YYYY-MM-DD)",
+                  "x-ms-content-hint": "DATE"
+                },
+                "date_1": {
+                  "title": "Due Date\n",
+                  "type": "string",
+                  "format": "date",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter or select a date (YYYY-MM-DD)",
+                  "x-ms-content-hint": "DATE"
+                },
+                "number": {
+                  "title": "Billable Hours\n",
+                  "type": "number",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter a number",
+                  "x-ms-content-hint": "NUMBER"
+                },
+                "text_7": {
+                  "title": "ID",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter your input",
+                  "x-ms-content-hint": "TEXT"
+                },
+                "number_1": {
+                  "title": "IsNew",
+                  "type": "number",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter a number",
+                  "x-ms-content-hint": "NUMBER"
+                },
+                "text_8": {
+                  "title": "User Story ",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter your input",
+                  "x-ms-content-hint": "TEXT"
+                },
+                "text_9": {
+                  "title": "IterationPath",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter your input",
+                  "x-ms-content-hint": "TEXT"
+                }
+              },
+              "required": [
+                "text",
+                "text_1",
+                "text_2",
+                "text_3",
+                "text_4",
+                "email",
+                "text_6",
+                "date",
+                "date_1",
+                "number",
+                "text_7",
+                "number_1",
+                "text_8",
+                "text_9"
+              ]
+            }
+          }
+        }
+      },
+      "actions": {
+        "Respond_to_Copilot": {
+          "runAfter": {
+            "Condition": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "81c94f73-dd52-465c-ad3b-a4686da63cc3"
+          },
+          "type": "Response",
+          "kind": "Skills",
+          "inputs": {
+            "statusCode": 200,
+            "body": {
+              "id": "@{outputs('Create_a_work_item')?['body/id']}@{outputs('Update_a_work_item')?['body/id']}"
+            },
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "title": "ID",
+                  "x-ms-dynamically-added": true,
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "Condition": {
+          "actions": {
+            "Create_a_work_item": {
+              "runAfter": {},
+              "metadata": {
+                "operationMetadataId": "7aa22f8f-6a35-43d0-9e43-c3184427fc89"
+              },
+              "type": "OpenApiConnection",
+              "inputs": {
+                "host": {
+                  "connectionName": "shared_visualstudioteamservices",
+                  "operationId": "CreateWorkItem",
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_visualstudioteamservices"
+                },
+                "parameters": {
+                  "account": "qservicesindia",
+                  "project": "@triggerBody()['text']",
+                  "type": "Task",
+                  "workItem/title": "@triggerBody()['text_2']",
+                  "workItem/description": "<p>@{triggerBody()['text_3']}</p>",
+                  "shouldReturnAllFields": true,
+                  "workItem/priority": "@triggerBody()['text_4']",
+                  "workItem/iteration": "@triggerBody()['text_9']",
+                  "workItem/linkUrl": "@triggerBody()['text_8']",
+                  "workItem/linkType": "Hierarchy-reverse",
+                  "workItem/userEnteredFields": {
+                    "Acceptance Criteria": "@triggerBody()['text_6']",
+                    "Effort": "@triggerBody()?['text_5']",
+                    "Expected Start Date": "@triggerBody()['date']",
+                    "Due Date": "@triggerBody()['date_1']",
+                    "Billable Hours": "@{triggerBody()['number']}",
+                    "Assigned to": "@triggerBody()['email']"
+                  }
+                },
+                "authentication": {
+                  "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']",
+                  "type": "Raw"
+                }
+              }
+            }
+          },
+          "runAfter": {},
+          "else": {
+            "actions": {
+              "Update_a_work_item": {
+                "runAfter": {},
+                "metadata": {
+                  "operationMetadataId": "eae06e23-ab7f-4355-9dea-e900bb3987c4"
+                },
+                "type": "OpenApiConnection",
+                "inputs": {
+                  "host": {
+                    "connectionName": "shared_visualstudioteamservices",
+                    "operationId": "UpdateWorkItem",
+                    "apiId": "/providers/Microsoft.PowerApps/apis/shared_visualstudioteamservices"
+                  },
+                  "parameters": {
+                    "account": "qservicesindia",
+                    "id": "@triggerBody()['text_7']",
+                    "project": "@triggerBody()['text']",
+                    "workItem/title": "@triggerBody()['text_2']",
+                    "workItem/description": "<p>@{triggerBody()['text_3']}</p>",
+                    "type": "Task",
+                    "workItem/priority": "@triggerBody()['text_4']",
+                    "workItem/iteration": "@triggerBody()['text_9']",
+                    "workItem/linkUrl": "@triggerBody()['text_8']",
+                    "workItem/linkType": "Hierarchy-reverse",
+                    "workItem/userEnteredFields": {
+                      "Acceptance Criteria": "@triggerBody()['text_6']",
+                      "Effort": "@triggerBody()?['text_5']",
+                      "Expected Start Date": "@triggerBody()['date']",
+                      "Due Date": "@triggerBody()['date_1']",
+                      "Billable Hours": "@{triggerBody()['number']}",
+                      "Assigned to": "@triggerBody()['email']"
+                    }
+                  },
+                  "authentication": "@parameters('$authentication')"
+                }
+              }
+            }
+          },
+          "expression": {
+            "equals": [
+              "@triggerBody()['number_1']",
+              1
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "8ddf494e-077d-42d3-b4ed-943526cb3632"
+          },
+          "type": "If"
+        }
+      },
+      "outputs": {}
+    },
+    "templateName": ""
+  },
+  "schemaVersion": "1.0.0.0"
+}

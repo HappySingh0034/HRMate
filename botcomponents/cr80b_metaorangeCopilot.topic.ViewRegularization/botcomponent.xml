@@ -1,0 +1,10 @@
+<botcomponent schemaname="cr80b_metaorangeCopilot.topic.ViewRegularization">
+  <componenttype>9</componenttype>
+  <iscustomizable>0</iscustomizable>
+  <name>ViewRegularizationFlow</name>
+  <parentbotid>
+    <schemaname>cr80b_metaorangeCopilot</schemaname>
+  </parentbotid>
+  <statecode>0</statecode>
+  <statuscode>1</statuscode>
+</botcomponent>

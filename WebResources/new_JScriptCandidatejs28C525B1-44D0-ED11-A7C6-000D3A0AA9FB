@@ -1,0 +1,168 @@
+"use strict"
+if (typeof RecruitmentManagement === "undefined") {
+    var RecruitmentManagement = { _namespace: true };
+}
+if (typeof RecruitmentManagement.Candidate === "undefined") {
+    RecruitmentManagement.Candidate = { _namespace: true }
+}
+RecruitmentManagement.Candidate.Form =
+{
+    _formContext: null,
+    Initialize: function (executionContext) {
+        try {
+            this._formContext = executionContext.getFormContext();
+        } catch (e) {
+            Xrm.Navigation.openErrorDialog(e);
+        }
+    },
+    OnLoad: function () {
+        try {
+            this._SetDefaultCurrency();
+            this._SetDefaultValue();
+        } catch (e) {
+            Xrm.Navigation.openErrorDialog(e);
+        }
+    },
+    OnSave: function () {
+        try {
+           
+        } catch (e) {
+            Xrm.Navigation.openErrorDialog(e);
+        }
+    },
+    AlreadyResigned: function () {
+        try {
+            let AlResigned = this._formContext.getAttribute("new_alreadyresign").getValue();
+            if (AlResigned == 1) {
+                this._formContext.getControl("new_lastworkingday").setVisible(true);
+                
+            }
+            else {
+                this._formContext.getControl("new_lastworkingday").setVisible(false);
+            }
+        } catch (e) {
+            Xrm.Navigation.openErrorDialog(e);
+        }
+    },
+    OfferLetterInHand: function () {
+        try {
+            let offerletter = this._formContext.getAttribute("new_doyouhaveanyofferinhand").getValue();
+            if (offerletter == 1) {
+                this._formContext.getControl("new_whyyouarenotjoiningthem").setVisible(true);
+            }
+            else {
+                this._formContext.getControl("new_whyyouarenotjoiningthem").setVisible(false);
+            }
+        } catch (e) {
+            Xrm.Navigation.openErrorDialog(e);
+        }
+    },
+    OnChange: function () {
+        try {
+            this._NoticePeriodNegotiable();
+        } catch (e) {
+            Xrm.Navigation.openErrorDialog(e);
+        }
+    },
+    _SetDefaultCurrency: function () {
+        try {
+            var lookup = [];   // Creating a new lookup Array
+            lookup[0] = {};    // new Object
+            lookup[0].id = "e1c036c6-11ca-ed11-b596-000d3a0aa9fb";  // GUID of the lookup id
+            lookup[0].name = "Rupee"; // Name of the lookup
+            lookup[0].entityType = "transactioncurrency"; // Entity Type of the lookup entity
+            // Getting Developer of the Case and Setting Owner of the case to Developer of the Case
+            this._formContext.getAttribute("transactioncurrencyid").setValue(lookup);
+        } catch (e) {
+            Xrm.Navigation.openErrorDialog(e);
+        }
+    },
+    _NoticePeriodNegotiable: function () {
+        try {
+            let NoticeperiodNegotiable = this._formContext.getAttribute("new_isyournoticeperiodnegotiable").getValue();
+            if (NoticeperiodNegotiable == 1) {
+                this._formContext.getControl("new_minimumnoticeperioddays").setVisible(true);
+            }
+            else {
+                this._formContext.getControl("new_minimumnoticeperioddays").setVisible(false);
+            }
+        } catch (e) {
+            Xrm.Navigation.openErrorDialog(e);
+        }
+    },
+    _SetDefaultValue: function () {
+        try {
+            let currentfixsal = this._formContext.getAttribute("new_currentfixedsalary").getValue();
+            let currentvar = this._formContext.getAttribute("new_currentvariablesalary").getValue();
+            let currentannual = this._formContext.getAttribute("new_currentannualsalary").getValue();
+            let currentmonthly = this._formContext.getAttribute("new_currentmonthlysalary").getValue();
+            let Expectedfixsal = this._formContext.getAttribute("new_expectedfixedsalary").getValue();
+            let Expectedvar = this._formContext.getAttribute("new_expectedvariablesalary").getValue();
+            let Expectedannual = this._formContext.getAttribute("new_expectedannualsalary").getValue();
+            let Expectedmonthly = this._formContext.getAttribute("new_expectedmonthlysalary").getValue();
+            let notes = this._formContext.getAttribute("new_notes").getValue();
+            let noticeperioddays = this._formContext.getAttribute("new_noticeperioddays").getValue();
+            if (currentfixsal == null) {
+                this._formContext.getAttribute("new_currentfixedsalary").setValue(0);
+            } else {
+                return;
+            }
+            if (currentvar == null) {
+                this._formContext.getAttribute("new_currentvariablesalary").setValue(0);
+            }
+            else {
+                return;
+            }
+            if (currentannual == null) {
+                this._formContext.getAttribute("new_currentannualsalary").setValue(0);
+            }
+            else {
+                return;
+            }
+            if (currentmonthly == null) {
+                this._formContext.getAttribute("new_currentmonthlysalary").setValue(0);
+            }
+            else {
+                return;
+            }
+            if (Expectedfixsal == null) {
+                this._formContext.getAttribute("new_expectedfixedsalary").setValue(0);
+            }
+            else {
+                return;
+            }
+            if (Expectedvar == null) {
+                this._formContext.getAttribute("new_expectedvariablesalary").setValue(0);
+            }
+            else {
+                return;
+            }
+            if (Expectedannual == null) {
+                this._formContext.getAttribute("new_expectedannualsalary").setValue(0);
+            }
+            else {
+                return;
+            }
+            if (Expectedmonthly == null) {
+                this._formContext.getAttribute("new_expectedmonthlysalary").setValue(0);
+            }
+            else {
+                return;
+            }
+            if (notes == null) {
+                this._formContext.getAttribute("new_notes").setValue("NA");
+            }
+            else {
+                return;
+            }
+            if (noticeperioddays == null) {
+                this._formContext.getAttribute("new_noticeperioddays").setValue(0);
+            }
+            else {
+                return;
+            }
+        } catch (e) {
+            Xrm.Navigation.openErrorDialog(e);
+        }
+    }
+}

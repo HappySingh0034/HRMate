@@ -1,0 +1,35 @@
+kind: AdaptiveDialog
+beginDialog:
+  kind: OnUnknownIntent
+  id: main
+  priority: -1
+  actions:
+    - kind: ConditionGroup
+      id: has-answer-conditions
+      conditions:
+        - id: has-answer
+          condition: =!IsBlank(Topic.Answer)
+          actions:
+            - kind: EndDialog
+              id: end-topic
+              clearTopicQueue: true
+
+    - kind: SearchAndSummarizeContent
+      id: search-content
+      variable: Topic.Answer
+      userInput: =System.Activity.Text
+      moderationLevel: High
+      sharePointSearchDataSource: {}
+      fileSearchDataSource:
+        searchFilesMode:
+          kind: SearchSpecificFiles
+          files:
+            - cr80b_metaorangeCopilot.file.POWERVERSESocialMediaPolicy.docx_t99
+
+      knowledgeSources:
+        kind: SearchSpecificKnowledgeSources
+        knowledgeSources:
+          - cr80b_metaorangeCopilot.topic.httpswwwpowerversein_LQEkopdOfCaBMs5m0ovUf
+          - cr80b_metaorangeCopilot.topic.PoshPolicydocx_7KDmlKURjB1UOjWVjtM85
+
+      tone: Friendly

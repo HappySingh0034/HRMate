@@ -1,0 +1,63 @@
+"use strict"
+if (typeof RecruitmentManagement === "undefined") {
+    var RecruitmentManagement = { _namespace: true };
+}
+if (typeof RecruitmentManagement.Candidate === "undefined") {
+    RecruitmentManagement.Candidate = { _namespace: true }
+}
+RecruitmentManagement.Candidate.Form =
+{   
+    _formContext: null,
+    Initialize: function (executionContext)
+    {
+        try {
+            this._formContext = executionContext.getFormContext();
+        } catch (e) {
+            Xrm.Navigation.openErrorDialog(e);
+        }
+    },
+    OnLoad: function ()
+    {
+        try {
+            this._SetProject();
+        } catch (e) {
+            Xrm.Navigation.openErrorDialog(e);
+        }
+    },
+    OnSave: function ()
+    {
+        try {
+           
+        } catch (e) {
+            Xrm.Navigation.openErrorDialog(e);
+        }
+    },
+    OnChange: function () {
+        try {
+
+        } catch (e) {
+            Xrm.Navigation.openErrorDialog(e);
+        }
+    },
+    OthersLoctaion: function () {
+        try {
+            let location = this._formContext.getAttribute("new_location").getValue();
+            if (location == 871840007) {
+                this._formContext.getControl("new_otherlocation").setVisible(true);
+            }
+            else {
+                this._formContext.getControl("new_otherlocation").setVisible(false);
+            }
+        } catch (e) {
+            Xrm.Navigation.openErrorDialog(e);
+        }
+    },
+    _SetProject: function () {
+        try {
+            this._formContext.getControl("new_projects").setDisabled(true);
+            this._formContext.getControl("statuscode").setDisabled(true);
+        } catch (e) {
+            Xrm.Navigation.openErrorDialog(e);
+        }
+    }
+}

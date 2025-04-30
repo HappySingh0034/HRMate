@@ -1,0 +1,35 @@
+"use strict"
+if (typeof RecruitmentManagement === "undefined") {
+    var RecruitmentManagement = { _namespace: true };
+}
+if (typeof RecruitmentManagement.Project === "undefined") {
+    RecruitmentManagement.Project = { _namespace: true }
+}
+RecruitmentManagement.Project.Form =
+{
+    JDCreation: function () {
+        // Inline Page
+        var pageInput = {
+            pageType: "custom",
+            name: "new_custompagejd_30cc9",
+        };
+        var navigationOptions = {
+            target: 2,
+            position: 1,
+            height: 800,
+            width:850,
+            title: "Create JD" // Enter Title Of Your Choice
+            
+        };
+        Xrm.Navigation.navigateTo(pageInput, navigationOptions)
+            .then(
+                function () {
+                    console.log("Sucess")
+                }
+            ).catch(
+                function (error) {
+                    console.log("Failed")
+                }
+         );
+    }
+}

@@ -1,0 +1,4245 @@
+kind: AdaptiveDialog
+beginDialog:
+  kind: OnRecognizedIntent
+  id: main
+  condition: =Global.GlobalTrigger = "Timesheet"
+  intent: {}
+  actions:
+    - kind: AdaptiveCardPrompt
+      id: iCSWGX
+      card: |
+        {
+          "type": "AdaptiveCard",
+          "body": [
+            {
+              "type": "TextBlock",
+              "text": "Please select an option:",
+              "weight": "Bolder",
+              "size": "Medium"
+            },
+            {
+              "type": "ActionSet",
+              "actions": [
+                {
+                  "type": "Action.Submit",
+                  "title": "Apply Timesheet",
+                  "data": {
+                    "choice": "ApplyTimesheet"
+                  }
+                }
+              ]
+            },
+            {
+              "type": "ActionSet",
+              "actions": [
+                {
+                  "type": "Action.Submit",
+                  "title": "View Timesheet",
+                  "data": {
+                    "choice": "ViewTimesheet"
+                  }
+                }
+              ]
+            }
+            
+          ],
+          "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+          "version": "1.3"
+        }
+      output:
+        binding:
+          actionSubmitId: Topic.actionSubmitId
+          choice: Topic.choice
+
+      outputType:
+        properties:
+          actionSubmitId: String
+          choice: String
+
+    - kind: ConditionGroup
+      id: conditionGroup_CCCUCH
+      conditions:
+        - id: conditionItem_o6pDUK
+          condition: =Topic.choice = "ApplyTimesheet"
+          actions:
+            - kind: ConditionGroup
+              id: conditionGroup_ij5RvL
+              conditions:
+                - id: conditionItem_dLGmZb
+                  condition: =Global.EmployeeType = 'cr80b_metaorangeCopilot.topic.Untitled.main.question_cLftbf'.Employee
+                  actions:
+                    - kind: InvokeConnectorAction
+                      id: invokeConnectorAction_KqfAr3
+                      input:
+                        binding:
+                          $filter: ="new_email eq '"&System.User.Email&"'"
+                          entityName: new_enployeeinfos
+                          organization: current
+
+                      output:
+                        binding:
+                          value: Topic.Var1
+
+                      connectionReference: cr80b_metaorangeCopilot.shared_commondataserviceforapps.8b14a02db5bc44f09eb442b213487848
+                      connectionProperties:
+                        mode: Invoker
+
+                      dynamicOutputSchema:
+                        kind: Record
+                        properties:
+                          @odata.nextLink:
+                            displayName: Next link
+                            description: The url to fetch next page data.
+                            visibility: Advanced
+                            order: 1
+                            type: String
+
+                          value:
+                            order: 0
+                            type:
+                              kind: Table
+                              properties:
+                                _createdby_value:
+                                  displayName: Created By (Value)
+                                  description: Unique identifier of the user who created the record.
+                                  visibility: Advanced
+                                  order: 24
+                                  type: String
+
+                                _createdby_value@Microsoft.Dynamics.CRM.lookuplogicalname:
+                                  displayName: Created By (Type)
+                                  description: Unique identifier of the user who created the record.
+                                  visibility: Advanced
+                                  order: 23
+                                  type: String
+
+                                _createdonbehalfby_value:
+                                  displayName: Created By (Delegate) (Value)
+                                  description: Unique identifier of the delegate user who created the record.
+                                  visibility: Advanced
+                                  order: 22
+                                  type: String
+
+                                _createdonbehalfby_value@Microsoft.Dynamics.CRM.lookuplogicalname:
+                                  displayName: Created By (Delegate) (Type)
+                                  description: Unique identifier of the delegate user who created the record.
+                                  visibility: Advanced
+                                  order: 21
+                                  type: String
+
+                                _modifiedby_value:
+                                  displayName: Modified By (Value)
+                                  description: Unique identifier of the user who modified the record.
+                                  visibility: Advanced
+                                  order: 67
+                                  type: String
+
+                                _modifiedby_value@Microsoft.Dynamics.CRM.lookuplogicalname:
+                                  displayName: Modified By (Type)
+                                  description: Unique identifier of the user who modified the record.
+                                  visibility: Advanced
+                                  order: 66
+                                  type: String
+
+                                _modifiedonbehalfby_value:
+                                  displayName: Modified By (Delegate) (Value)
+                                  description: Unique identifier of the delegate user who modified the record.
+                                  visibility: Advanced
+                                  order: 65
+                                  type: String
+
+                                _modifiedonbehalfby_value@Microsoft.Dynamics.CRM.lookuplogicalname:
+                                  displayName: Modified By (Delegate) (Type)
+                                  description: Unique identifier of the delegate user who modified the record.
+                                  visibility: Advanced
+                                  order: 64
+                                  type: String
+
+                                _new_department_value:
+                                  displayName: Department (Value)
+                                  order: 32
+                                  type: String
+
+                                _new_department_value@Microsoft.Dynamics.CRM.lookuplogicalname:
+                                  displayName: Department (Type)
+                                  order: 31
+                                  type: String
+
+                                _new_designation_value:
+                                  displayName: " Designation (Value)"
+                                  order: 1
+                                  type: String
+
+                                _new_designation_value@Microsoft.Dynamics.CRM.lookuplogicalname:
+                                  displayName: " Designation (Type)"
+                                  order: 0
+                                  type: String
+
+                                _new_hod_value:
+                                  displayName: HOD (Value)
+                                  order: 50
+                                  type: String
+
+                                _new_hod_value@Microsoft.Dynamics.CRM.lookuplogicalname:
+                                  displayName: HOD (Type)
+                                  order: 49
+                                  type: String
+
+                                _new_manager_value:
+                                  displayName: Manager (Value)
+                                  order: 61
+                                  type: String
+
+                                _new_manager_value@Microsoft.Dynamics.CRM.lookuplogicalname:
+                                  displayName: Manager (Type)
+                                  order: 60
+                                  type: String
+
+                                _new_questionnaire_value:
+                                  displayName: Questionnaire (Value)
+                                  visibility: Advanced
+                                  order: 99
+                                  type: String
+
+                                _new_questionnaire_value@Microsoft.Dynamics.CRM.lookuplogicalname:
+                                  displayName: Questionnaire (Type)
+                                  visibility: Advanced
+                                  order: 98
+                                  type: String
+
+                                _new_questiontemplate_value:
+                                  displayName: Invitation Type (Value)
+                                  visibility: Advanced
+                                  order: 56
+                                  type: String
+
+                                _new_questiontemplate_value@Microsoft.Dynamics.CRM.lookuplogicalname:
+                                  displayName: Invitation Type (Type)
+                                  visibility: Advanced
+                                  order: 55
+                                  type: String
+
+                                _new_role_value:
+                                  displayName: Role (Value)
+                                  visibility: Advanced
+                                  order: 108
+                                  type: String
+
+                                _new_role_value@Microsoft.Dynamics.CRM.lookuplogicalname:
+                                  displayName: Role (Type)
+                                  visibility: Advanced
+                                  order: 107
+                                  type: String
+
+                                _new_workshift_value:
+                                  displayName: Work Shift with Employee (Value)
+                                  order: 126
+                                  type: String
+
+                                _new_workshift_value@Microsoft.Dynamics.CRM.lookuplogicalname:
+                                  displayName: Work Shift with Employee (Type)
+                                  order: 125
+                                  type: String
+
+                                _ownerid_value:
+                                  displayName: Owner (Value)
+                                  description: Owner Id
+                                  visibility: Advanced
+                                  order: 77
+                                  type: String
+
+                                _ownerid_value@Microsoft.Dynamics.CRM.lookuplogicalname:
+                                  displayName: Owner (Type)
+                                  description: Owner Id
+                                  visibility: Advanced
+                                  order: 76
+                                  type: String
+
+                                _owningbusinessunit_value:
+                                  displayName: Owning Business Unit (Value)
+                                  description: Unique identifier for the business unit that owns the record
+                                  visibility: Advanced
+                                  order: 79
+                                  type: String
+
+                                _owningbusinessunit_value@Microsoft.Dynamics.CRM.lookuplogicalname:
+                                  displayName: Owning Business Unit (Type)
+                                  description: Unique identifier for the business unit that owns the record
+                                  visibility: Advanced
+                                  order: 78
+                                  type: String
+
+                                _owningteam_value:
+                                  displayName: Owning Team (Value)
+                                  description: Unique identifier for the team that owns the record.
+                                  visibility: Advanced
+                                  order: 81
+                                  type: String
+
+                                _owningteam_value@Microsoft.Dynamics.CRM.lookuplogicalname:
+                                  displayName: Owning Team (Type)
+                                  description: Unique identifier for the team that owns the record.
+                                  visibility: Advanced
+                                  order: 80
+                                  type: String
+
+                                _owninguser_value:
+                                  displayName: Owning User (Value)
+                                  description: Unique identifier for the user that owns the record.
+                                  visibility: Advanced
+                                  order: 83
+                                  type: String
+
+                                _owninguser_value@Microsoft.Dynamics.CRM.lookuplogicalname:
+                                  displayName: Owning User (Type)
+                                  description: Unique identifier for the user that owns the record.
+                                  visibility: Advanced
+                                  order: 82
+                                  type: String
+
+                                @odata.id:
+                                  displayName: OData Id
+                                  description: OData row id
+                                  order: 74
+                                  type: String
+
+                                cr80b_fullname:
+                                  displayName: Full Name
+                                  visibility: Advanced
+                                  order: 45
+                                  type: String
+
+                                cr80b_probationextension:
+                                  displayName: ProbationExtension
+                                  visibility: Advanced
+                                  order: 96
+                                  type: String
+
+                                cr80b_statusofcandidate:
+                                  displayName: Status Of Candidate
+                                  visibility: Advanced
+                                  order: 111
+                                  dynamicValuesConfig:
+                                    capability: List
+
+                                  type: Number
+
+                                cr80b_username:
+                                  displayName: Username
+                                  visibility: Advanced
+                                  order: 116
+                                  type: String
+
+                                cr80b_variableamount:
+                                  displayName: Variable Amount
+                                  visibility: Advanced
+                                  order: 119
+                                  type: Number
+
+                                cr80b_variablefrequency:
+                                  displayName: Variable Frequency
+                                  visibility: Advanced
+                                  order: 120
+                                  dynamicValuesConfig:
+                                    capability: List
+
+                                  type: Number
+
+                                cr80b_variablepaiddate:
+                                  displayName: Variable Paid Date
+                                  visibility: Advanced
+                                  order: 121
+                                  type: DateTime
+
+                                cr80b_variablestatus:
+                                  displayName: Variable status
+                                  visibility: Advanced
+                                  order: 122
+                                  type: String
+
+                                createdon:
+                                  displayName: Created On
+                                  description: Date and time when the record was created.
+                                  visibility: Advanced
+                                  order: 25
+                                  type: DateTime
+
+                                importsequencenumber:
+                                  displayName: Import Sequence Number
+                                  description: Sequence number of the import that created this record.
+                                  visibility: Advanced
+                                  order: 53
+                                  type: Number
+
+                                modifiedon:
+                                  displayName: Modified On
+                                  description: Date and time when the record was modified.
+                                  visibility: Advanced
+                                  order: 68
+                                  type: DateTime
+
+                                new_aadhaarnumber:
+                                  displayName: Aadhaar Number
+                                  visibility: Advanced
+                                  order: 2
+                                  type: String
+
+                                new_actiontaken:
+                                  displayName: Action Taken ?
+                                  visibility: Advanced
+                                  order: 3
+                                  dynamicValuesConfig:
+                                    capability: List
+
+                                  type: Number
+
+                                new_adharcard:
+                                  displayName: Adharcard
+                                  visibility: Advanced
+                                  order: 4
+                                  type: String
+
+                                new_ageyears:
+                                  displayName: Age (Years)
+                                  visibility: Advanced
+                                  order: 5
+                                  type: Number
+
+                                new_agreewithonboardingtermsconditions:
+                                  displayName: Agree with Onboarding Terms&Conditions
+                                  visibility: Advanced
+                                  order: 6
+                                  type: Boolean
+
+                                new_alternateemail:
+                                  displayName: Alternate Email
+                                  visibility: Advanced
+                                  order: 7
+                                  type: String
+
+                                new_alternatenumber:
+                                  displayName: Alternate Mobile Number
+                                  visibility: Advanced
+                                  order: 8
+                                  type: String
+
+                                new_appid:
+                                  displayName: Appid
+                                  order: 9
+                                  type: String
+
+                                new_bankaccountnumber:
+                                  displayName: Bank Account Number
+                                  visibility: Advanced
+                                  order: 10
+                                  type: String
+
+                                new_bankbranchcity:
+                                  displayName: Bank Branch City
+                                  visibility: Advanced
+                                  order: 11
+                                  type: String
+
+                                new_bankbranchname:
+                                  displayName: Bank Branch Name
+                                  visibility: Advanced
+                                  order: 12
+                                  type: String
+
+                                new_bankname:
+                                  displayName: Bank Name
+                                  visibility: Advanced
+                                  order: 13
+                                  type: String
+
+                                new_bloodgroup:
+                                  displayName: Blood Group
+                                  visibility: Advanced
+                                  order: 14
+                                  dynamicValuesConfig:
+                                    capability: List
+
+                                  type: Number
+
+                                new_calculatesalarypayoutinstant:
+                                  displayName: calculate salary payout instant
+                                  visibility: Advanced
+                                  order: 15
+                                  type: Boolean
+
+                                new_certificationtype:
+                                  displayName: Certification Type
+                                  visibility: Advanced
+                                  order: 16
+                                  dynamicValuesConfig:
+                                    capability: List
+
+                                  type: Number
+
+                                new_comment:
+                                  displayName: Comment
+                                  visibility: Advanced
+                                  order: 17
+                                  type: String
+
+                                new_companyname:
+                                  displayName: Company Name
+                                  visibility: Advanced
+                                  order: 18
+                                  type: String
+
+                                new_compensationleaves2:
+                                  displayName: Compensation Leaves
+                                  visibility: Advanced
+                                  order: 19
+                                  type: Number
+
+                                new_convertedfromintern:
+                                  displayName: Converted from Intern?
+                                  visibility: Advanced
+                                  order: 20
+                                  type: Boolean
+
+                                new_currentdate:
+                                  displayName: current date
+                                  visibility: Advanced
+                                  order: 26
+                                  type: DateTime
+
+                                new_dateofbirth:
+                                  displayName: Date of Birth
+                                  order: 27
+                                  type: DateTime
+
+                                new_dateofjoining:
+                                  displayName: Date of Joining
+                                  order: 28
+                                  type: DateTime
+
+                                new_dateofleaving:
+                                  displayName: Date of Leaving
+                                  visibility: Advanced
+                                  order: 29
+                                  type: DateTime
+
+                                new_degreename:
+                                  displayName: Degree/Diploma Obtained
+                                  visibility: Advanced
+                                  order: 30
+                                  type: String
+
+                                new_document:
+                                  displayName: Document
+                                  visibility: Advanced
+                                  order: 33
+                                  type: String
+
+                                new_email:
+                                  displayName: Email
+                                  order: 34
+                                  type: String
+
+                                new_employeehourlysalary:
+                                  displayName: Employee monthly salary
+                                  visibility: Advanced
+                                  order: 37
+                                  type: Number
+
+                                new_employeehourlysalary_date:
+                                  displayName: Employee monthly salary (Last Updated On)
+                                  description: Last Updated time of rollup field Employee monthly salary.
+                                  visibility: Advanced
+                                  order: 38
+                                  type: DateTime
+
+                                new_employeehourlysalary_state:
+                                  displayName: Employee monthly salary (State)
+                                  description: State of rollup field Employee monthly salary.
+                                  visibility: Advanced
+                                  order: 39
+                                  type: Number
+
+                                new_employeeid:
+                                  displayName: Employee Id
+                                  visibility: Advanced
+                                  order: 36
+                                  type: String
+
+                                new_employeestatus:
+                                  displayName: Employee Status
+                                  visibility: Advanced
+                                  order: 40
+                                  dynamicValuesConfig:
+                                    capability: List
+
+                                  type: Number
+
+                                new_employeetype:
+                                  displayName: Employment Type
+                                  visibility: Advanced
+                                  order: 41
+                                  dynamicValuesConfig:
+                                    capability: List
+
+                                  type: Number
+
+                                new_enployeeinfoid:
+                                  displayName: Employee
+                                  description: Unique identifier for entity instances
+                                  visibility: Advanced
+                                  order: 35
+                                  type: String
+
+                                new_executive:
+                                  displayName: Executive
+                                  visibility: Advanced
+                                  order: 42
+                                  dynamicValuesConfig:
+                                    capability: List
+
+                                  type: Number
+
+                                new_experianceyears:
+                                  displayName: Experience in years
+                                  visibility: Advanced
+                                  order: 43
+                                  type: Number
+
+                                new_firstname:
+                                  displayName: First Name
+                                  visibility: Advanced
+                                  order: 44
+                                  type: String
+
+                                new_gender:
+                                  displayName: Gender
+                                  visibility: Advanced
+                                  order: 46
+                                  dynamicValuesConfig:
+                                    capability: List
+
+                                  type: Number
+
+                                new_gradeband:
+                                  displayName: Grade/Band
+                                  visibility: Advanced
+                                  order: 47
+                                  dynamicValuesConfig:
+                                    capability: List
+
+                                  type: Number
+
+                                new_graduationlevel:
+                                  displayName: Highest Education Level
+                                  visibility: Advanced
+                                  order: 48
+                                  dynamicValuesConfig:
+                                    capability: List
+
+                                  type: Number
+
+                                new_ifsccode:
+                                  displayName: IFSC Code
+                                  visibility: Advanced
+                                  order: 52
+                                  type: String
+
+                                new_image:
+                                  displayName: Profile Picture
+                                  visibility: Advanced
+                                  order: 97
+                                  type: String
+
+                                new_imageid:
+                                  displayName: new_ImageId
+                                  visibility: Advanced
+                                  order: 72
+                                  type: String
+
+                                new_informemployeesforsurvey:
+                                  displayName: Inform Employees for survey
+                                  visibility: Advanced
+                                  order: 54
+                                  type: Boolean
+
+                                new_lastdateofrelieving:
+                                  displayName: Last date of Relieving
+                                  visibility: Advanced
+                                  order: 57
+                                  type: DateTime
+
+                                new_lastname:
+                                  displayName: Last Name
+                                  visibility: Advanced
+                                  order: 58
+                                  type: String
+
+                                new_location:
+                                  displayName: Location
+                                  visibility: Advanced
+                                  order: 59
+                                  dynamicValuesConfig:
+                                    capability: List
+
+                                  type: Number
+
+                                new_middlename:
+                                  displayName: Middle Name
+                                  visibility: Advanced
+                                  order: 62
+                                  type: String
+
+                                new_mobilenumber:
+                                  displayName: Mobile Number
+                                  visibility: Advanced
+                                  order: 63
+                                  type: String
+
+                                new_name:
+                                  displayName: Name
+                                  visibility: Advanced
+                                  order: 69
+                                  type: String
+
+                                new_nameofthecertification:
+                                  displayName: Name of the Certification
+                                  visibility: Advanced
+                                  order: 70
+                                  type: String
+
+                                new_nameoftheinstitute:
+                                  displayName: Name of the Institute
+                                  visibility: Advanced
+                                  order: 71
+                                  type: String
+
+                                new_noticeperioddays:
+                                  displayName: Notice Period (Days)
+                                  order: 73
+                                  type: Number
+
+                                new_onboardingtermsandconditiondate:
+                                  displayName: Onboarding Terms and condition Date
+                                  visibility: Advanced
+                                  order: 75
+                                  type: DateTime
+
+                                new_pancard:
+                                  displayName: Pancard
+                                  visibility: Advanced
+                                  order: 85
+                                  type: String
+
+                                new_pancardnumber:
+                                  displayName: PAN Card Number
+                                  visibility: Advanced
+                                  order: 84
+                                  type: String
+
+                                new_passing:
+                                  displayName: Passing %
+                                  visibility: Advanced
+                                  order: 86
+                                  type: Number
+
+                                new_password:
+                                  displayName: Password
+                                  visibility: Advanced
+                                  order: 87
+                                  type: String
+
+                                new_permanentaddress:
+                                  displayName: Permanent Address
+                                  visibility: Advanced
+                                  order: 88
+                                  type: String
+
+                                new_pfno:
+                                  displayName: PF No.
+                                  visibility: Advanced
+                                  order: 89
+                                  type: String
+
+                                new_poshcommittee:
+                                  displayName: POSH Committee
+                                  visibility: Advanced
+                                  order: 90
+                                  type: Boolean
+
+                                new_pp:
+                                  displayName: Probation Period (Months)
+                                  visibility: Advanced
+                                  order: 93
+                                  type: Number
+
+                                new_pp_date:
+                                  displayName: Probation Period (Months) (Last Updated On)
+                                  description: Last Updated time of rollup field Probation Period (Months).
+                                  visibility: Advanced
+                                  order: 94
+                                  type: DateTime
+
+                                new_pp_state:
+                                  displayName: Probation Period (Months) (State)
+                                  description: State of rollup field Probation Period (Months).
+                                  visibility: Advanced
+                                  order: 95
+                                  type: Number
+
+                                new_probationlastdate:
+                                  displayName: Probation Last date
+                                  visibility: Advanced
+                                  order: 91
+                                  type: DateTime
+
+                                new_probationmnth:
+                                  displayName: Probation Mnth
+                                  visibility: Advanced
+                                  order: 92
+                                  type: Number
+
+                                new_relation:
+                                  displayName: Relation
+                                  visibility: Advanced
+                                  order: 101
+                                  dynamicValuesConfig:
+                                    capability: List
+
+                                  type: Number
+
+                                new_resignationapprovedbyhod:
+                                  displayName: Resignation Approved by HOD
+                                  visibility: Advanced
+                                  order: 102
+                                  type: Boolean
+
+                                new_resignationapprovedbyhr:
+                                  displayName: Resignation Approved by HR
+                                  visibility: Advanced
+                                  order: 103
+                                  type: Boolean
+
+                                new_resignationapprovedbymanager:
+                                  displayName: Resignation Approved by Manager
+                                  visibility: Advanced
+                                  order: 104
+                                  type: Boolean
+
+                                new_resignationdate:
+                                  displayName: Resignation Date
+                                  visibility: Advanced
+                                  order: 105
+                                  type: DateTime
+
+                                new_resignationreason:
+                                  displayName: Resignation Reason
+                                  visibility: Advanced
+                                  order: 106
+                                  type: String
+
+                                new_showinterview:
+                                  displayName: Show Interview
+                                  visibility: Advanced
+                                  order: 109
+                                  type: Boolean
+
+                                new_substatus:
+                                  displayName: HR Action
+                                  visibility: Advanced
+                                  order: 51
+                                  dynamicValuesConfig:
+                                    capability: List
+
+                                  type: Number
+
+                                new_temporaryaddress:
+                                  displayName: Temporary Address
+                                  visibility: Advanced
+                                  order: 113
+                                  type: String
+
+                                new_type:
+                                  displayName: Type
+                                  visibility: Advanced
+                                  order: 115
+                                  dynamicValuesConfig:
+                                    capability: List
+
+                                  type: Number
+
+                                new_validtoo:
+                                  displayName: Valid too
+                                  visibility: Advanced
+                                  order: 118
+                                  type: Number
+
+                                new_whatsappnumber:
+                                  displayName: WhatsApp Number
+                                  visibility: Advanced
+                                  order: 124
+                                  type: String
+
+                                new_yearofpassing:
+                                  displayName: Year of Passing
+                                  visibility: Advanced
+                                  order: 127
+                                  type: Number
+
+                                new_yearofpassingcertification:
+                                  displayName: Year of passing (certification)
+                                  visibility: Advanced
+                                  order: 128
+                                  type: Number
+
+                                overriddencreatedon:
+                                  displayName: Record Created On
+                                  description: Date and time that the record was migrated.
+                                  visibility: Advanced
+                                  order: 100
+                                  type: DateTime
+
+                                statecode:
+                                  displayName: Status
+                                  description: Status of the Enployee Info
+                                  visibility: Advanced
+                                  order: 110
+                                  dynamicValuesConfig:
+                                    capability: List
+
+                                  type: Number
+
+                                statuscode:
+                                  displayName: Status Reason
+                                  description: Reason for the status of the Enployee Info
+                                  visibility: Advanced
+                                  order: 112
+                                  dynamicValuesConfig:
+                                    capability: List
+
+                                  type: Number
+
+                                timezoneruleversionnumber:
+                                  displayName: Time Zone Rule Version Number
+                                  description: For internal use only.
+                                  visibility: Advanced
+                                  order: 114
+                                  type: Number
+
+                                utcconversiontimezonecode:
+                                  displayName: UTC Conversion Time Zone Code
+                                  description: Time zone code that was in use when the record was created.
+                                  visibility: Advanced
+                                  order: 117
+                                  type: Number
+
+                                versionnumber:
+                                  displayName: Version Number
+                                  description: Version Number
+                                  visibility: Advanced
+                                  order: 123
+                                  type: Number
+
+                      operationId: ListRecordsWithOrganization
+
+                    - kind: InvokeConnectorAction
+                      id: invokeConnectorAction_LIVnjw
+                      input:
+                        binding:
+                          entityName: new_projectses
+                          fetchXml: |
+                            ="<fetch>
+                              <!-- Table -->
+                              <entity name='new_projects'>
+                                <!-- Columns -->
+                                <attribute name='new_projectsid' />
+                                <attribute name='cr80b_projectmanager' />
+                            		<attribute name='cr80b_projectmanagername' />
+                                <attribute name='new_name' />
+                                <!-- Many To Many Relationships -->
+                                <link-entity name='new_projects_new_enployeeinfo' from='new_projectsid' to='new_projectsid' link-type='inner' intersect='true'>
+                                  <link-entity name='new_enployeeinfo' from='new_enployeeinfoid' to='new_enployeeinfoid' alias='new_Projects_new_EnployeeInfo_new_Enploye' link-type='inner'>
+                                    <attribute name='new_enployeeinfoid' />
+                                    <filter type='and'>
+                                      <condition attribute='new_enployeeinfoid' operator='eq' value='"&First(Topic.Var1).new_enployeeinfoid&"' />
+                                    </filter>
+                                  </link-entity>
+                                </link-entity>
+                              </entity>
+                            </fetch>"
+                          organization: current
+
+                      output:
+                        binding:
+                          @odata.nextLink: Topic.Var6
+                          value: Topic.Var4
+
+                      connectionReference: cr80b_metaorangeCopilot.shared_commondataserviceforapps.8b14a02db5bc44f09eb442b213487848
+                      connectionProperties:
+                        mode: Invoker
+
+                      dynamicOutputSchema:
+                        kind: Record
+                        properties:
+                          @odata.nextLink:
+                            displayName: Next link
+                            description: The url to fetch next page data.
+                            visibility: Advanced
+                            order: 1
+                            type: String
+
+                          value:
+                            order: 0
+                            type:
+                              kind: Table
+                              properties:
+                                _cr80b_projectmanager_value:
+                                  displayName: Project Manager (Value)
+                                  visibility: Advanced
+                                  order: 60
+                                  type: String
+
+                                _cr80b_projectmanager_value@Microsoft.Dynamics.CRM.lookuplogicalname:
+                                  displayName: Project Manager (Type)
+                                  visibility: Advanced
+                                  order: 59
+                                  type: String
+
+                                _createdby_value:
+                                  displayName: Created By (Value)
+                                  description: Unique identifier of the user who created the record.
+                                  visibility: Advanced
+                                  order: 19
+                                  type: String
+
+                                _createdby_value@Microsoft.Dynamics.CRM.lookuplogicalname:
+                                  displayName: Created By (Type)
+                                  description: Unique identifier of the user who created the record.
+                                  visibility: Advanced
+                                  order: 18
+                                  type: String
+
+                                _createdonbehalfby_value:
+                                  displayName: Created By (Delegate) (Value)
+                                  description: Unique identifier of the delegate user who created the record.
+                                  visibility: Advanced
+                                  order: 17
+                                  type: String
+
+                                _createdonbehalfby_value@Microsoft.Dynamics.CRM.lookuplogicalname:
+                                  displayName: Created By (Delegate) (Type)
+                                  description: Unique identifier of the delegate user who created the record.
+                                  visibility: Advanced
+                                  order: 16
+                                  type: String
+
+                                _modifiedby_value:
+                                  displayName: Modified By (Value)
+                                  description: Unique identifier of the user who modified the record.
+                                  visibility: Advanced
+                                  order: 35
+                                  type: String
+
+                                _modifiedby_value@Microsoft.Dynamics.CRM.lookuplogicalname:
+                                  displayName: Modified By (Type)
+                                  description: Unique identifier of the user who modified the record.
+                                  visibility: Advanced
+                                  order: 34
+                                  type: String
+
+                                _modifiedonbehalfby_value:
+                                  displayName: Modified By (Delegate) (Value)
+                                  description: Unique identifier of the delegate user who modified the record.
+                                  visibility: Advanced
+                                  order: 33
+                                  type: String
+
+                                _modifiedonbehalfby_value@Microsoft.Dynamics.CRM.lookuplogicalname:
+                                  displayName: Modified By (Delegate) (Type)
+                                  description: Unique identifier of the delegate user who modified the record.
+                                  visibility: Advanced
+                                  order: 32
+                                  type: String
+
+                                _new_account_value:
+                                  displayName: Account (Value)
+                                  order: 1
+                                  type: String
+
+                                _new_account_value@Microsoft.Dynamics.CRM.lookuplogicalname:
+                                  displayName: Account (Type)
+                                  order: 0
+                                  type: String
+
+                                _new_projecttemplate_value:
+                                  displayName: Project Type Template (Value)
+                                  visibility: Advanced
+                                  order: 69
+                                  type: String
+
+                                _new_projecttemplate_value@Microsoft.Dynamics.CRM.lookuplogicalname:
+                                  displayName: Project Type Template (Type)
+                                  visibility: Advanced
+                                  order: 68
+                                  type: String
+
+                                _new_projecttype_value:
+                                  displayName: Project Type (Value)
+                                  visibility: Advanced
+                                  order: 67
+                                  type: String
+
+                                _new_projecttype_value@Microsoft.Dynamics.CRM.lookuplogicalname:
+                                  displayName: Project Type (Type)
+                                  visibility: Advanced
+                                  order: 66
+                                  type: String
+
+                                _new_rfp_value:
+                                  displayName: Opportunity (Value)
+                                  visibility: Advanced
+                                  order: 41
+                                  type: String
+
+                                _new_rfp_value@Microsoft.Dynamics.CRM.lookuplogicalname:
+                                  displayName: Opportunity (Type)
+                                  visibility: Advanced
+                                  order: 40
+                                  type: String
+
+                                _ownerid_value:
+                                  displayName: Owner (Value)
+                                  description: Owner Id
+                                  visibility: Advanced
+                                  order: 43
+                                  type: String
+
+                                _ownerid_value@Microsoft.Dynamics.CRM.lookuplogicalname:
+                                  displayName: Owner (Type)
+                                  description: Owner Id
+                                  visibility: Advanced
+                                  order: 42
+                                  type: String
+
+                                _owningbusinessunit_value:
+                                  displayName: Owning Business Unit (Value)
+                                  description: Unique identifier for the business unit that owns the record
+                                  visibility: Advanced
+                                  order: 45
+                                  type: String
+
+                                _owningbusinessunit_value@Microsoft.Dynamics.CRM.lookuplogicalname:
+                                  displayName: Owning Business Unit (Type)
+                                  description: Unique identifier for the business unit that owns the record
+                                  visibility: Advanced
+                                  order: 44
+                                  type: String
+
+                                _owningteam_value:
+                                  displayName: Owning Team (Value)
+                                  description: Unique identifier for the team that owns the record.
+                                  visibility: Advanced
+                                  order: 47
+                                  type: String
+
+                                _owningteam_value@Microsoft.Dynamics.CRM.lookuplogicalname:
+                                  displayName: Owning Team (Type)
+                                  description: Unique identifier for the team that owns the record.
+                                  visibility: Advanced
+                                  order: 46
+                                  type: String
+
+                                _owninguser_value:
+                                  displayName: Owning User (Value)
+                                  description: Unique identifier for the user that owns the record.
+                                  visibility: Advanced
+                                  order: 49
+                                  type: String
+
+                                _owninguser_value@Microsoft.Dynamics.CRM.lookuplogicalname:
+                                  displayName: Owning User (Type)
+                                  description: Unique identifier for the user that owns the record.
+                                  visibility: Advanced
+                                  order: 48
+                                  type: String
+
+                                _transactioncurrencyid_value:
+                                  displayName: Currency (Value)
+                                  description: Unique identifier of the currency associated with the entity.
+                                  visibility: Advanced
+                                  order: 22
+                                  type: String
+
+                                _transactioncurrencyid_value@Microsoft.Dynamics.CRM.lookuplogicalname:
+                                  displayName: Currency (Type)
+                                  description: Unique identifier of the currency associated with the entity.
+                                  visibility: Advanced
+                                  order: 21
+                                  type: String
+
+                                @odata.id:
+                                  displayName: OData Id
+                                  description: OData row id
+                                  order: 39
+                                  type: String
+
+                                cr80b_favorite:
+                                  displayName: Favorite
+                                  visibility: Advanced
+                                  order: 28
+                                  type: String
+
+                                createdon:
+                                  displayName: Created On
+                                  description: Date and time when the record was created.
+                                  visibility: Advanced
+                                  order: 20
+                                  type: DateTime
+
+                                exchangerate:
+                                  displayName: Exchange Rate
+                                  description: Exchange rate for the currency associated with the entity with respect to the base currency.
+                                  visibility: Advanced
+                                  order: 27
+                                  type: Number
+
+                                importsequencenumber:
+                                  displayName: Import Sequence Number
+                                  description: Sequence number of the import that created this record.
+                                  visibility: Advanced
+                                  order: 29
+                                  type: Number
+
+                                modifiedon:
+                                  displayName: Modified On
+                                  description: Date and time when the record was modified.
+                                  visibility: Advanced
+                                  order: 36
+                                  type: DateTime
+
+                                new_actualcostofproject:
+                                  displayName: Actual effort cost of Project
+                                  visibility: Advanced
+                                  order: 5
+                                  type: Number
+
+                                new_actualcostofproject_base:
+                                  displayName: Actual effort cost of Project (Base)
+                                  description: Value of the Actual cost of Project in base currency.
+                                  visibility: Advanced
+                                  order: 6
+                                  type: Number
+
+                                new_actualcostofproject_date:
+                                  displayName: Actual effort cost of Project (Last Updated On)
+                                  description: Last Updated time of rollup field Actual effort cost of Project.
+                                  visibility: Advanced
+                                  order: 7
+                                  type: DateTime
+
+                                new_actualcostofproject_state:
+                                  displayName: Actual effort cost of Project (State)
+                                  description: State of rollup field Actual effort cost of Project.
+                                  visibility: Advanced
+                                  order: 8
+                                  type: Number
+
+                                new_channelid:
+                                  displayName: Channel ID
+                                  visibility: Advanced
+                                  order: 9
+                                  type: String
+
+                                new_clientapprovedeffort:
+                                  displayName: Client Approved Effort
+                                  visibility: Advanced
+                                  order: 10
+                                  type: Number
+
+                                new_clientapprovedeffort_date:
+                                  displayName: Client Approved Effort (Last Updated On)
+                                  description: Last Updated time of rollup field Client Approved Effort.
+                                  visibility: Advanced
+                                  order: 11
+                                  type: DateTime
+
+                                new_clientapprovedeffort_state:
+                                  displayName: Client Approved Effort (State)
+                                  description: State of rollup field Client Approved Effort.
+                                  visibility: Advanced
+                                  order: 12
+                                  type: Number
+
+                                new_closedon:
+                                  displayName: Closed on
+                                  visibility: Advanced
+                                  order: 13
+                                  type: DateTime
+
+                                new_completedon:
+                                  displayName: completed on
+                                  visibility: Advanced
+                                  order: 14
+                                  type: DateTime
+
+                                new_createactivityefforts:
+                                  displayName: Create Activity Efforts
+                                  visibility: Advanced
+                                  order: 15
+                                  type: Boolean
+
+                                new_currentplannedeffort:
+                                  displayName: Current Planned effort (hours)
+                                  visibility: Advanced
+                                  order: 23
+                                  type: Number
+
+                                new_currentplannedeffort_date:
+                                  displayName: Current Planned effort (hours) (Last Updated On)
+                                  description: Last Updated time of rollup field Current Planned effort (hours).
+                                  visibility: Advanced
+                                  order: 24
+                                  type: DateTime
+
+                                new_currentplannedeffort_state:
+                                  displayName: Current Planned effort (hours) (State)
+                                  description: State of rollup field Current Planned effort (hours).
+                                  visibility: Advanced
+                                  order: 25
+                                  type: Number
+
+                                new_enddate:
+                                  displayName: End Date
+                                  visibility: Advanced
+                                  order: 26
+                                  type: DateTime
+
+                                new_inprogressdate:
+                                  displayName: In Progress Date
+                                  visibility: Advanced
+                                  order: 30
+                                  type: DateTime
+
+                                new_jobdescription:
+                                  displayName: Job Description
+                                  visibility: Advanced
+                                  order: 31
+                                  type: String
+
+                                new_name:
+                                  displayName: Name of the project
+                                  order: 37
+                                  type: String
+
+                                new_numberofpositions:
+                                  displayName: Number of Positions
+                                  visibility: Advanced
+                                  order: 38
+                                  type: Number
+
+                                new_projectcost:
+                                  displayName: Project Cost
+                                  visibility: Advanced
+                                  order: 50
+                                  type: Number
+
+                                new_projectcost_base:
+                                  displayName: Project Cost (Base)
+                                  description: Value of the Project Cost in base currency.
+                                  visibility: Advanced
+                                  order: 51
+                                  type: Number
+
+                                new_projectdescription:
+                                  displayName: Project Description
+                                  order: 52
+                                  type: String
+
+                                new_projectearning:
+                                  displayName: Project Earning
+                                  visibility: Advanced
+                                  order: 53
+                                  type: Number
+
+                                new_projectearning_date:
+                                  displayName: Project Earning (Last Updated On)
+                                  description: Last Updated time of rollup field Project Earning.
+                                  visibility: Advanced
+                                  order: 56
+                                  type: DateTime
+
+                                new_projectearning_state:
+                                  displayName: Project Earning (State)
+                                  description: State of rollup field Project Earning.
+                                  visibility: Advanced
+                                  order: 57
+                                  type: Number
+
+                                new_projectearningcurrency:
+                                  displayName: Project Earning (Currency)
+                                  visibility: Advanced
+                                  order: 54
+                                  type: Number
+
+                                new_projectearningcurrency_base:
+                                  displayName: Project Earning (Currency) (Base)
+                                  description: Value of the Project Earning (Currency) in base currency.
+                                  visibility: Advanced
+                                  order: 55
+                                  type: Number
+
+                                new_projectid:
+                                  displayName: Project Id
+                                  visibility: Advanced
+                                  order: 58
+                                  type: String
+
+                                new_projectpriority:
+                                  displayName: Project Priority
+                                  visibility: Advanced
+                                  order: 61
+                                  dynamicValuesConfig:
+                                    capability: List
+
+                                  type: Number
+
+                                new_projectprofitonearning:
+                                  displayName: Project profit on earning
+                                  visibility: Advanced
+                                  order: 62
+                                  type: Number
+
+                                new_projectprofitonearning_base:
+                                  displayName: Project profit on earning (Base)
+                                  description: Value of the Project profit on earning in base currency.
+                                  visibility: Advanced
+                                  order: 64
+                                  type: Number
+
+                                new_projectprofitonearningdecimal:
+                                  displayName: Project profit on earning decimal
+                                  visibility: Advanced
+                                  order: 65
+                                  type: Number
+
+                                new_projectprofitonearningpercentage:
+                                  displayName: Project profit on earning %
+                                  visibility: Advanced
+                                  order: 63
+                                  type: Number
+
+                                new_projectsid:
+                                  displayName: Projects
+                                  description: Unique identifier for entity instances
+                                  visibility: Advanced
+                                  order: 70
+                                  type: String
+
+                                new_relatedstime:
+                                  displayName: Actual effort (hours)
+                                  visibility: Advanced
+                                  order: 2
+                                  type: Number
+
+                                new_relatedstime_date:
+                                  displayName: Actual effort (hours) (Last Updated On)
+                                  description: Last Updated time of rollup field Actual effort (hours).
+                                  visibility: Advanced
+                                  order: 3
+                                  type: DateTime
+
+                                new_relatedstime_state:
+                                  displayName: Actual effort (hours) (State)
+                                  description: State of rollup field Actual effort (hours).
+                                  visibility: Advanced
+                                  order: 4
+                                  type: Number
+
+                                new_remainingeffort:
+                                  displayName: Remaining effort
+                                  visibility: Advanced
+                                  order: 72
+                                  type: Number
+
+                                new_remainingefforthrs:
+                                  displayName: Remaining Effort hrs
+                                  visibility: Advanced
+                                  order: 74
+                                  type: Number
+
+                                new_remainingeffortpercent:
+                                  displayName: Remaining effort %
+                                  visibility: Advanced
+                                  order: 73
+                                  type: Number
+
+                                new_startdate:
+                                  displayName: Start Date
+                                  visibility: Advanced
+                                  order: 75
+                                  type: DateTime
+
+                                new_teamid:
+                                  displayName: Team Id
+                                  visibility: Advanced
+                                  order: 78
+                                  type: String
+
+                                new_totalcandidatesforthisproject:
+                                  displayName: Total Candidates for this Project
+                                  description: this field is used to calculate the total candidate record associated to this project
+                                  visibility: Advanced
+                                  order: 80
+                                  type: Number
+
+                                new_totalcandidatesforthisproject_date:
+                                  displayName: Total Candidates for this Project (Last Updated On)
+                                  description: Last Updated time of rollup field Total Candidates for this Project.
+                                  visibility: Advanced
+                                  order: 81
+                                  type: DateTime
+
+                                new_totalcandidatesforthisproject_state:
+                                  displayName: Total Candidates for this Project (State)
+                                  description: State of rollup field Total Candidates for this Project.
+                                  visibility: Advanced
+                                  order: 82
+                                  type: Number
+
+                                overriddencreatedon:
+                                  displayName: Record Created On
+                                  description: Date and time that the record was migrated.
+                                  visibility: Advanced
+                                  order: 71
+                                  type: DateTime
+
+                                statecode:
+                                  displayName: Status
+                                  description: Status of the Projects
+                                  visibility: Advanced
+                                  order: 76
+                                  dynamicValuesConfig:
+                                    capability: List
+
+                                  type: Number
+
+                                statuscode:
+                                  displayName: Status Reason
+                                  description: Reason for the status of the Projects
+                                  visibility: Advanced
+                                  order: 77
+                                  dynamicValuesConfig:
+                                    capability: List
+
+                                  type: Number
+
+                                timezoneruleversionnumber:
+                                  displayName: Time Zone Rule Version Number
+                                  description: For internal use only.
+                                  visibility: Advanced
+                                  order: 79
+                                  type: Number
+
+                                utcconversiontimezonecode:
+                                  displayName: UTC Conversion Time Zone Code
+                                  description: Time zone code that was in use when the record was created.
+                                  visibility: Advanced
+                                  order: 83
+                                  type: Number
+
+                                versionnumber:
+                                  displayName: Version Number
+                                  description: Version Number
+                                  visibility: Advanced
+                                  order: 84
+                                  type: Number
+
+                      operationId: ListRecordsWithOrganization
+
+                    - kind: Question
+                      id: question_1Ab9Ip
+                      interruptionPolicy:
+                        allowInterruption: true
+
+                      variable: init:Topic.Var5
+                      prompt: select projects...
+                      entity:
+                        kind: DynamicClosedListEntity
+                        items: =Distinct(Topic.Var4,new_name)
+
+                - id: conditionItem_41ReIK
+                  condition: =Global.EmployeeType = 'cr80b_metaorangeCopilot.topic.Untitled.main.question_cLftbf'.Intern
+                  actions:
+                    - kind: InvokeConnectorAction
+                      id: invokeConnectorAction_DvsJJe
+                      input:
+                        binding:
+                          $filter: ="new_emailid eq '"&System.User.Email&"'"
+                          entityName: new_interns
+                          organization: current
+
+                      output:
+                        binding:
+                          value: Topic.Var2
+
+                      connectionReference: cr80b_metaorangeCopilot.shared_commondataserviceforapps.8b14a02db5bc44f09eb442b213487848
+                      connectionProperties:
+                        mode: Invoker
+
+                      dynamicOutputSchema:
+                        kind: Record
+                        properties:
+                          @odata.nextLink:
+                            displayName: Next link
+                            description: The url to fetch next page data.
+                            visibility: Advanced
+                            order: 1
+                            type: String
+
+                          value:
+                            order: 0
+                            type:
+                              kind: Table
+                              properties:
+                                _createdby_value:
+                                  displayName: Created By (Value)
+                                  description: Unique identifier of the user who created the record.
+                                  visibility: Advanced
+                                  order: 22
+                                  type: String
+
+                                _createdby_value@Microsoft.Dynamics.CRM.lookuplogicalname:
+                                  displayName: Created By (Type)
+                                  description: Unique identifier of the user who created the record.
+                                  visibility: Advanced
+                                  order: 21
+                                  type: String
+
+                                _createdonbehalfby_value:
+                                  displayName: Created By (Delegate) (Value)
+                                  description: Unique identifier of the delegate user who created the record.
+                                  visibility: Advanced
+                                  order: 20
+                                  type: String
+
+                                _createdonbehalfby_value@Microsoft.Dynamics.CRM.lookuplogicalname:
+                                  displayName: Created By (Delegate) (Type)
+                                  description: Unique identifier of the delegate user who created the record.
+                                  visibility: Advanced
+                                  order: 19
+                                  type: String
+
+                                _modifiedby_value:
+                                  displayName: Modified By (Value)
+                                  description: Unique identifier of the user who modified the record.
+                                  visibility: Advanced
+                                  order: 61
+                                  type: String
+
+                                _modifiedby_value@Microsoft.Dynamics.CRM.lookuplogicalname:
+                                  displayName: Modified By (Type)
+                                  description: Unique identifier of the user who modified the record.
+                                  visibility: Advanced
+                                  order: 60
+                                  type: String
+
+                                _modifiedonbehalfby_value:
+                                  displayName: Modified By (Delegate) (Value)
+                                  description: Unique identifier of the delegate user who modified the record.
+                                  visibility: Advanced
+                                  order: 59
+                                  type: String
+
+                                _modifiedonbehalfby_value@Microsoft.Dynamics.CRM.lookuplogicalname:
+                                  displayName: Modified By (Delegate) (Type)
+                                  description: Unique identifier of the delegate user who modified the record.
+                                  visibility: Advanced
+                                  order: 58
+                                  type: String
+
+                                _new_department_value:
+                                  displayName: Department (Value)
+                                  visibility: Advanced
+                                  order: 30
+                                  type: String
+
+                                _new_department_value@Microsoft.Dynamics.CRM.lookuplogicalname:
+                                  displayName: Department (Type)
+                                  visibility: Advanced
+                                  order: 29
+                                  type: String
+
+                                _new_designation_value:
+                                  displayName: " Designation (Value)"
+                                  order: 1
+                                  type: String
+
+                                _new_designation_value@Microsoft.Dynamics.CRM.lookuplogicalname:
+                                  displayName: " Designation (Type)"
+                                  order: 0
+                                  type: String
+
+                                _new_invitationtype_value:
+                                  displayName: invitation type (Value)
+                                  visibility: Advanced
+                                  order: 53
+                                  type: String
+
+                                _new_invitationtype_value@Microsoft.Dynamics.CRM.lookuplogicalname:
+                                  displayName: invitation type (Type)
+                                  visibility: Advanced
+                                  order: 52
+                                  type: String
+
+                                _new_questionnaire_value:
+                                  displayName: Questionnaire (Value)
+                                  visibility: Advanced
+                                  order: 87
+                                  type: String
+
+                                _new_questionnaire_value@Microsoft.Dynamics.CRM.lookuplogicalname:
+                                  displayName: Questionnaire (Type)
+                                  visibility: Advanced
+                                  order: 86
+                                  type: String
+
+                                _new_reportingmanager_value:
+                                  displayName: Reporting Manager (Value)
+                                  order: 92
+                                  type: String
+
+                                _new_reportingmanager_value@Microsoft.Dynamics.CRM.lookuplogicalname:
+                                  displayName: Reporting Manager (Type)
+                                  order: 91
+                                  type: String
+
+                                _new_workshiftintern_value:
+                                  displayName: Work Shift - intern (Value)
+                                  order: 107
+                                  type: String
+
+                                _new_workshiftintern_value@Microsoft.Dynamics.CRM.lookuplogicalname:
+                                  displayName: Work Shift - intern (Type)
+                                  order: 106
+                                  type: String
+
+                                _ownerid_value:
+                                  displayName: Owner (Value)
+                                  description: Owner Id
+                                  visibility: Advanced
+                                  order: 69
+                                  type: String
+
+                                _ownerid_value@Microsoft.Dynamics.CRM.lookuplogicalname:
+                                  displayName: Owner (Type)
+                                  description: Owner Id
+                                  visibility: Advanced
+                                  order: 68
+                                  type: String
+
+                                _owningbusinessunit_value:
+                                  displayName: Owning Business Unit (Value)
+                                  description: Unique identifier for the business unit that owns the record
+                                  visibility: Advanced
+                                  order: 71
+                                  type: String
+
+                                _owningbusinessunit_value@Microsoft.Dynamics.CRM.lookuplogicalname:
+                                  displayName: Owning Business Unit (Type)
+                                  description: Unique identifier for the business unit that owns the record
+                                  visibility: Advanced
+                                  order: 70
+                                  type: String
+
+                                _owningteam_value:
+                                  displayName: Owning Team (Value)
+                                  description: Unique identifier for the team that owns the record.
+                                  visibility: Advanced
+                                  order: 73
+                                  type: String
+
+                                _owningteam_value@Microsoft.Dynamics.CRM.lookuplogicalname:
+                                  displayName: Owning Team (Type)
+                                  description: Unique identifier for the team that owns the record.
+                                  visibility: Advanced
+                                  order: 72
+                                  type: String
+
+                                _owninguser_value:
+                                  displayName: Owning User (Value)
+                                  description: Unique identifier for the user that owns the record.
+                                  visibility: Advanced
+                                  order: 75
+                                  type: String
+
+                                _owninguser_value@Microsoft.Dynamics.CRM.lookuplogicalname:
+                                  displayName: Owning User (Type)
+                                  description: Unique identifier for the user that owns the record.
+                                  visibility: Advanced
+                                  order: 74
+                                  type: String
+
+                                _transactioncurrencyid_value:
+                                  displayName: Currency (Value)
+                                  description: Unique identifier of the currency associated with the entity.
+                                  visibility: Advanced
+                                  order: 25
+                                  type: String
+
+                                _transactioncurrencyid_value@Microsoft.Dynamics.CRM.lookuplogicalname:
+                                  displayName: Currency (Type)
+                                  description: Unique identifier of the currency associated with the entity.
+                                  visibility: Advanced
+                                  order: 24
+                                  type: String
+
+                                @odata.id:
+                                  displayName: OData Id
+                                  description: OData row id
+                                  order: 66
+                                  type: String
+
+                                cr80b_actualenddate:
+                                  displayName: Actual End Date
+                                  description: This is used to store Actual End Date for Intern
+                                  visibility: Advanced
+                                  order: 5
+                                  type: DateTime
+
+                                cr80b_attachmentletter:
+                                  displayName: Attachment Letter
+                                  visibility: Advanced
+                                  order: 12
+                                  type: String
+
+                                cr80b_bloodgroup:
+                                  displayName: Blood Group
+                                  visibility: Advanced
+                                  order: 17
+                                  dynamicValuesConfig:
+                                    capability: List
+
+                                  type: Number
+
+                                cr80b_experienceyears:
+                                  displayName: Experience (Years)
+                                  visibility: Advanced
+                                  order: 37
+                                  type: Number
+
+                                cr80b_fullname:
+                                  displayName: Full Name
+                                  visibility: Advanced
+                                  order: 39
+                                  type: String
+
+                                cr80b_graduationleve:
+                                  displayName: Highest Education Level
+                                  visibility: Advanced
+                                  order: 42
+                                  dynamicValuesConfig:
+                                    capability: List
+
+                                  type: Number
+
+                                cr80b_nameofinstitute:
+                                  displayName: Name of Institute
+                                  visibility: Advanced
+                                  order: 63
+                                  type: String
+
+                                cr80b_passingyear:
+                                  displayName: Passing Year
+                                  visibility: Advanced
+                                  order: 79
+                                  type: Number
+
+                                cr80b_password:
+                                  displayName: Password
+                                  visibility: Advanced
+                                  order: 80
+                                  type: String
+
+                                cr80b_previouscompany:
+                                  displayName: Previous Company
+                                  visibility: Advanced
+                                  order: 84
+                                  type: String
+
+                                cr80b_reasonforleaving:
+                                  displayName: Reason for Leaving
+                                  visibility: Advanced
+                                  order: 88
+                                  dynamicValuesConfig:
+                                    capability: List
+
+                                  type: Number
+
+                                cr80b_statusofcandidate:
+                                  displayName: Status Of Candidate
+                                  visibility: Advanced
+                                  order: 96
+                                  dynamicValuesConfig:
+                                    capability: List
+
+                                  type: Number
+
+                                cr80b_username:
+                                  displayName: Username
+                                  visibility: Advanced
+                                  order: 102
+                                  type: String
+
+                                createdon:
+                                  displayName: Created On
+                                  description: Date and time when the record was created.
+                                  visibility: Advanced
+                                  order: 23
+                                  type: DateTime
+
+                                exchangerate:
+                                  displayName: Exchange Rate
+                                  description: Exchange rate for the currency associated with the entity with respect to the base currency.
+                                  visibility: Advanced
+                                  order: 36
+                                  type: Number
+
+                                importsequencenumber:
+                                  displayName: Import Sequence Number
+                                  description: Sequence number of the import that created this record.
+                                  visibility: Advanced
+                                  order: 44
+                                  type: Number
+
+                                modifiedon:
+                                  displayName: Modified On
+                                  description: Date and time when the record was modified.
+                                  visibility: Advanced
+                                  order: 62
+                                  type: DateTime
+
+                                new_aadhaarnumber:
+                                  displayName: Aadhaar Number
+                                  visibility: Advanced
+                                  order: 3
+                                  type: String
+
+                                new_aadharnumber:
+                                  displayName: Aadhar Number
+                                  visibility: Advanced
+                                  order: 4
+                                  type: Number
+
+                                new_adharcard:
+                                  displayName: Adharcard
+                                  order: 6
+                                  type: String
+
+                                new_ageyears:
+                                  displayName: Age (years)
+                                  visibility: Advanced
+                                  order: 7
+                                  type: Number
+
+                                new_agreewithonboardingtermsconditions:
+                                  displayName: Agree with Onboarding Terms&Conditions
+                                  visibility: Advanced
+                                  order: 8
+                                  type: Boolean
+
+                                new_alternateemailid:
+                                  displayName: Alternate Email Id
+                                  order: 9
+                                  type: String
+
+                                new_alternatephonenumber:
+                                  displayName: Alternate Mobile Number
+                                  visibility: Advanced
+                                  order: 10
+                                  type: String
+
+                                new_appid:
+                                  displayName: Appid
+                                  visibility: Advanced
+                                  order: 11
+                                  type: String
+
+                                new_bankaccountnumber:
+                                  displayName: Bank Account Number
+                                  visibility: Advanced
+                                  order: 13
+                                  type: String
+
+                                new_bankbranchcity:
+                                  displayName: Bank Branch City 
+                                  visibility: Advanced
+                                  order: 14
+                                  type: String
+
+                                new_bankbranchname:
+                                  displayName: Bank Branch Name
+                                  visibility: Advanced
+                                  order: 15
+                                  type: String
+
+                                new_bankname:
+                                  displayName: Bank Name
+                                  visibility: Advanced
+                                  order: 16
+                                  type: String
+
+                                new_compensationleaves2:
+                                  displayName: Compensation Leaves
+                                  visibility: Advanced
+                                  order: 18
+                                  type: Number
+
+                                new_dateofbirth:
+                                  displayName: Date of Birth
+                                  visibility: Advanced
+                                  order: 26
+                                  type: DateTime
+
+                                new_dateofjoining:
+                                  displayName: Date of Joining
+                                  order: 27
+                                  type: DateTime
+
+                                new_daysafterjoiningdate:
+                                  displayName: 15 days after joining date
+                                  visibility: Advanced
+                                  order: 2
+                                  type: DateTime
+
+                                new_degreename:
+                                  displayName: Degree/Diploma Obtained
+                                  visibility: Advanced
+                                  order: 28
+                                  type: String
+
+                                new_documenturl:
+                                  displayName: Document URL
+                                  visibility: Advanced
+                                  order: 32
+                                  type: String
+
+                                new_dox:
+                                  displayName: Document
+                                  visibility: Advanced
+                                  order: 31
+                                  type: String
+
+                                new_durationoftheinternshipmonths:
+                                  displayName: Duration of the Internship (months)
+                                  order: 33
+                                  type: Number
+
+                                new_emailid:
+                                  displayName: Email Id
+                                  visibility: Advanced
+                                  order: 34
+                                  type: String
+
+                                new_enddt2:
+                                  displayName: End Date
+                                  visibility: Advanced
+                                  order: 35
+                                  type: DateTime
+
+                                new_firstname:
+                                  displayName: First Name
+                                  visibility: Advanced
+                                  order: 38
+                                  type: String
+
+                                new_gender:
+                                  displayName: Gender
+                                  visibility: Advanced
+                                  order: 41
+                                  dynamicValuesConfig:
+                                    capability: List
+
+                                  type: Number
+
+                                new_ifsccode:
+                                  displayName: IFSC Code
+                                  visibility: Advanced
+                                  order: 43
+                                  type: String
+
+                                new_informinternforsurvey:
+                                  displayName: Inform Intern for survey
+                                  visibility: Advanced
+                                  order: 45
+                                  type: Boolean
+
+                                new_internhourlysalary:
+                                  displayName: intern Monthly salary
+                                  visibility: Advanced
+                                  order: 48
+                                  type: Number
+
+                                new_internhourlysalary_date:
+                                  displayName: intern Monthly salary (Last Updated On)
+                                  description: Last Updated time of rollup field intern Monthly salary.
+                                  visibility: Advanced
+                                  order: 49
+                                  type: DateTime
+
+                                new_internhourlysalary_state:
+                                  displayName: intern Monthly salary (State)
+                                  description: State of rollup field intern Monthly salary.
+                                  visibility: Advanced
+                                  order: 50
+                                  type: Number
+
+                                new_internid:
+                                  displayName: Intern
+                                  description: Unique identifier for entity instances
+                                  visibility: Advanced
+                                  order: 46
+                                  type: String
+
+                                new_internidan:
+                                  displayName: Intern ID
+                                  visibility: Advanced
+                                  order: 47
+                                  type: String
+
+                                new_internshiptype:
+                                  displayName: Internship Type
+                                  order: 51
+                                  dynamicValuesConfig:
+                                    capability: List
+
+                                  type: Number
+
+                                new_lastname:
+                                  displayName: Last Name
+                                  visibility: Advanced
+                                  order: 54
+                                  type: String
+
+                                new_location:
+                                  displayName: Location
+                                  visibility: Advanced
+                                  order: 55
+                                  dynamicValuesConfig:
+                                    capability: List
+
+                                  type: Number
+
+                                new_middlename:
+                                  displayName: Middle Name
+                                  visibility: Advanced
+                                  order: 56
+                                  type: String
+
+                                new_name:
+                                  displayName: Full Name
+                                  visibility: Advanced
+                                  order: 40
+                                  type: String
+
+                                new_notes:
+                                  displayName: Notes
+                                  visibility: Advanced
+                                  order: 65
+                                  type: String
+
+                                new_onboardingtermsandconditiondate:
+                                  displayName: Onboarding Terms and condition Date
+                                  visibility: Advanced
+                                  order: 67
+                                  type: DateTime
+
+                                new_pancardattachment:
+                                  displayName: Pancard
+                                  order: 77
+                                  type: String
+
+                                new_pancardnumber:
+                                  displayName: PAN Card Number
+                                  visibility: Advanced
+                                  order: 76
+                                  type: String
+
+                                new_passing:
+                                  displayName: Passing %
+                                  visibility: Advanced
+                                  order: 78
+                                  type: Number
+
+                                new_permanentaddress:
+                                  displayName: Permanent Address
+                                  visibility: Advanced
+                                  order: 81
+                                  type: String
+
+                                new_pfnumber:
+                                  displayName: PF Number
+                                  visibility: Advanced
+                                  order: 82
+                                  type: String
+
+                                new_phonenumber:
+                                  displayName: Mobile Number
+                                  visibility: Advanced
+                                  order: 57
+                                  type: String
+
+                                new_poshcommittee:
+                                  displayName: POSH Committee
+                                  visibility: Advanced
+                                  order: 83
+                                  type: Boolean
+
+                                new_profilepicture:
+                                  displayName: Profile Picture
+                                  visibility: Advanced
+                                  order: 85
+                                  type: String
+
+                                new_profilepictureid:
+                                  displayName: new_ProfilePictureId
+                                  visibility: Advanced
+                                  order: 64
+                                  type: String
+
+                                new_relation:
+                                  displayName: Relation
+                                  visibility: Advanced
+                                  order: 90
+                                  dynamicValuesConfig:
+                                    capability: List
+
+                                  type: Number
+
+                                new_skills:
+                                  displayName: Skills
+                                  visibility: Advanced
+                                  order: 93
+                                  type: String
+
+                                new_startdate:
+                                  displayName: Start Date
+                                  visibility: Advanced
+                                  order: 94
+                                  type: DateTime
+
+                                new_stipend:
+                                  displayName: Stipend
+                                  visibility: Advanced
+                                  order: 98
+                                  type: Number
+
+                                new_stipend_base:
+                                  displayName: Stipend (Base)
+                                  description: Value of the Stipend in base currency.
+                                  visibility: Advanced
+                                  order: 99
+                                  type: Number
+
+                                new_temporaryaddress:
+                                  displayName: Temporary Address
+                                  visibility: Advanced
+                                  order: 100
+                                  type: String
+
+                                new_whatsappnumber:
+                                  displayName: WhatsApp Number
+                                  visibility: Advanced
+                                  order: 105
+                                  type: String
+
+                                overriddencreatedon:
+                                  displayName: Record Created On
+                                  description: Date and time that the record was migrated.
+                                  visibility: Advanced
+                                  order: 89
+                                  type: DateTime
+
+                                statecode:
+                                  displayName: Status
+                                  description: Status of the Intern
+                                  visibility: Advanced
+                                  order: 95
+                                  dynamicValuesConfig:
+                                    capability: List
+
+                                  type: Number
+
+                                statuscode:
+                                  displayName: Status Reason
+                                  description: Reason for the status of the Intern
+                                  visibility: Advanced
+                                  order: 97
+                                  dynamicValuesConfig:
+                                    capability: List
+
+                                  type: Number
+
+                                timezoneruleversionnumber:
+                                  displayName: Time Zone Rule Version Number
+                                  description: For internal use only.
+                                  visibility: Advanced
+                                  order: 101
+                                  type: Number
+
+                                utcconversiontimezonecode:
+                                  displayName: UTC Conversion Time Zone Code
+                                  description: Time zone code that was in use when the record was created.
+                                  visibility: Advanced
+                                  order: 103
+                                  type: Number
+
+                                versionnumber:
+                                  displayName: Version Number
+                                  description: Version Number
+                                  visibility: Advanced
+                                  order: 104
+                                  type: Number
+
+                      operationId: ListRecordsWithOrganization
+
+                    - kind: InvokeConnectorAction
+                      id: invokeConnectorAction_B4ndJg
+                      input:
+                        binding:
+                          entityName: new_projectses
+                          fetchXml: |
+                            ="<fetch>
+                              <!-- Table -->
+                              <entity name='new_projects'>
+                                <!-- Columns -->
+                                <attribute name='new_projectsid' />
+                                <attribute name='cr80b_projectmanager' />
+                            		<attribute name='cr80b_projectmanagername' />
+                                <attribute name='new_name' />
+                                <!-- Filter By -->
+                                <filter type='and'>
+                                  <condition attribute='statecode' operator='eq' value='0' />
+                                </filter>
+                                <!-- Many To Many Relationships -->
+                                <link-entity name='new_projects_new_intern' from='new_projectsid' to='new_projectsid' link-type='inner' intersect='true'>
+                                  <link-entity name='new_intern' from='new_internid' to='new_internid' alias='new_Projects_new_Intern_new_Intern' link-type='inner'>
+                                    <attribute name='new_internid' />
+                                    <filter type='and'>
+                                      <condition attribute='new_internid' operator='eq' value='"&First(Topic.Var2).new_internid &"' />
+                                    </filter>
+                                  </link-entity>
+                                </link-entity>
+                              </entity>
+                            </fetch>"
+                          organization: current
+
+                      output:
+                        binding:
+                          value: Topic.Var8
+
+                      connectionReference: cr80b_metaorangeCopilot.shared_commondataserviceforapps.8b14a02db5bc44f09eb442b213487848
+                      connectionProperties:
+                        mode: Invoker
+
+                      dynamicOutputSchema:
+                        kind: Record
+                        properties:
+                          @odata.nextLink:
+                            displayName: Next link
+                            description: The url to fetch next page data.
+                            visibility: Advanced
+                            order: 1
+                            type: String
+
+                          value:
+                            order: 0
+                            type:
+                              kind: Table
+                              properties:
+                                _cr80b_projectmanager_value:
+                                  displayName: Project Manager (Value)
+                                  visibility: Advanced
+                                  order: 60
+                                  type: String
+
+                                _cr80b_projectmanager_value@Microsoft.Dynamics.CRM.lookuplogicalname:
+                                  displayName: Project Manager (Type)
+                                  visibility: Advanced
+                                  order: 59
+                                  type: String
+
+                                _createdby_value:
+                                  displayName: Created By (Value)
+                                  description: Unique identifier of the user who created the record.
+                                  visibility: Advanced
+                                  order: 19
+                                  type: String
+
+                                _createdby_value@Microsoft.Dynamics.CRM.lookuplogicalname:
+                                  displayName: Created By (Type)
+                                  description: Unique identifier of the user who created the record.
+                                  visibility: Advanced
+                                  order: 18
+                                  type: String
+
+                                _createdonbehalfby_value:
+                                  displayName: Created By (Delegate) (Value)
+                                  description: Unique identifier of the delegate user who created the record.
+                                  visibility: Advanced
+                                  order: 17
+                                  type: String
+
+                                _createdonbehalfby_value@Microsoft.Dynamics.CRM.lookuplogicalname:
+                                  displayName: Created By (Delegate) (Type)
+                                  description: Unique identifier of the delegate user who created the record.
+                                  visibility: Advanced
+                                  order: 16
+                                  type: String
+
+                                _modifiedby_value:
+                                  displayName: Modified By (Value)
+                                  description: Unique identifier of the user who modified the record.
+                                  visibility: Advanced
+                                  order: 35
+                                  type: String
+
+                                _modifiedby_value@Microsoft.Dynamics.CRM.lookuplogicalname:
+                                  displayName: Modified By (Type)
+                                  description: Unique identifier of the user who modified the record.
+                                  visibility: Advanced
+                                  order: 34
+                                  type: String
+
+                                _modifiedonbehalfby_value:
+                                  displayName: Modified By (Delegate) (Value)
+                                  description: Unique identifier of the delegate user who modified the record.
+                                  visibility: Advanced
+                                  order: 33
+                                  type: String
+
+                                _modifiedonbehalfby_value@Microsoft.Dynamics.CRM.lookuplogicalname:
+                                  displayName: Modified By (Delegate) (Type)
+                                  description: Unique identifier of the delegate user who modified the record.
+                                  visibility: Advanced
+                                  order: 32
+                                  type: String
+
+                                _new_account_value:
+                                  displayName: Account (Value)
+                                  order: 1
+                                  type: String
+
+                                _new_account_value@Microsoft.Dynamics.CRM.lookuplogicalname:
+                                  displayName: Account (Type)
+                                  order: 0
+                                  type: String
+
+                                _new_projecttemplate_value:
+                                  displayName: Project Type Template (Value)
+                                  visibility: Advanced
+                                  order: 69
+                                  type: String
+
+                                _new_projecttemplate_value@Microsoft.Dynamics.CRM.lookuplogicalname:
+                                  displayName: Project Type Template (Type)
+                                  visibility: Advanced
+                                  order: 68
+                                  type: String
+
+                                _new_projecttype_value:
+                                  displayName: Project Type (Value)
+                                  visibility: Advanced
+                                  order: 67
+                                  type: String
+
+                                _new_projecttype_value@Microsoft.Dynamics.CRM.lookuplogicalname:
+                                  displayName: Project Type (Type)
+                                  visibility: Advanced
+                                  order: 66
+                                  type: String
+
+                                _new_rfp_value:
+                                  displayName: Opportunity (Value)
+                                  visibility: Advanced
+                                  order: 41
+                                  type: String
+
+                                _new_rfp_value@Microsoft.Dynamics.CRM.lookuplogicalname:
+                                  displayName: Opportunity (Type)
+                                  visibility: Advanced
+                                  order: 40
+                                  type: String
+
+                                _ownerid_value:
+                                  displayName: Owner (Value)
+                                  description: Owner Id
+                                  visibility: Advanced
+                                  order: 43
+                                  type: String
+
+                                _ownerid_value@Microsoft.Dynamics.CRM.lookuplogicalname:
+                                  displayName: Owner (Type)
+                                  description: Owner Id
+                                  visibility: Advanced
+                                  order: 42
+                                  type: String
+
+                                _owningbusinessunit_value:
+                                  displayName: Owning Business Unit (Value)
+                                  description: Unique identifier for the business unit that owns the record
+                                  visibility: Advanced
+                                  order: 45
+                                  type: String
+
+                                _owningbusinessunit_value@Microsoft.Dynamics.CRM.lookuplogicalname:
+                                  displayName: Owning Business Unit (Type)
+                                  description: Unique identifier for the business unit that owns the record
+                                  visibility: Advanced
+                                  order: 44
+                                  type: String
+
+                                _owningteam_value:
+                                  displayName: Owning Team (Value)
+                                  description: Unique identifier for the team that owns the record.
+                                  visibility: Advanced
+                                  order: 47
+                                  type: String
+
+                                _owningteam_value@Microsoft.Dynamics.CRM.lookuplogicalname:
+                                  displayName: Owning Team (Type)
+                                  description: Unique identifier for the team that owns the record.
+                                  visibility: Advanced
+                                  order: 46
+                                  type: String
+
+                                _owninguser_value:
+                                  displayName: Owning User (Value)
+                                  description: Unique identifier for the user that owns the record.
+                                  visibility: Advanced
+                                  order: 49
+                                  type: String
+
+                                _owninguser_value@Microsoft.Dynamics.CRM.lookuplogicalname:
+                                  displayName: Owning User (Type)
+                                  description: Unique identifier for the user that owns the record.
+                                  visibility: Advanced
+                                  order: 48
+                                  type: String
+
+                                _transactioncurrencyid_value:
+                                  displayName: Currency (Value)
+                                  description: Unique identifier of the currency associated with the entity.
+                                  visibility: Advanced
+                                  order: 22
+                                  type: String
+
+                                _transactioncurrencyid_value@Microsoft.Dynamics.CRM.lookuplogicalname:
+                                  displayName: Currency (Type)
+                                  description: Unique identifier of the currency associated with the entity.
+                                  visibility: Advanced
+                                  order: 21
+                                  type: String
+
+                                @odata.id:
+                                  displayName: OData Id
+                                  description: OData row id
+                                  order: 39
+                                  type: String
+
+                                cr80b_favorite:
+                                  displayName: Favorite
+                                  visibility: Advanced
+                                  order: 28
+                                  type: String
+
+                                createdon:
+                                  displayName: Created On
+                                  description: Date and time when the record was created.
+                                  visibility: Advanced
+                                  order: 20
+                                  type: DateTime
+
+                                exchangerate:
+                                  displayName: Exchange Rate
+                                  description: Exchange rate for the currency associated with the entity with respect to the base currency.
+                                  visibility: Advanced
+                                  order: 27
+                                  type: Number
+
+                                importsequencenumber:
+                                  displayName: Import Sequence Number
+                                  description: Sequence number of the import that created this record.
+                                  visibility: Advanced
+                                  order: 29
+                                  type: Number
+
+                                modifiedon:
+                                  displayName: Modified On
+                                  description: Date and time when the record was modified.
+                                  visibility: Advanced
+                                  order: 36
+                                  type: DateTime
+
+                                new_actualcostofproject:
+                                  displayName: Actual effort cost of Project
+                                  visibility: Advanced
+                                  order: 5
+                                  type: Number
+
+                                new_actualcostofproject_base:
+                                  displayName: Actual effort cost of Project (Base)
+                                  description: Value of the Actual cost of Project in base currency.
+                                  visibility: Advanced
+                                  order: 6
+                                  type: Number
+
+                                new_actualcostofproject_date:
+                                  displayName: Actual effort cost of Project (Last Updated On)
+                                  description: Last Updated time of rollup field Actual effort cost of Project.
+                                  visibility: Advanced
+                                  order: 7
+                                  type: DateTime
+
+                                new_actualcostofproject_state:
+                                  displayName: Actual effort cost of Project (State)
+                                  description: State of rollup field Actual effort cost of Project.
+                                  visibility: Advanced
+                                  order: 8
+                                  type: Number
+
+                                new_channelid:
+                                  displayName: Channel ID
+                                  visibility: Advanced
+                                  order: 9
+                                  type: String
+
+                                new_clientapprovedeffort:
+                                  displayName: Client Approved Effort
+                                  visibility: Advanced
+                                  order: 10
+                                  type: Number
+
+                                new_clientapprovedeffort_date:
+                                  displayName: Client Approved Effort (Last Updated On)
+                                  description: Last Updated time of rollup field Client Approved Effort.
+                                  visibility: Advanced
+                                  order: 11
+                                  type: DateTime
+
+                                new_clientapprovedeffort_state:
+                                  displayName: Client Approved Effort (State)
+                                  description: State of rollup field Client Approved Effort.
+                                  visibility: Advanced
+                                  order: 12
+                                  type: Number
+
+                                new_closedon:
+                                  displayName: Closed on
+                                  visibility: Advanced
+                                  order: 13
+                                  type: DateTime
+
+                                new_completedon:
+                                  displayName: completed on
+                                  visibility: Advanced
+                                  order: 14
+                                  type: DateTime
+
+                                new_createactivityefforts:
+                                  displayName: Create Activity Efforts
+                                  visibility: Advanced
+                                  order: 15
+                                  type: Boolean
+
+                                new_currentplannedeffort:
+                                  displayName: Current Planned effort (hours)
+                                  visibility: Advanced
+                                  order: 23
+                                  type: Number
+
+                                new_currentplannedeffort_date:
+                                  displayName: Current Planned effort (hours) (Last Updated On)
+                                  description: Last Updated time of rollup field Current Planned effort (hours).
+                                  visibility: Advanced
+                                  order: 24
+                                  type: DateTime
+
+                                new_currentplannedeffort_state:
+                                  displayName: Current Planned effort (hours) (State)
+                                  description: State of rollup field Current Planned effort (hours).
+                                  visibility: Advanced
+                                  order: 25
+                                  type: Number
+
+                                new_enddate:
+                                  displayName: End Date
+                                  visibility: Advanced
+                                  order: 26
+                                  type: DateTime
+
+                                new_inprogressdate:
+                                  displayName: In Progress Date
+                                  visibility: Advanced
+                                  order: 30
+                                  type: DateTime
+
+                                new_jobdescription:
+                                  displayName: Job Description
+                                  visibility: Advanced
+                                  order: 31
+                                  type: String
+
+                                new_name:
+                                  displayName: Name of the project
+                                  order: 37
+                                  type: String
+
+                                new_numberofpositions:
+                                  displayName: Number of Positions
+                                  visibility: Advanced
+                                  order: 38
+                                  type: Number
+
+                                new_projectcost:
+                                  displayName: Project Cost
+                                  visibility: Advanced
+                                  order: 50
+                                  type: Number
+
+                                new_projectcost_base:
+                                  displayName: Project Cost (Base)
+                                  description: Value of the Project Cost in base currency.
+                                  visibility: Advanced
+                                  order: 51
+                                  type: Number
+
+                                new_projectdescription:
+                                  displayName: Project Description
+                                  order: 52
+                                  type: String
+
+                                new_projectearning:
+                                  displayName: Project Earning
+                                  visibility: Advanced
+                                  order: 53
+                                  type: Number
+
+                                new_projectearning_date:
+                                  displayName: Project Earning (Last Updated On)
+                                  description: Last Updated time of rollup field Project Earning.
+                                  visibility: Advanced
+                                  order: 56
+                                  type: DateTime
+
+                                new_projectearning_state:
+                                  displayName: Project Earning (State)
+                                  description: State of rollup field Project Earning.
+                                  visibility: Advanced
+                                  order: 57
+                                  type: Number
+
+                                new_projectearningcurrency:
+                                  displayName: Project Earning (Currency)
+                                  visibility: Advanced
+                                  order: 54
+                                  type: Number
+
+                                new_projectearningcurrency_base:
+                                  displayName: Project Earning (Currency) (Base)
+                                  description: Value of the Project Earning (Currency) in base currency.
+                                  visibility: Advanced
+                                  order: 55
+                                  type: Number
+
+                                new_projectid:
+                                  displayName: Project Id
+                                  visibility: Advanced
+                                  order: 58
+                                  type: String
+
+                                new_projectpriority:
+                                  displayName: Project Priority
+                                  visibility: Advanced
+                                  order: 61
+                                  dynamicValuesConfig:
+                                    capability: List
+
+                                  type: Number
+
+                                new_projectprofitonearning:
+                                  displayName: Project profit on earning
+                                  visibility: Advanced
+                                  order: 62
+                                  type: Number
+
+                                new_projectprofitonearning_base:
+                                  displayName: Project profit on earning (Base)
+                                  description: Value of the Project profit on earning in base currency.
+                                  visibility: Advanced
+                                  order: 64
+                                  type: Number
+
+                                new_projectprofitonearningdecimal:
+                                  displayName: Project profit on earning decimal
+                                  visibility: Advanced
+                                  order: 65
+                                  type: Number
+
+                                new_projectprofitonearningpercentage:
+                                  displayName: Project profit on earning %
+                                  visibility: Advanced
+                                  order: 63
+                                  type: Number
+
+                                new_projectsid:
+                                  displayName: Projects
+                                  description: Unique identifier for entity instances
+                                  visibility: Advanced
+                                  order: 70
+                                  type: String
+
+                                new_relatedstime:
+                                  displayName: Actual effort (hours)
+                                  visibility: Advanced
+                                  order: 2
+                                  type: Number
+
+                                new_relatedstime_date:
+                                  displayName: Actual effort (hours) (Last Updated On)
+                                  description: Last Updated time of rollup field Actual effort (hours).
+                                  visibility: Advanced
+                                  order: 3
+                                  type: DateTime
+
+                                new_relatedstime_state:
+                                  displayName: Actual effort (hours) (State)
+                                  description: State of rollup field Actual effort (hours).
+                                  visibility: Advanced
+                                  order: 4
+                                  type: Number
+
+                                new_remainingeffort:
+                                  displayName: Remaining effort
+                                  visibility: Advanced
+                                  order: 72
+                                  type: Number
+
+                                new_remainingefforthrs:
+                                  displayName: Remaining Effort hrs
+                                  visibility: Advanced
+                                  order: 74
+                                  type: Number
+
+                                new_remainingeffortpercent:
+                                  displayName: Remaining effort %
+                                  visibility: Advanced
+                                  order: 73
+                                  type: Number
+
+                                new_startdate:
+                                  displayName: Start Date
+                                  visibility: Advanced
+                                  order: 75
+                                  type: DateTime
+
+                                new_teamid:
+                                  displayName: Team Id
+                                  visibility: Advanced
+                                  order: 78
+                                  type: String
+
+                                new_totalcandidatesforthisproject:
+                                  displayName: Total Candidates for this Project
+                                  description: this field is used to calculate the total candidate record associated to this project
+                                  visibility: Advanced
+                                  order: 80
+                                  type: Number
+
+                                new_totalcandidatesforthisproject_date:
+                                  displayName: Total Candidates for this Project (Last Updated On)
+                                  description: Last Updated time of rollup field Total Candidates for this Project.
+                                  visibility: Advanced
+                                  order: 81
+                                  type: DateTime
+
+                                new_totalcandidatesforthisproject_state:
+                                  displayName: Total Candidates for this Project (State)
+                                  description: State of rollup field Total Candidates for this Project.
+                                  visibility: Advanced
+                                  order: 82
+                                  type: Number
+
+                                overriddencreatedon:
+                                  displayName: Record Created On
+                                  description: Date and time that the record was migrated.
+                                  visibility: Advanced
+                                  order: 71
+                                  type: DateTime
+
+                                statecode:
+                                  displayName: Status
+                                  description: Status of the Projects
+                                  visibility: Advanced
+                                  order: 76
+                                  dynamicValuesConfig:
+                                    capability: List
+
+                                  type: Number
+
+                                statuscode:
+                                  displayName: Status Reason
+                                  description: Reason for the status of the Projects
+                                  visibility: Advanced
+                                  order: 77
+                                  dynamicValuesConfig:
+                                    capability: List
+
+                                  type: Number
+
+                                timezoneruleversionnumber:
+                                  displayName: Time Zone Rule Version Number
+                                  description: For internal use only.
+                                  visibility: Advanced
+                                  order: 79
+                                  type: Number
+
+                                utcconversiontimezonecode:
+                                  displayName: UTC Conversion Time Zone Code
+                                  description: Time zone code that was in use when the record was created.
+                                  visibility: Advanced
+                                  order: 83
+                                  type: Number
+
+                                versionnumber:
+                                  displayName: Version Number
+                                  description: Version Number
+                                  visibility: Advanced
+                                  order: 84
+                                  type: Number
+
+                      operationId: ListRecordsWithOrganization
+
+                    - kind: Question
+                      id: question_5c2Fzz
+                      interruptionPolicy:
+                        allowInterruption: false
+
+                      alwaysPrompt: true
+                      variable: init:Topic.Var7
+                      prompt: Select projects....
+                      entity:
+                        kind: DynamicClosedListEntity
+                        items: =Distinct(Topic.Var8,new_name)
+
+            - kind: InvokeConnectorAction
+              id: invokeConnectorAction_J9GUhv
+              input:
+                binding:
+                  entityName: new_backendactivities
+                  fetchXml: |+
+                    =If(Text(Global.EmployeeType)="Employee","<fetch>
+                      <entity name='new_backendactivity'>
+                        <attribute name='new_backendactivityid' />
+                        <attribute name='new_name' />
+                        <link-entity name='new_projects_new_backendactivity' from='new_backendactivityid' to='new_backendactivityid' link-type='inner' intersect='true'>
+                          <link-entity name='new_projects' from='new_projectsid' to='new_projectsid' alias='new_Projects_new_BackendActivity_new_Back' link-type='inner' intersect='true'>
+                            <attribute name='new_projectsid' />
+                            <attribute name='new_name' />
+                            <filter type='and'>
+                              <condition attribute='new_name' operator='eq' value='"&Topic.Var5&"' />
+                            </filter>
+                          </link-entity>
+                        </link-entity>
+                        <filter type='and'>
+                          <condition attribute='statecode' operator='eq' value='0' />
+                        </filter>
+                      </entity>
+                    </fetch>",
+                    "<fetch>
+                      <entity name='new_backendactivity'>
+                        <attribute name='new_backendactivityid' />
+                        <attribute name='new_name' />
+                        <link-entity name='new_projects_new_backendactivity' from='new_backendactivityid' to='new_backendactivityid' link-type='inner' intersect='true'>
+                          <link-entity name='new_projects' from='new_projectsid' to='new_projectsid' alias='new_Projects_new_BackendActivity_new_Back' link-type='inner' intersect='true'>
+                            <attribute name='new_projectsid' />
+                            <attribute name='new_name' />
+                            <filter type='and'>
+                              <condition attribute='new_name' operator='eq' value='"&Topic.Var7&"' />
+                            </filter>
+                          </link-entity>
+                        </link-entity>
+                        <filter type='and'>
+                          <condition attribute='statecode' operator='eq' value='0' />
+                        </filter>
+                      </entity>
+                    </fetch>")
+
+                  organization: current
+
+              output:
+                binding:
+                  value: Topic.Var9
+
+              connectionReference: cr80b_metaorangeCopilot.shared_commondataserviceforapps.8b14a02db5bc44f09eb442b213487848
+              connectionProperties:
+                mode: Invoker
+
+              dynamicOutputSchema:
+                kind: Record
+                properties:
+                  @odata.nextLink:
+                    displayName: Next link
+                    description: The url to fetch next page data.
+                    visibility: Advanced
+                    order: 1
+                    type: String
+
+                  value:
+                    order: 0
+                    type:
+                      kind: Table
+                      properties:
+                        _createdby_value:
+                          displayName: Created By (Value)
+                          description: Unique identifier of the user who created the record.
+                          visibility: Advanced
+                          order: 6
+                          type: String
+
+                        _createdby_value@Microsoft.Dynamics.CRM.lookuplogicalname:
+                          displayName: Created By (Type)
+                          description: Unique identifier of the user who created the record.
+                          visibility: Advanced
+                          order: 5
+                          type: String
+
+                        _createdonbehalfby_value:
+                          displayName: Created By (Delegate) (Value)
+                          description: Unique identifier of the delegate user who created the record.
+                          visibility: Advanced
+                          order: 4
+                          type: String
+
+                        _createdonbehalfby_value@Microsoft.Dynamics.CRM.lookuplogicalname:
+                          displayName: Created By (Delegate) (Type)
+                          description: Unique identifier of the delegate user who created the record.
+                          visibility: Advanced
+                          order: 3
+                          type: String
+
+                        _modifiedby_value:
+                          displayName: Modified By (Value)
+                          description: Unique identifier of the user who modified the record.
+                          visibility: Advanced
+                          order: 12
+                          type: String
+
+                        _modifiedby_value@Microsoft.Dynamics.CRM.lookuplogicalname:
+                          displayName: Modified By (Type)
+                          description: Unique identifier of the user who modified the record.
+                          visibility: Advanced
+                          order: 11
+                          type: String
+
+                        _modifiedonbehalfby_value:
+                          displayName: Modified By (Delegate) (Value)
+                          description: Unique identifier of the delegate user who modified the record.
+                          visibility: Advanced
+                          order: 10
+                          type: String
+
+                        _modifiedonbehalfby_value@Microsoft.Dynamics.CRM.lookuplogicalname:
+                          displayName: Modified By (Delegate) (Type)
+                          description: Unique identifier of the delegate user who modified the record.
+                          visibility: Advanced
+                          order: 9
+                          type: String
+
+                        _ownerid_value:
+                          displayName: Owner (Value)
+                          description: Owner Id
+                          visibility: Advanced
+                          order: 16
+                          type: String
+
+                        _ownerid_value@Microsoft.Dynamics.CRM.lookuplogicalname:
+                          displayName: Owner (Type)
+                          description: Owner Id
+                          visibility: Advanced
+                          order: 15
+                          type: String
+
+                        _owningbusinessunit_value:
+                          displayName: Owning Business Unit (Value)
+                          description: Unique identifier for the business unit that owns the record
+                          visibility: Advanced
+                          order: 18
+                          type: String
+
+                        _owningbusinessunit_value@Microsoft.Dynamics.CRM.lookuplogicalname:
+                          displayName: Owning Business Unit (Type)
+                          description: Unique identifier for the business unit that owns the record
+                          visibility: Advanced
+                          order: 17
+                          type: String
+
+                        _owningteam_value:
+                          displayName: Owning Team (Value)
+                          description: Unique identifier for the team that owns the record.
+                          visibility: Advanced
+                          order: 20
+                          type: String
+
+                        _owningteam_value@Microsoft.Dynamics.CRM.lookuplogicalname:
+                          displayName: Owning Team (Type)
+                          description: Unique identifier for the team that owns the record.
+                          visibility: Advanced
+                          order: 19
+                          type: String
+
+                        _owninguser_value:
+                          displayName: Owning User (Value)
+                          description: Unique identifier for the user that owns the record.
+                          visibility: Advanced
+                          order: 22
+                          type: String
+
+                        _owninguser_value@Microsoft.Dynamics.CRM.lookuplogicalname:
+                          displayName: Owning User (Type)
+                          description: Unique identifier for the user that owns the record.
+                          visibility: Advanced
+                          order: 21
+                          type: String
+
+                        @odata.id:
+                          displayName: OData Id
+                          description: OData row id
+                          order: 14
+                          type: String
+
+                        createdon:
+                          displayName: Created On
+                          description: Date and time when the record was created.
+                          visibility: Advanced
+                          order: 7
+                          type: DateTime
+
+                        importsequencenumber:
+                          displayName: Import Sequence Number
+                          description: Sequence number of the import that created this record.
+                          visibility: Advanced
+                          order: 8
+                          type: Number
+
+                        modifiedon:
+                          displayName: Modified On
+                          description: Date and time when the record was modified.
+                          visibility: Advanced
+                          order: 13
+                          type: DateTime
+
+                        new_activitydescription:
+                          displayName: Activity Description
+                          visibility: Advanced
+                          order: 0
+                          type: String
+
+                        new_backendactivityid:
+                          displayName: Backend Activity
+                          description: Unique identifier for entity instances
+                          visibility: Advanced
+                          order: 2
+                          type: String
+
+                        new_name:
+                          displayName: Activity Name
+                          order: 1
+                          type: String
+
+                        new_typeofactivity:
+                          displayName: Type of Activity
+                          visibility: Advanced
+                          order: 27
+                          dynamicValuesConfig:
+                            capability: List
+
+                          type: Number
+
+                        overriddencreatedon:
+                          displayName: Record Created On
+                          description: Date and time that the record was migrated.
+                          visibility: Advanced
+                          order: 23
+                          type: DateTime
+
+                        statecode:
+                          displayName: Status
+                          description: Status of the Backend Activity
+                          visibility: Advanced
+                          order: 24
+                          dynamicValuesConfig:
+                            capability: List
+
+                          type: Number
+
+                        statuscode:
+                          displayName: Status Reason
+                          description: Reason for the status of the Backend Activity
+                          visibility: Advanced
+                          order: 25
+                          dynamicValuesConfig:
+                            capability: List
+
+                          type: Number
+
+                        timezoneruleversionnumber:
+                          displayName: Time Zone Rule Version Number
+                          description: For internal use only.
+                          visibility: Advanced
+                          order: 26
+                          type: Number
+
+                        utcconversiontimezonecode:
+                          displayName: UTC Conversion Time Zone Code
+                          description: Time zone code that was in use when the record was created.
+                          visibility: Advanced
+                          order: 28
+                          type: Number
+
+                        versionnumber:
+                          displayName: Version Number
+                          description: Version Number
+                          visibility: Advanced
+                          order: 29
+                          type: Number
+
+              operationId: ListRecordsWithOrganization
+
+            - kind: Question
+              id: question_qulZaM
+              interruptionPolicy:
+                allowInterruption: true
+
+              variable: init:Topic.Var10
+              prompt: Select Activity..
+              entity:
+                kind: DynamicClosedListEntity
+                items: =Distinct(Topic.Var9,new_name)
+
+            - kind: AdaptiveCardPrompt
+              id: g8XJ5e
+              card: |
+                {
+                  "type": "AdaptiveCard",
+                  "version": "1.2",
+                  "body": [
+                    {
+                      "type": "TextBlock",
+                      "text": "Date",
+                      "weight": "Bolder",
+                      "wrap": true
+                    },
+                    {
+                      "type": "Input.Date",
+                      "id": "Date",
+                      "placeholder": "Select date"
+                    },
+                    {
+                      "type": "TextBlock",
+                      "text": "Start Time",
+                      "weight": "Bolder",
+                      "wrap": true
+                    },
+                    {
+                      "type": "Input.Time",
+                      "id": "StartTime",
+                      "placeholder": "Select start time"
+                    },
+                    {
+                      "type": "TextBlock",
+                      "text": "End Time",
+                      "weight": "Bolder",
+                      "wrap": true
+                    },
+                    {
+                      "type": "Input.Time",
+                      "id": "EndTime",
+                      "placeholder": "Select end time"
+                    },
+                    {
+                      "type": "TextBlock",
+                      "text": "Comments",
+                      "weight": "Bolder",
+                      "wrap": true
+                    },
+                    {
+                      "type": "Input.Text",
+                      "id": "Comments",
+                      "isMultiline": true,
+                      "placeholder": "Enter your comments here..."
+                    }
+                  ],
+                  "actions": [
+                    {
+                      "type": "Action.Submit",
+                      "title": "Submit"
+                    }
+                  ]
+                }
+              output:
+                binding:
+                  actionSubmitId: Topic.actionSubmitId
+                  Comments: Topic.Comments
+                  Date: Topic.Date
+                  EndTime: Topic.EndTime
+                  StartTime: Topic.StartTime
+
+              outputType:
+                properties:
+                  actionSubmitId: String
+                  Comments: String
+                  Date: Date
+                  EndTime: Time
+                  StartTime: Time
+
+            - kind: InvokeConnectorAction
+              id: invokeConnectorAction_D6VUEz
+              input:
+                binding:
+                  $filter: ="isocurrencycode eq 'AUD'"
+                  $top: 1
+                  entityName: transactioncurrencies
+                  organization: current
+
+              output:
+                binding:
+                  value: Topic.Var11
+
+              connectionReference: cr80b_metaorangeCopilot.shared_commondataserviceforapps.8b14a02db5bc44f09eb442b213487848
+              connectionProperties:
+                mode: Invoker
+
+              dynamicOutputSchema:
+                kind: Record
+                properties:
+                  @odata.nextLink:
+                    displayName: Next link
+                    description: The url to fetch next page data.
+                    visibility: Advanced
+                    order: 1
+                    type: String
+
+                  value:
+                    order: 0
+                    type:
+                      kind: Table
+                      properties:
+                        _createdby_value:
+                          displayName: Created By (Value)
+                          description: Unique identifier of the user who created the transaction currency.
+                          visibility: Advanced
+                          order: 3
+                          type: String
+
+                        _createdby_value@Microsoft.Dynamics.CRM.lookuplogicalname:
+                          displayName: Created By (Type)
+                          description: Unique identifier of the user who created the transaction currency.
+                          visibility: Advanced
+                          order: 2
+                          type: String
+
+                        _createdonbehalfby_value:
+                          displayName: Created By (Delegate) (Value)
+                          description: Unique identifier of the delegate user who created the transactioncurrency.
+                          visibility: Advanced
+                          order: 1
+                          type: String
+
+                        _createdonbehalfby_value@Microsoft.Dynamics.CRM.lookuplogicalname:
+                          displayName: Created By (Delegate) (Type)
+                          description: Unique identifier of the delegate user who created the transactioncurrency.
+                          visibility: Advanced
+                          order: 0
+                          type: String
+
+                        _modifiedby_value:
+                          displayName: Modified By (Value)
+                          description: Unique identifier of the user who last modified the transaction currency.
+                          visibility: Advanced
+                          order: 17
+                          type: String
+
+                        _modifiedby_value@Microsoft.Dynamics.CRM.lookuplogicalname:
+                          displayName: Modified By (Type)
+                          description: Unique identifier of the user who last modified the transaction currency.
+                          visibility: Advanced
+                          order: 16
+                          type: String
+
+                        _modifiedonbehalfby_value:
+                          displayName: Modified By (Delegate) (Value)
+                          description: Unique identifier of the delegate user who last modified the transactioncurrency.
+                          visibility: Advanced
+                          order: 15
+                          type: String
+
+                        _modifiedonbehalfby_value@Microsoft.Dynamics.CRM.lookuplogicalname:
+                          displayName: Modified By (Delegate) (Type)
+                          description: Unique identifier of the delegate user who last modified the transactioncurrency.
+                          visibility: Advanced
+                          order: 14
+                          type: String
+
+                        _organizationid_value:
+                          displayName: Organization (Value)
+                          description: Unique identifier of the organization associated with the transaction currency.
+                          order: 21
+                          type: String
+
+                        _organizationid_value@Microsoft.Dynamics.CRM.lookuplogicalname:
+                          displayName: Organization (Type)
+                          description: Unique identifier of the organization associated with the transaction currency.
+                          order: 20
+                          type: String
+
+                        @odata.id:
+                          displayName: OData Id
+                          description: OData row id
+                          order: 19
+                          type: String
+
+                        createdon:
+                          displayName: Created On
+                          description: Date and time when the transaction currency was created.
+                          visibility: Advanced
+                          order: 4
+                          type: DateTime
+
+                        currencyname:
+                          displayName: Currency Name
+                          description: Name of the transaction currency.
+                          order: 6
+                          type: String
+
+                        currencyprecision:
+                          displayName: Currency Precision
+                          description: Number of decimal places that can be used for currency.
+                          order: 7
+                          type: Number
+
+                        currencysymbol:
+                          displayName: Currency Symbol
+                          description: Symbol for the transaction currency.
+                          order: 8
+                          type: String
+
+                        currencytype:
+                          displayName: Currency Type
+                          description: Currency type that can be used for new currency.
+                          order: 9
+                          dynamicValuesConfig:
+                            capability: List
+
+                          type: Number
+
+                        entityimage:
+                          displayName: Entity Image
+                          description: The default image for the entity.
+                          visibility: Advanced
+                          order: 10
+                          type: String
+
+                        entityimageid:
+                          displayName: Entity Image Id
+                          description: For internal use only.
+                          visibility: Advanced
+                          order: 11
+                          type: String
+
+                        exchangerate:
+                          displayName: Exchange Rate
+                          description: Exchange rate between the transaction currency and the base currency.
+                          order: 12
+                          type: Number
+
+                        importsequencenumber:
+                          displayName: Import Sequence Number
+                          description: Unique identifier of the data import or data migration that created this record.
+                          visibility: Advanced
+                          order: 13
+                          type: Number
+
+                        isocurrencycode:
+                          displayName: Currency Code
+                          description: ISO currency code for the transaction currency.
+                          order: 5
+                          type: String
+
+                        modifiedon:
+                          displayName: Modified On
+                          description: Date and time when the transaction currency was last modified.
+                          visibility: Advanced
+                          order: 18
+                          type: DateTime
+
+                        overriddencreatedon:
+                          displayName: Record Created On
+                          description: Date and time that the record was migrated.
+                          visibility: Advanced
+                          order: 22
+                          type: DateTime
+
+                        statecode:
+                          displayName: Status
+                          description: Status of the transaction currency.
+                          visibility: Advanced
+                          order: 23
+                          dynamicValuesConfig:
+                            capability: List
+
+                          type: Number
+
+                        statuscode:
+                          displayName: Status Reason
+                          description: Reason for the status of the transaction currency.
+                          visibility: Advanced
+                          order: 24
+                          dynamicValuesConfig:
+                            capability: List
+
+                          type: Number
+
+                        transactioncurrencyid:
+                          displayName: Transaction Currency
+                          description: Unique identifier of the transaction currency.
+                          visibility: Advanced
+                          order: 25
+                          type: String
+
+                        versionnumber:
+                          displayName: Version Number
+                          description: Version number of the transaction currency.
+                          visibility: Advanced
+                          order: 26
+                          type: Number
+
+              operationId: ListRecordsWithOrganization
+
+            - kind: InvokeConnectorAction
+              id: invokeConnectorAction_jMjmoq
+              input:
+                binding:
+                  entityName: new_timesheets
+                  item: "={'new_Activity@odata.bind': \"/new_backendactivities(\"&LookUp(Topic.Var9,new_name=Topic.Var10).new_backendactivityid&\")\", 'new_Employee@odata.bind': If(Text(Global.EmployeeType)=\"Employee\", \"/new_enployeeinfos(\"&First(Topic.Var1).new_enployeeinfoid&\")\"), 'new_Intern@odata.bind': If(Text(Global.EmployeeType)=\"Intern\",\"/new_interns(\"&First(Topic.Var2).new_internid&\")\"), 'new_ProjectManager@odata.bind': If(Text(Global.EmployeeType)=\"Employee\",\"/new_enployeeinfos(\"&LookUp(Topic.Var4,new_name=Topic.Var5)._cr80b_projectmanager_value &\")\",\"/new_enployeeinfos(\"&LookUp(Topic.Var8,new_name=Topic.Var7)._cr80b_projectmanager_value &\")\"), 'new_ProjectName@odata.bind': If(Text(Global.EmployeeType)=\"Employee\",\"/new_projectses(\"&LookUp(Topic.Var4,new_name=Topic.Var5).new_projectsid &\")\",\"/new_projectses(\"&LookUp(Topic.Var8,new_name=Topic.Var7).new_projectsid &\")\"), 'transactioncurrencyid@odata.bind': \"/transactioncurrencies(\"&First(Topic.Var11).transactioncurrencyid&\")\", new_date: Topic.Date, new_endtime: DateTimeValue(Topic.Date&\" \"&Topic.EndTime), new_name: System.User.DisplayName&\"_\"&Today(), new_notes: Topic.Comments, new_starttime: DateTimeValue(Topic.Date&\" \"&Topic.StartTime), new_task: Topic.Comments}"
+                  organization: current
+
+              output:
+                binding:
+                  new_timesheetid: Topic.Var3
+
+              connectionReference: cr80b_metaorangeCopilot.shared_commondataserviceforapps.8b14a02db5bc44f09eb442b213487848
+              connectionProperties:
+                mode: Invoker
+
+              dynamicInputSchema:
+                properties:
+                  entityName:
+                    displayName: Table name
+                    description: Choose a table
+                    isRequired: true
+                    order: 1
+                    dynamicValuesConfig:
+                      capability: List
+
+                    type: String
+
+                  item:
+                    displayName: Row Item
+                    description: Row to create
+                    isRequired: true
+                    order: 2
+                    type:
+                      kind: Record
+                      properties:
+                        cr80b_managercomment:
+                          displayName: Manager Comment 
+                          visibility: Advanced
+                          order: 11
+                          type: String
+
+                        cr80b_reasonmorethan9hours:
+                          displayName: Reason(For more than 9hours)
+                          description: more than 9 hours
+                          visibility: Advanced
+                          order: 18
+                          type: String
+
+                        importsequencenumber:
+                          displayName: Import Sequence Number
+                          description: Sequence number of the import that created this record.
+                          visibility: Advanced
+                          order: 9
+                          type: Number
+
+                        new_Activity@odata.bind:
+                          displayName: Activity ( Activity Master Data)
+                          visibility: Advanced
+                          order: 0
+                          type: String
+
+                        new_actualcost:
+                          displayName: Actual Cost
+                          visibility: Advanced
+                          order: 1
+                          type: Number
+
+                        new_approverejectdatetime:
+                          displayName: Approve Reject Date&Time
+                          visibility: Advanced
+                          order: 2
+                          type: DateTime
+
+                        new_ApproveRejectedBy@odata.bind:
+                          displayName: Approve/Rejected By (Users)
+                          visibility: Advanced
+                          order: 3
+                          type: String
+
+                        new_date:
+                          displayName: Date
+                          visibility: Advanced
+                          order: 5
+                          type: Date
+
+                        new_Employee@odata.bind:
+                          displayName: Employee (Employee Infos)
+                          visibility: Advanced
+                          order: 6
+                          type: String
+
+                        new_endtime:
+                          displayName: End Time
+                          isRequired: true
+                          order: 7
+                          type: DateTime
+
+                        new_hourlycost:
+                          displayName: Hourly Cost
+                          visibility: Advanced
+                          order: 8
+                          type: Number
+
+                        new_Intern@odata.bind:
+                          displayName: Intern (Interns)
+                          visibility: Advanced
+                          order: 10
+                          type: String
+
+                        new_name:
+                          displayName: Name
+                          visibility: Advanced
+                          order: 12
+                          type: String
+
+                        new_notes:
+                          displayName: Notes
+                          visibility: Advanced
+                          order: 13
+                          type: String
+
+                        new_ProjectManager@odata.bind:
+                          displayName: Project Manager (Employee Infos)
+                          visibility: Advanced
+                          order: 15
+                          type: String
+
+                        new_ProjectName@odata.bind:
+                          displayName: Project Name (Projects)
+                          visibility: Advanced
+                          order: 16
+                          type: String
+
+                        new_ProjectTypeTemplate@odata.bind:
+                          displayName: Project Type Template (Project Type Templates)
+                          visibility: Advanced
+                          order: 17
+                          type: String
+
+                        new_starttime:
+                          displayName: Start Time
+                          isRequired: true
+                          order: 20
+                          type: DateTime
+
+                        new_task:
+                          displayName: Task
+                          visibility: Advanced
+                          order: 22
+                          type: String
+
+                        new_timesheetid:
+                          displayName: Timesheet
+                          description: Unique identifier for entity instances
+                          visibility: Advanced
+                          order: 24
+                          type: String
+
+                        new_timesheetstatus:
+                          displayName: Timesheet Status
+                          visibility: Advanced
+                          order: 25
+                          dynamicValuesConfig:
+                            capability: List
+
+                          type: Number
+
+                        overriddencreatedon:
+                          displayName: Record Created On
+                          description: Date and time that the record was migrated.
+                          visibility: Advanced
+                          order: 19
+                          type: DateTime
+
+                        ownerid@odata.bind:
+                          displayName: Owner (Owners)
+                          description: Owner Id
+                          visibility: Advanced
+                          order: 14
+                          type: String
+
+                        statuscode:
+                          displayName: Status Reason
+                          description: Reason for the status of the Timesheet
+                          visibility: Advanced
+                          order: 21
+                          dynamicValuesConfig:
+                            capability: List
+
+                          type: Number
+
+                        timezoneruleversionnumber:
+                          displayName: Time Zone Rule Version Number
+                          description: For internal use only.
+                          visibility: Advanced
+                          order: 23
+                          type: Number
+
+                        transactioncurrencyid@odata.bind:
+                          displayName: Currency (Currencies)
+                          description: Unique identifier of the currency associated with the entity.
+                          visibility: Advanced
+                          order: 4
+                          type: String
+
+                        utcconversiontimezonecode:
+                          displayName: UTC Conversion Time Zone Code
+                          description: Time zone code that was in use when the record was created.
+                          visibility: Advanced
+                          order: 26
+                          type: Number
+
+                  organization:
+                    displayName: Environment
+                    description: Choose an environment
+                    isRequired: true
+                    order: 0
+                    dynamicValuesConfig:
+                      capability: List
+
+                    type: String
+
+              dynamicOutputSchema:
+                kind: Record
+                properties:
+                  _createdby_value:
+                    displayName: Created By (Value)
+                    description: Unique identifier of the user who created the record.
+                    visibility: Advanced
+                    order: 10
+                    type: String
+
+                  _createdby_value@Microsoft.Dynamics.CRM.lookuplogicalname:
+                    displayName: Created By (Type)
+                    description: Unique identifier of the user who created the record.
+                    visibility: Advanced
+                    order: 9
+                    type: String
+
+                  _createdonbehalfby_value:
+                    displayName: Created By (Delegate) (Value)
+                    description: Unique identifier of the delegate user who created the record.
+                    visibility: Advanced
+                    order: 8
+                    type: String
+
+                  _createdonbehalfby_value@Microsoft.Dynamics.CRM.lookuplogicalname:
+                    displayName: Created By (Delegate) (Type)
+                    description: Unique identifier of the delegate user who created the record.
+                    visibility: Advanced
+                    order: 7
+                    type: String
+
+                  _modifiedby_value:
+                    displayName: Modified By (Value)
+                    description: Unique identifier of the user who modified the record.
+                    visibility: Advanced
+                    order: 28
+                    type: String
+
+                  _modifiedby_value@Microsoft.Dynamics.CRM.lookuplogicalname:
+                    displayName: Modified By (Type)
+                    description: Unique identifier of the user who modified the record.
+                    visibility: Advanced
+                    order: 27
+                    type: String
+
+                  _modifiedonbehalfby_value:
+                    displayName: Modified By (Delegate) (Value)
+                    description: Unique identifier of the delegate user who modified the record.
+                    visibility: Advanced
+                    order: 26
+                    type: String
+
+                  _modifiedonbehalfby_value@Microsoft.Dynamics.CRM.lookuplogicalname:
+                    displayName: Modified By (Delegate) (Type)
+                    description: Unique identifier of the delegate user who modified the record.
+                    visibility: Advanced
+                    order: 25
+                    type: String
+
+                  _new_activity_value:
+                    displayName: Activity (Value)
+                    visibility: Advanced
+                    order: 1
+                    type: String
+
+                  _new_activity_value@Microsoft.Dynamics.CRM.lookuplogicalname:
+                    displayName: Activity (Type)
+                    visibility: Advanced
+                    order: 0
+                    type: String
+
+                  _new_approverejectedby_value:
+                    displayName: Approve/Rejected By (Value)
+                    visibility: Advanced
+                    order: 6
+                    type: String
+
+                  _new_approverejectedby_value@Microsoft.Dynamics.CRM.lookuplogicalname:
+                    displayName: Approve/Rejected By (Type)
+                    visibility: Advanced
+                    order: 5
+                    type: String
+
+                  _new_employee_value:
+                    displayName: Employee (Value)
+                    visibility: Advanced
+                    order: 16
+                    type: String
+
+                  _new_employee_value@Microsoft.Dynamics.CRM.lookuplogicalname:
+                    displayName: Employee (Type)
+                    visibility: Advanced
+                    order: 15
+                    type: String
+
+                  _new_intern_value:
+                    displayName: Intern (Value)
+                    visibility: Advanced
+                    order: 23
+                    type: String
+
+                  _new_intern_value@Microsoft.Dynamics.CRM.lookuplogicalname:
+                    displayName: Intern (Type)
+                    visibility: Advanced
+                    order: 22
+                    type: String
+
+                  _new_projectmanager_value:
+                    displayName: Project Manager (Value)
+                    visibility: Advanced
+                    order: 43
+                    type: String
+
+                  _new_projectmanager_value@Microsoft.Dynamics.CRM.lookuplogicalname:
+                    displayName: Project Manager (Type)
+                    visibility: Advanced
+                    order: 42
+                    type: String
+
+                  _new_projectname_value:
+                    displayName: Project Name (Value)
+                    visibility: Advanced
+                    order: 45
+                    type: String
+
+                  _new_projectname_value@Microsoft.Dynamics.CRM.lookuplogicalname:
+                    displayName: Project Name (Type)
+                    visibility: Advanced
+                    order: 44
+                    type: String
+
+                  _new_projecttypetemplate_value:
+                    displayName: Project Type Template (Value)
+                    visibility: Advanced
+                    order: 47
+                    type: String
+
+                  _new_projecttypetemplate_value@Microsoft.Dynamics.CRM.lookuplogicalname:
+                    displayName: Project Type Template (Type)
+                    visibility: Advanced
+                    order: 46
+                    type: String
+
+                  _ownerid_value:
+                    displayName: Owner (Value)
+                    description: Owner Id
+                    visibility: Advanced
+                    order: 35
+                    type: String
+
+                  _ownerid_value@Microsoft.Dynamics.CRM.lookuplogicalname:
+                    displayName: Owner (Type)
+                    description: Owner Id
+                    visibility: Advanced
+                    order: 34
+                    type: String
+
+                  _owningbusinessunit_value:
+                    displayName: Owning Business Unit (Value)
+                    description: Unique identifier for the business unit that owns the record
+                    visibility: Advanced
+                    order: 37
+                    type: String
+
+                  _owningbusinessunit_value@Microsoft.Dynamics.CRM.lookuplogicalname:
+                    displayName: Owning Business Unit (Type)
+                    description: Unique identifier for the business unit that owns the record
+                    visibility: Advanced
+                    order: 36
+                    type: String
+
+                  _owningteam_value:
+                    displayName: Owning Team (Value)
+                    description: Unique identifier for the team that owns the record.
+                    visibility: Advanced
+                    order: 39
+                    type: String
+
+                  _owningteam_value@Microsoft.Dynamics.CRM.lookuplogicalname:
+                    displayName: Owning Team (Type)
+                    description: Unique identifier for the team that owns the record.
+                    visibility: Advanced
+                    order: 38
+                    type: String
+
+                  _owninguser_value:
+                    displayName: Owning User (Value)
+                    description: Unique identifier for the user that owns the record.
+                    visibility: Advanced
+                    order: 41
+                    type: String
+
+                  _owninguser_value@Microsoft.Dynamics.CRM.lookuplogicalname:
+                    displayName: Owning User (Type)
+                    description: Unique identifier for the user that owns the record.
+                    visibility: Advanced
+                    order: 40
+                    type: String
+
+                  _transactioncurrencyid_value:
+                    displayName: Currency (Value)
+                    description: Unique identifier of the currency associated with the entity.
+                    visibility: Advanced
+                    order: 13
+                    type: String
+
+                  _transactioncurrencyid_value@Microsoft.Dynamics.CRM.lookuplogicalname:
+                    displayName: Currency (Type)
+                    description: Unique identifier of the currency associated with the entity.
+                    visibility: Advanced
+                    order: 12
+                    type: String
+
+                  @odata.id:
+                    displayName: OData Id
+                    description: OData row id
+                    order: 33
+                    type: String
+
+                  cr80b_managercomment:
+                    displayName: Manager Comment 
+                    visibility: Advanced
+                    order: 24
+                    type: String
+
+                  cr80b_reasonmorethan9hours:
+                    displayName: Reason(For more than 9hours)
+                    description: more than 9 hours
+                    visibility: Advanced
+                    order: 48
+                    type: String
+
+                  createdon:
+                    displayName: Created On
+                    description: Date and time when the record was created.
+                    visibility: Advanced
+                    order: 11
+                    type: DateTime
+
+                  exchangerate:
+                    displayName: Exchange Rate
+                    description: Exchange rate for the currency associated with the entity with respect to the base currency.
+                    visibility: Advanced
+                    order: 18
+                    type: Number
+
+                  importsequencenumber:
+                    displayName: Import Sequence Number
+                    description: Sequence number of the import that created this record.
+                    visibility: Advanced
+                    order: 21
+                    type: Number
+
+                  modifiedon:
+                    displayName: Modified On
+                    description: Date and time when the record was modified.
+                    visibility: Advanced
+                    order: 29
+                    type: DateTime
+
+                  new_actualcost:
+                    displayName: Actual Cost
+                    visibility: Advanced
+                    order: 2
+                    type: Number
+
+                  new_actualcost_base:
+                    displayName: Actual Cost (Base)
+                    description: Value of the Actual Cost in base currency.
+                    visibility: Advanced
+                    order: 3
+                    type: Number
+
+                  new_approverejectdatetime:
+                    displayName: Approve Reject Date&Time
+                    visibility: Advanced
+                    order: 4
+                    type: DateTime
+
+                  new_date:
+                    displayName: Date
+                    visibility: Advanced
+                    order: 14
+                    type: Date
+
+                  new_endtime:
+                    displayName: End Time
+                    order: 17
+                    type: DateTime
+
+                  new_hourlycost:
+                    displayName: Hourly Cost
+                    visibility: Advanced
+                    order: 19
+                    type: Number
+
+                  new_hourlycost_base:
+                    displayName: Hourly Cost (Base)
+                    description: Value of the Hourly Cost in base currency.
+                    visibility: Advanced
+                    order: 20
+                    type: Number
+
+                  new_month:
+                    displayName: Month
+                    visibility: Advanced
+                    order: 30
+                    type: String
+
+                  new_name:
+                    displayName: Name
+                    visibility: Advanced
+                    order: 31
+                    type: String
+
+                  new_notes:
+                    displayName: Notes
+                    visibility: Advanced
+                    order: 32
+                    type: String
+
+                  new_starttime:
+                    displayName: Start Time
+                    order: 50
+                    type: DateTime
+
+                  new_task:
+                    displayName: Task
+                    visibility: Advanced
+                    order: 53
+                    type: String
+
+                  new_timesheetid:
+                    displayName: Timesheet
+                    description: Unique identifier for entity instances
+                    visibility: Advanced
+                    order: 55
+                    type: String
+
+                  new_timesheetstatus:
+                    displayName: Timesheet Status
+                    visibility: Advanced
+                    order: 56
+                    dynamicValuesConfig:
+                      capability: List
+
+                    type: Number
+
+                  new_totaltimetaken:
+                    displayName: Total Time Taken
+                    visibility: Advanced
+                    order: 58
+                    type: Number
+
+                  new_totaltimetext:
+                    displayName: Total Time (Text)
+                    visibility: Advanced
+                    order: 57
+                    type: String
+
+                  new_year:
+                    displayName: Year
+                    visibility: Advanced
+                    order: 61
+                    type: Number
+
+                  overriddencreatedon:
+                    displayName: Record Created On
+                    description: Date and time that the record was migrated.
+                    visibility: Advanced
+                    order: 49
+                    type: DateTime
+
+                  statecode:
+                    displayName: Status
+                    description: Status of the Timesheet
+                    visibility: Advanced
+                    order: 51
+                    dynamicValuesConfig:
+                      capability: List
+
+                    type: Number
+
+                  statuscode:
+                    displayName: Status Reason
+                    description: Reason for the status of the Timesheet
+                    visibility: Advanced
+                    order: 52
+                    dynamicValuesConfig:
+                      capability: List
+
+                    type: Number
+
+                  timezoneruleversionnumber:
+                    displayName: Time Zone Rule Version Number
+                    description: For internal use only.
+                    visibility: Advanced
+                    order: 54
+                    type: Number
+
+                  utcconversiontimezonecode:
+                    displayName: UTC Conversion Time Zone Code
+                    description: Time zone code that was in use when the record was created.
+                    visibility: Advanced
+                    order: 59
+                    type: Number
+
+                  versionnumber:
+                    displayName: Version Number
+                    description: Version Number
+                    visibility: Advanced
+                    order: 60
+                    type: Number
+
+              operationId: CreateRecordWithOrganization
+
+            - kind: SendActivity
+              id: sendActivity_QtQsgN
+              activity: |+
+                {If(IsBlank(Topic.Var3),"Wrong went wrong.","Timesheet applied successfully.")}
+
+
+        - id: conditionItem_9EuGnz
+          condition: =Topic.choice = "ViewTimesheet"
+          actions:
+            - kind: AdaptiveCardPrompt
+              id: Bu1Xt3
+              card: |
+                {
+                    "type": "AdaptiveCard",
+                    "body": [
+                        {
+                            "type": "TextBlock",
+                            "text": "Select a Month",
+                            "weight": "Bolder",
+                            "size": "Medium"
+                        },
+                        {
+                            "type": "Input.ChoiceSet",
+                            "id": "month",
+                            "style": "compact",
+                            "choices": [
+                                { "title": "January", "value": "01" },
+                                { "title": "February", "value": "02" },
+                                { "title": "March", "value": "03" },
+                                { "title": "April", "value": "04" },
+                                { "title": "May", "value": "05" },
+                                { "title": "June", "value": "06" },
+                                { "title": "July", "value": "07" },
+                                { "title": "August", "value": "08" },
+                                { "title": "September", "value": "09" },
+                                { "title": "October", "value": "10" },
+                                { "title": "November", "value": "11" },
+                                { "title": "December", "value": "12" }
+                            ]
+                        }
+                    ],
+                    "actions": [
+                        {
+                            "type": "Action.Submit",
+                            "title": "Submit"
+                        }
+                    ],
+                    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+                    "version": "1.3"
+                }
+              output:
+                binding:
+                  actionSubmitId: Topic.actionSubmitId
+                  month: Topic.month
+
+              outputType:
+                properties:
+                  actionSubmitId: String
+                  month: String
+
+            - kind: InvokeFlowAction
+              id: invokeFlowAction_m3zmqM
+              latencyMessageSettings:
+                allowLatencyMessage: true
+                latencyMessage: Please wait...
+
+              input:
+                binding:
+                  email: =System.User.Email
+                  number: =Int(Topic.month)
+
+              output:
+                binding:
+                  result: Topic.Result
+
+              flowId: 722287da-a09d-ef11-8a6a-7c1e520e6962
+
+    - kind: BeginDialog
+      id: vhZntb
+      dialog: cr80b_metaorangeCopilot.topic.Untitled

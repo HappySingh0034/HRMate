@@ -1,0 +1,216 @@
+kind: AdaptiveDialog
+modelDescription: Update User Story,
+beginDialog:
+  kind: OnRedirect
+  id: main
+  actions:
+    - kind: BeginDialog
+      id: 8dAF4o
+      dialog: cr80b_metaorangeCopilot.topic.GetProjectList
+
+    - kind: ConditionGroup
+      id: conditionGroup_CV4lRk
+      conditions:
+        - id: conditionItem_2mUvUc
+          condition: =!IsBlank(Global.SelectedProjectName)
+          actions:
+            - kind: InvokeFlowAction
+              id: invokeFlowAction_HZ7ANb
+              input:
+                binding:
+                  text: =Global.SelectedProjectName
+                  text_1: User Story
+
+              output:
+                binding:
+                  listofitems: Topic.ListOfitems
+
+              flowId: bb134fdb-2d09-f011-bae3-000d3aca4339
+
+            - kind: ParseValue
+              id: ikD0aD
+              variable: Topic.Var_UserStoryList
+              valueType:
+                kind: Table
+                properties:
+                  WorkItemId: String
+                  WorkItemName: String
+
+              value: =Topic.ListOfitems
+
+            - kind: SetVariable
+              id: setVariable_uJ03P8
+              variable: Topic.Var_ItemCount
+              value: =CountRows(Topic.Var_UserStoryList)
+
+            - kind: ConditionGroup
+              id: conditionGroup_9H4wsA
+              conditions:
+                - id: conditionItem_17Fdjn
+                  condition: =Topic.Var_ItemCount <= 0
+                  actions:
+                    - kind: SendActivity
+                      id: sendActivity_kcWtZZ
+                      activity: No user story found!!
+
+                    - kind: CancelAllDialogs
+                      id: dXnFsJ
+
+            - kind: Question
+              id: question_mIYWPX
+              interruptionPolicy:
+                allowInterruption: true
+
+              variable: init:Topic.Var_SelectedUserStoryToUpdate
+              prompt: Select user story you want to update.
+              entity:
+                kind: DynamicClosedListEntity
+                items: =Distinct(Topic.Var_UserStoryList,WorkItemName)
+
+            - kind: Question
+              id: question_lwzFc7
+              interruptionPolicy:
+                allowInterruption: true
+
+              variable: init:Topic.Var_UserStoryTitle_Update
+              prompt: Enter a new title.
+              entity: StringPrebuiltEntity
+
+            - kind: InvokeAIBuilderModelAction
+              id: invokeAIBuilderModelAction_Y8P5Aq
+              input:
+                binding:
+                  Description: =Topic.Var_UserStoryTitle_Update
+                  Project_20Name: =Global.SelectedProjectName
+
+              output:
+                binding:
+                  predictionOutput: Topic.Var_UserStoryDescription_Update
+
+              aIModelId: d8915fb8-d25d-4215-a14a-873fac6897bc
+
+            - kind: InvokeAIBuilderModelAction
+              id: invokeAIBuilderModelAction_6KJUOW
+              input:
+                binding:
+                  Decription_20: =Topic.Var_UserStoryDescription_Update.text
+                  ProjectName: =Global.SelectedProjectName
+
+              output:
+                binding:
+                  predictionOutput: Topic.Var_UserStoryAcceptanceCriteria_Update
+
+              aIModelId: 478aa949-0e1a-4b3f-8caf-84cff0ba73a9
+
+            - kind: SendActivity
+              id: sendActivity_slORKA
+              activity: |-
+                ******* Acceptance Criteria  \*\_*\*\*\*\*_
+                _{Topic.Var_UserStoryAcceptanceCriteria_Update.text}_
+
+            - kind: Question
+              id: question_Fzcdiu
+              interruptionPolicy:
+                allowInterruption: true
+
+              variable: init:Topic.Var2
+              prompt: Do you want to change Acceptance Criteria?
+              entity: BooleanPrebuiltEntity
+
+            - kind: ConditionGroup
+              id: conditionGroup_19IpQc
+              conditions:
+                - id: conditionItem_aUi87a
+                  condition: =Topic.Var2 = true
+                  actions:
+                    - kind: Question
+                      id: question_mEiZAc
+                      interruptionPolicy:
+                        allowInterruption: true
+
+                      variable: init:Topic.Var3
+                      prompt: write a new Acceptance Criteria.
+                      entity: StringPrebuiltEntity
+
+                    - kind: SetVariable
+                      id: setVariable_oY4ew8
+                      variable: Topic.Var_UserStoryAcceptanceCriteria_Update.text
+                      value: =Topic.Var3
+
+            - kind: Question
+              id: question_wo32vA
+              interruptionPolicy:
+                allowInterruption: true
+
+              variable: init:Topic.VarEfforts
+              prompt: Enter efforts
+              entity: NumberPrebuiltEntity
+
+            - kind: Question
+              id: question_C6LxzJ
+              interruptionPolicy:
+                allowInterruption: true
+
+              variable: init:Topic.Var_UserStoryAssignToEmail_Update
+              prompt: Enter User Email to assign this user story.
+              entity: EmailPrebuiltEntity
+
+            - kind: InvokeFlowAction
+              id: invokeFlowAction_LAQeF5
+              input:
+                binding:
+                  email: =Topic.Var_UserStoryAssignToEmail_Update
+                  number: 0
+                  text: =Global.SelectedProjectName
+                  text_1: User Story
+                  text_2: =Topic.Var_UserStoryTitle_Update
+                  text_3: =Topic.Var_UserStoryDescription_Update.text
+                  text_4: =Text(LookUp(Topic.Var_UserStoryList,WorkItemName=Topic.Var_SelectedUserStoryToUpdate).WorkItemId)
+                  text_5: =Text(Topic.VarEfforts)
+                  text_6: =Topic.Var_UserStoryAcceptanceCriteria_Update.text
+
+              output:
+                binding:
+                  id: Global.ID
+                  iteration: Global.Iteration
+
+              flowId: efc40c85-1206-f011-bae2-000d3aca4339
+
+            - kind: SendActivity
+              id: sendActivity_13TI11
+              activity: |-
+                Updated Item Link :
+                {"https://dev.azure.com/qservicesindia/"&Global.SelectedProjectName&"/_workitems/edit/"&Global.ID&"/"}
+
+            - kind: Question
+              id: question_eaJoIB
+              interruptionPolicy:
+                allowInterruption: true
+
+              variable: init:Topic.Var1
+              prompt: Do you want to create sub task for this user story?
+              entity: BooleanPrebuiltEntity
+
+            - kind: ConditionGroup
+              id: conditionGroup_BGmqjF
+              conditions:
+                - id: conditionItem_vU1bQ4
+                  condition: =Topic.Var1 = true
+                  actions:
+                    - kind: BeginDialog
+                      id: 7Whzeh
+                      dialog: cr80b_metaorangeCopilot.topic.CreateSubTask
+
+            - kind: CancelAllDialogs
+              id: HUePQi
+
+      elseActions:
+        - kind: SendActivity
+          id: sendActivity_lcGfGo
+          activity: Something wrong happend.
+
+    - kind: EndDialog
+      id: gIWkTM
+
+inputType: {}
+outputType: {}

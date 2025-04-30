@@ -1,0 +1,515 @@
+kind: AdaptiveDialog
+beginDialog:
+  kind: OnRecognizedIntent
+  id: main
+  condition: =Global.GlobalTrigger = "Policy"
+  intent: {}
+  actions:
+    - kind: InvokeConnectorAction
+      id: invokeConnectorAction_1rfn8n
+      input:
+        binding:
+          $filter: ="statecode eq 0"
+          entityName: new_policies
+          organization: current
+
+      output:
+        binding:
+          value: Topic.Var1
+
+      connectionReference: cr80b_metaorangeCopilot.shared_commondataserviceforapps.8b14a02db5bc44f09eb442b213487848
+      connectionProperties:
+        mode: Invoker
+
+      dynamicOutputSchema:
+        kind: Record
+        properties:
+          @odata.nextLink:
+            displayName: Next link
+            description: The url to fetch next page data.
+            visibility: Advanced
+            order: 1
+            type: String
+
+          value:
+            order: 0
+            type:
+              kind: Table
+              properties:
+                _createdby_value:
+                  displayName: Created By (Value)
+                  description: Unique identifier of the user who created the record.
+                  visibility: Advanced
+                  order: 4
+                  type: String
+
+                _createdby_value@Microsoft.Dynamics.CRM.lookuplogicalname:
+                  displayName: Created By (Type)
+                  description: Unique identifier of the user who created the record.
+                  visibility: Advanced
+                  order: 3
+                  type: String
+
+                _createdonbehalfby_value:
+                  displayName: Created By (Delegate) (Value)
+                  description: Unique identifier of the delegate user who created the record.
+                  visibility: Advanced
+                  order: 2
+                  type: String
+
+                _createdonbehalfby_value@Microsoft.Dynamics.CRM.lookuplogicalname:
+                  displayName: Created By (Delegate) (Type)
+                  description: Unique identifier of the delegate user who created the record.
+                  visibility: Advanced
+                  order: 1
+                  type: String
+
+                _modifiedby_value:
+                  displayName: Modified By (Value)
+                  description: Unique identifier of the user who modified the record.
+                  visibility: Advanced
+                  order: 11
+                  type: String
+
+                _modifiedby_value@Microsoft.Dynamics.CRM.lookuplogicalname:
+                  displayName: Modified By (Type)
+                  description: Unique identifier of the user who modified the record.
+                  visibility: Advanced
+                  order: 10
+                  type: String
+
+                _modifiedonbehalfby_value:
+                  displayName: Modified By (Delegate) (Value)
+                  description: Unique identifier of the delegate user who modified the record.
+                  visibility: Advanced
+                  order: 9
+                  type: String
+
+                _modifiedonbehalfby_value@Microsoft.Dynamics.CRM.lookuplogicalname:
+                  displayName: Modified By (Delegate) (Type)
+                  description: Unique identifier of the delegate user who modified the record.
+                  visibility: Advanced
+                  order: 8
+                  type: String
+
+                _ownerid_value:
+                  displayName: Owner (Value)
+                  description: Owner Id
+                  visibility: Advanced
+                  order: 15
+                  type: String
+
+                _ownerid_value@Microsoft.Dynamics.CRM.lookuplogicalname:
+                  displayName: Owner (Type)
+                  description: Owner Id
+                  visibility: Advanced
+                  order: 14
+                  type: String
+
+                _owningbusinessunit_value:
+                  displayName: Owning Business Unit (Value)
+                  description: Unique identifier for the business unit that owns the record
+                  visibility: Advanced
+                  order: 17
+                  type: String
+
+                _owningbusinessunit_value@Microsoft.Dynamics.CRM.lookuplogicalname:
+                  displayName: Owning Business Unit (Type)
+                  description: Unique identifier for the business unit that owns the record
+                  visibility: Advanced
+                  order: 16
+                  type: String
+
+                _owningteam_value:
+                  displayName: Owning Team (Value)
+                  description: Unique identifier for the team that owns the record.
+                  visibility: Advanced
+                  order: 19
+                  type: String
+
+                _owningteam_value@Microsoft.Dynamics.CRM.lookuplogicalname:
+                  displayName: Owning Team (Type)
+                  description: Unique identifier for the team that owns the record.
+                  visibility: Advanced
+                  order: 18
+                  type: String
+
+                _owninguser_value:
+                  displayName: Owning User (Value)
+                  description: Unique identifier for the user that owns the record.
+                  visibility: Advanced
+                  order: 21
+                  type: String
+
+                _owninguser_value@Microsoft.Dynamics.CRM.lookuplogicalname:
+                  displayName: Owning User (Type)
+                  description: Unique identifier for the user that owns the record.
+                  visibility: Advanced
+                  order: 20
+                  type: String
+
+                @odata.id:
+                  displayName: OData Id
+                  description: OData row id
+                  order: 13
+                  type: String
+
+                createdon:
+                  displayName: Created On
+                  description: Date and time when the record was created.
+                  visibility: Advanced
+                  order: 5
+                  type: DateTime
+
+                importsequencenumber:
+                  displayName: Import Sequence Number
+                  description: Sequence number of the import that created this record.
+                  visibility: Advanced
+                  order: 6
+                  type: Number
+
+                modifiedon:
+                  displayName: Modified On
+                  description: Date and time when the record was modified.
+                  visibility: Advanced
+                  order: 12
+                  type: DateTime
+
+                new_description:
+                  displayName: " Description"
+                  visibility: Advanced
+                  order: 0
+                  type: String
+
+                new_informtoall:
+                  displayName: Inform to all
+                  visibility: Advanced
+                  order: 7
+                  type: Boolean
+
+                new_name:
+                  displayName: Title
+                  order: 28
+                  type: String
+
+                new_policydocument:
+                  displayName: Policy Document
+                  visibility: Advanced
+                  order: 23
+                  type: String
+
+                new_policyid:
+                  displayName: policy
+                  description: Unique identifier for entity instances
+                  visibility: Advanced
+                  order: 22
+                  type: String
+
+                overriddencreatedon:
+                  displayName: Record Created On
+                  description: Date and time that the record was migrated.
+                  visibility: Advanced
+                  order: 24
+                  type: DateTime
+
+                statecode:
+                  displayName: Status
+                  description: Status of the policy
+                  visibility: Advanced
+                  order: 25
+                  dynamicValuesConfig:
+                    capability: List
+
+                  type: Number
+
+                statuscode:
+                  displayName: Status Reason
+                  description: Reason for the status of the policy
+                  visibility: Advanced
+                  order: 26
+                  dynamicValuesConfig:
+                    capability: List
+
+                  type: Number
+
+                timezoneruleversionnumber:
+                  displayName: Time Zone Rule Version Number
+                  description: For internal use only.
+                  visibility: Advanced
+                  order: 27
+                  type: Number
+
+                utcconversiontimezonecode:
+                  displayName: UTC Conversion Time Zone Code
+                  description: Time zone code that was in use when the record was created.
+                  visibility: Advanced
+                  order: 29
+                  type: Number
+
+                versionnumber:
+                  displayName: Version Number
+                  description: Version Number
+                  visibility: Advanced
+                  order: 30
+                  type: Number
+
+      operationId: ListRecordsWithOrganization
+
+    - kind: Question
+      id: question_63ZcwW
+      interruptionPolicy:
+        allowInterruption: true
+
+      variable: init:Topic.Var2
+      prompt: Select policy ....
+      entity:
+        kind: DynamicClosedListEntity
+        items: =Distinct(Topic.Var1,new_name)
+
+    - kind: InvokeConnectorAction
+      id: invokeConnectorAction_boEi7C
+      input:
+        binding:
+          entityName: new_policies
+          organization: current
+          recordId: =LookUp(Topic.Var1,new_name=Topic.Var2).new_policyid
+
+      output:
+        binding:
+          @odata.id: Topic.Var3
+
+      connectionReference: cr80b_metaorangeCopilot.shared_commondataserviceforapps.8b14a02db5bc44f09eb442b213487848
+      connectionProperties:
+        mode: Invoker
+
+      dynamicOutputSchema:
+        kind: Record
+        properties:
+          _createdby_value:
+            displayName: Created By (Value)
+            description: Unique identifier of the user who created the record.
+            visibility: Advanced
+            order: 4
+            type: String
+
+          _createdby_value@Microsoft.Dynamics.CRM.lookuplogicalname:
+            displayName: Created By (Type)
+            description: Unique identifier of the user who created the record.
+            visibility: Advanced
+            order: 3
+            type: String
+
+          _createdonbehalfby_value:
+            displayName: Created By (Delegate) (Value)
+            description: Unique identifier of the delegate user who created the record.
+            visibility: Advanced
+            order: 2
+            type: String
+
+          _createdonbehalfby_value@Microsoft.Dynamics.CRM.lookuplogicalname:
+            displayName: Created By (Delegate) (Type)
+            description: Unique identifier of the delegate user who created the record.
+            visibility: Advanced
+            order: 1
+            type: String
+
+          _modifiedby_value:
+            displayName: Modified By (Value)
+            description: Unique identifier of the user who modified the record.
+            visibility: Advanced
+            order: 11
+            type: String
+
+          _modifiedby_value@Microsoft.Dynamics.CRM.lookuplogicalname:
+            displayName: Modified By (Type)
+            description: Unique identifier of the user who modified the record.
+            visibility: Advanced
+            order: 10
+            type: String
+
+          _modifiedonbehalfby_value:
+            displayName: Modified By (Delegate) (Value)
+            description: Unique identifier of the delegate user who modified the record.
+            visibility: Advanced
+            order: 9
+            type: String
+
+          _modifiedonbehalfby_value@Microsoft.Dynamics.CRM.lookuplogicalname:
+            displayName: Modified By (Delegate) (Type)
+            description: Unique identifier of the delegate user who modified the record.
+            visibility: Advanced
+            order: 8
+            type: String
+
+          _ownerid_value:
+            displayName: Owner (Value)
+            description: Owner Id
+            visibility: Advanced
+            order: 15
+            type: String
+
+          _ownerid_value@Microsoft.Dynamics.CRM.lookuplogicalname:
+            displayName: Owner (Type)
+            description: Owner Id
+            visibility: Advanced
+            order: 14
+            type: String
+
+          _owningbusinessunit_value:
+            displayName: Owning Business Unit (Value)
+            description: Unique identifier for the business unit that owns the record
+            visibility: Advanced
+            order: 17
+            type: String
+
+          _owningbusinessunit_value@Microsoft.Dynamics.CRM.lookuplogicalname:
+            displayName: Owning Business Unit (Type)
+            description: Unique identifier for the business unit that owns the record
+            visibility: Advanced
+            order: 16
+            type: String
+
+          _owningteam_value:
+            displayName: Owning Team (Value)
+            description: Unique identifier for the team that owns the record.
+            visibility: Advanced
+            order: 19
+            type: String
+
+          _owningteam_value@Microsoft.Dynamics.CRM.lookuplogicalname:
+            displayName: Owning Team (Type)
+            description: Unique identifier for the team that owns the record.
+            visibility: Advanced
+            order: 18
+            type: String
+
+          _owninguser_value:
+            displayName: Owning User (Value)
+            description: Unique identifier for the user that owns the record.
+            visibility: Advanced
+            order: 21
+            type: String
+
+          _owninguser_value@Microsoft.Dynamics.CRM.lookuplogicalname:
+            displayName: Owning User (Type)
+            description: Unique identifier for the user that owns the record.
+            visibility: Advanced
+            order: 20
+            type: String
+
+          @odata.id:
+            displayName: OData Id
+            description: OData row id
+            order: 13
+            type: String
+
+          createdon:
+            displayName: Created On
+            description: Date and time when the record was created.
+            visibility: Advanced
+            order: 5
+            type: DateTime
+
+          importsequencenumber:
+            displayName: Import Sequence Number
+            description: Sequence number of the import that created this record.
+            visibility: Advanced
+            order: 6
+            type: Number
+
+          modifiedon:
+            displayName: Modified On
+            description: Date and time when the record was modified.
+            visibility: Advanced
+            order: 12
+            type: DateTime
+
+          new_description:
+            displayName: " Description"
+            visibility: Advanced
+            order: 0
+            type: String
+
+          new_informtoall:
+            displayName: Inform to all
+            visibility: Advanced
+            order: 7
+            type: Boolean
+
+          new_name:
+            displayName: Title
+            order: 28
+            type: String
+
+          new_policydocument:
+            displayName: Policy Document
+            visibility: Advanced
+            order: 23
+            type: String
+
+          new_policyid:
+            displayName: policy
+            description: Unique identifier for entity instances
+            visibility: Advanced
+            order: 22
+            type: String
+
+          overriddencreatedon:
+            displayName: Record Created On
+            description: Date and time that the record was migrated.
+            visibility: Advanced
+            order: 24
+            type: DateTime
+
+          statecode:
+            displayName: Status
+            description: Status of the policy
+            visibility: Advanced
+            order: 25
+            dynamicValuesConfig:
+              capability: List
+
+            type: Number
+
+          statuscode:
+            displayName: Status Reason
+            description: Reason for the status of the policy
+            visibility: Advanced
+            order: 26
+            dynamicValuesConfig:
+              capability: List
+
+            type: Number
+
+          timezoneruleversionnumber:
+            displayName: Time Zone Rule Version Number
+            description: For internal use only.
+            visibility: Advanced
+            order: 27
+            type: Number
+
+          utcconversiontimezonecode:
+            displayName: UTC Conversion Time Zone Code
+            description: Time zone code that was in use when the record was created.
+            visibility: Advanced
+            order: 29
+            type: Number
+
+          versionnumber:
+            displayName: Version Number
+            description: Version Number
+            visibility: Advanced
+            order: 30
+            type: Number
+
+      operationId: GetItemWithOrganization
+
+    - kind: SendActivity
+      id: sendActivity_n6t9UI
+      activity: |+
+        {Topic.Var3&"/new_policydocument/$value"}
+
+
+    - kind: BeginDialog
+      id: hbfvde
+      dialog: cr80b_metaorangeCopilot.topic.Untitled

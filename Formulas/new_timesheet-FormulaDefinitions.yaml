@@ -1,0 +1,5 @@
+new_month: =Switch(Month(new_date),1,"January",2,"February",3,"March",4,"April",5,"May",6,"June",7,"July",8,"August",9,"September",10,"October",11,"November",12,"December")
+new_totaltimetaken: =DateDiff(new_starttime,new_endtime,TimeUnit.Minutes)/60
+new_totaltimetext: |-
+    =(Concatenate(Text(RoundDown( DateDiff(new_starttime,new_endtime,TimeUnit.Minutes)/60,0),"00"),":",Text(RoundDown(Mod(DateDiff (new_starttime,new_endtime,TimeUnit.Minutes),60),0),"00")))
+new_year: =Int(Year(new_date))

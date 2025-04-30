@@ -1,0 +1,10 @@
+<botcomponent schemaname="cr80b_metaorangeCopilot.topic.Untitled_9me">
+  <componenttype>9</componenttype>
+  <iscustomizable>0</iscustomizable>
+  <name>CompanyPolicyFlow</name>
+  <parentbotid>
+    <schemaname>cr80b_metaorangeCopilot</schemaname>
+  </parentbotid>
+  <statecode>0</statecode>
+  <statuscode>1</statuscode>
+</botcomponent>

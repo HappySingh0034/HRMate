@@ -1,0 +1,226 @@
+kind: AdaptiveDialog
+beginDialog:
+  kind: OnRecognizedIntent
+  id: main
+  condition: =Global.GlobalTrigger = "Attendance"
+  intent: {}
+  actions:
+    - kind: SetVariable
+      id: setVariable_7lpJKc
+      variable: Global.GlobalTrigger
+      value: AttendanceFlow
+
+    - kind: AdaptiveCardPrompt
+      id: 8L4feL
+      repeatCount: 0
+      card: |
+        {
+          "type": "AdaptiveCard",
+          "body": [
+            {
+              "type": "TextBlock",
+              "text": "Please select an option:",
+              "weight": "Bolder",
+              "size": "Medium"
+            },
+            {
+              "type": "ActionSet",
+              "actions": [
+                {
+                  "type": "Action.Submit",
+                  "title": "Clock-In",
+                  "data": {
+                    "choice": "Clock-In"
+                  }
+                }
+              ]
+            },
+            {
+              "type": "ActionSet",
+              "actions": [
+                {
+                  "type": "Action.Submit",
+                  "title": "Clock-Out",
+                  "data": {
+                    "choice": "Clock-Out"
+                  }
+                }
+              ]
+            },
+            {
+              "type": "ActionSet",
+              "actions": [
+                {
+                  "type": "Action.Submit",
+                  "title": "View Attendance",
+                  "data": {
+                    "choice": "View Attendance"
+                  }
+                }
+              ]
+            },
+            {
+              "type": "ActionSet",
+              "actions": [
+                {
+                  "type": "Action.Submit",
+                  "title": "Apply Regularization",
+                  "data": {
+                    "choice": "Apply Regularization"
+                  }
+                }
+              ]
+            },
+            {
+              "type": "ActionSet",
+              "actions": [
+                {
+                  "type": "Action.Submit",
+                  "title": "View Regularization",
+                  "data": {
+                    "choice": "View Regularization"
+                  }
+                }
+              ]
+            },
+            {
+              "type": "ActionSet",
+              "actions": [
+                {
+                  "type": "Action.Submit",
+                  "title": "Other",
+                  "data": {
+                    "choice": "Other"
+                  }
+                }
+              ]
+            }
+            
+          ],
+          "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+          "version": "1.3"
+        }
+      output:
+        binding:
+          actionSubmitId: Topic.actionSubmitId
+          choice: Topic.choice
+
+      outputType:
+        properties:
+          actionSubmitId: String
+          choice: String
+
+    - kind: ConditionGroup
+      id: conditionGroup_kYYdXa
+      conditions:
+        - id: conditionItem_v2ow4v
+          condition: =Topic.choice = "Clock-In"
+          actions:
+            - kind: BeginDialog
+              id: fBxU4F
+              dialog: cr80b_metaorangeCopilot.topic.ClockIN
+
+        - id: conditionItem_lWXNP4
+          condition: =Topic.choice = "Clock-Out"
+          actions:
+            - kind: BeginDialog
+              id: U50oey
+              dialog: cr80b_metaorangeCopilot.topic.Clock
+
+        - id: conditionItem_9psc1l
+          condition: =Topic.choice = "View Attendance"
+          actions:
+            - kind: AdaptiveCardPrompt
+              id: ylERFA
+              card: |
+                {
+                  "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+                  "type": "AdaptiveCard",
+                  "version": "1.0",
+                  "body": [
+                    {
+                      "type": "TextBlock",
+                      "text": "From"
+                    },
+                    {
+                      "type": "Input.Date",
+                      "id": "FromDate",
+                      "placeholder": "Enter a date",
+                      "value": "${formatDateTime(utcNow(), 'yyyy-MM-dd')}"
+                    }
+                    ,
+                    {
+                      "type": "TextBlock",
+                      "text": "To"
+                    },
+                    {
+                      "type": "Input.Date",
+                      "id": "ToDate",
+                      "placeholder": "Enter a date",
+                      "value": "${formatDateTime(utcNow(), 'yyyy-MM-dd')}"
+                    }
+                  ],
+                  "actions": [
+                    {
+                      "type": "Action.Submit",
+                      "title": "OK"
+                    }
+                  ]
+                }
+              output:
+                binding:
+                  actionSubmitId: Topic.actionSubmitId
+                  FromDate: Topic.FromDate
+                  ToDate: Topic.ToDate
+
+              outputType:
+                properties:
+                  actionSubmitId: String
+                  FromDate: Date
+                  ToDate: Date
+
+            - kind: SetVariable
+              id: setVariable_JpuvcV
+              variable: Topic.From_Date
+              value: =Text(Topic.FromDate,"yyyy-MM-dd")
+
+            - kind: SetVariable
+              id: setVariable_QPqEOe
+              variable: Topic.To_date
+              value: =Text(Topic.ToDate,"yyyy-MM-dd")
+
+            - kind: InvokeFlowAction
+              id: invokeFlowAction_9Xm5iD
+              latencyMessageSettings:
+                allowLatencyMessage: true
+                latencyMessage: Please wait.....
+
+              input:
+                binding:
+                  text: =Topic.From_Date
+                  text_1: =Topic.To_date
+                  text_2: =System.User.Email
+
+              output:
+                binding:
+                  output: Topic.Output
+
+              flowId: 886493eb-7792-ef11-8a69-7c1e520e6962
+
+        - id: conditionItem_npaKv1
+          condition: =Topic.choice = "Apply Regularization"
+          actions:
+            - kind: BeginDialog
+              id: NZegkX
+              dialog: cr80b_metaorangeCopilot.topic.Untitled2
+
+        - id: conditionItem_Id3xAg
+          condition: =Topic.choice = "View Regularization"
+          actions:
+            - kind: BeginDialog
+              id: 4C5PEK
+              dialog: cr80b_metaorangeCopilot.topic.ViewRegularization
+
+    - kind: BeginDialog
+      id: o0veZc
+      dialog: cr80b_metaorangeCopilot.topic.Untitled

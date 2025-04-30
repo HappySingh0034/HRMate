@@ -1,0 +1,376 @@
+kind: AdaptiveDialog
+beginDialog:
+  kind: OnRecognizedIntent
+  id: main
+  condition: =Global.GlobalTrigger = "AttendanceFlow"
+  intent: {}
+  actions:
+    - kind: AdaptiveCardPrompt
+      id: XYeJbN
+      card: |
+        {
+          "type": "AdaptiveCard",
+          "body": [
+            {
+              "type": "Input.Date",
+              "id": "date",
+              "title": "Date"
+            },
+            {
+              "type": "Input.Time",
+              "id": "clockInTime",
+              "title": "Clock In Time"
+            },
+            {
+              "type": "Input.Time",
+              "id": "clockOutTime",
+              "title": "Clock Out Time"
+            }
+          ],
+          "actions": [
+            {
+              "type": "Action.Submit",
+              "title": "Submit"
+            }
+          ],
+          "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+          "version": "1.3"
+        }
+      output:
+        binding:
+          actionSubmitId: Topic.actionSubmitId
+          clockInTime: Topic.clockInTime
+          clockOutTime: Topic.clockOutTime
+          date: Topic.date
+
+      outputType:
+        properties:
+          actionSubmitId: String
+          clockInTime: Time
+          clockOutTime: Time
+          date: Date
+
+    - kind: ConditionGroup
+      id: conditionGroup_ejj4JQ
+      conditions:
+        - id: conditionItem_ZHBBpI
+          condition: =IsBlank(Topic.date) || Topic.date >= Today()
+          actions:
+            - kind: SendActivity
+              id: sendActivity_4yVoj6
+              activity: Please select valid date...
+
+            - kind: GotoAction
+              id: ahiIY6
+              actionId: XYeJbN
+
+        - id: conditionItem_PsJeBd
+          condition: =IsBlank(Topic.clockInTime) || Topic.clockInTime >= Topic.clockOutTime
+          actions:
+            - kind: SendActivity
+              id: sendActivity_HrI5X2
+              activity: Please select valid clockin  time..
+
+            - kind: GotoAction
+              id: y3qWGN
+              actionId: XYeJbN
+
+        - id: conditionItem_rVqvNA
+          condition: =IsBlank(Topic.clockOutTime) || Topic.clockOutTime <= Topic.clockInTime
+          actions:
+            - kind: SendActivity
+              id: sendActivity_xgHvqR
+              activity: Please select valid clock out time.
+
+            - kind: GotoAction
+              id: 2zrVgj
+              actionId: XYeJbN
+
+    - kind: InvokeConnectorAction
+      id: invokeConnectorAction_JXpfBj
+      input:
+        binding:
+          entityName: new_categoryandreasonses
+          organization: current
+
+      output:
+        kind: SingleVariableOutputBinding
+        variable: Global.ListRecordsWithOrganization
+
+      connectionReference: cr80b_metaorangeCopilot.cr.KeQrU1hy
+      connectionProperties:
+        mode: Invoker
+
+      dynamicOutputSchema:
+        kind: Record
+        properties:
+          @odata.nextLink:
+            displayName: Next link
+            description: The url to fetch next page data.
+            visibility: Advanced
+            order: 1
+            type: String
+
+          value:
+            order: 0
+            type:
+              kind: Table
+              properties:
+                _createdby_value:
+                  displayName: Created By (Value)
+                  description: Unique identifier of the user who created the record.
+                  visibility: Advanced
+                  order: 5
+                  type: String
+
+                _createdby_value@Microsoft.Dynamics.CRM.lookuplogicalname:
+                  displayName: Created By (Type)
+                  description: Unique identifier of the user who created the record.
+                  visibility: Advanced
+                  order: 4
+                  type: String
+
+                _createdonbehalfby_value:
+                  displayName: Created By (Delegate) (Value)
+                  description: Unique identifier of the delegate user who created the record.
+                  visibility: Advanced
+                  order: 3
+                  type: String
+
+                _createdonbehalfby_value@Microsoft.Dynamics.CRM.lookuplogicalname:
+                  displayName: Created By (Delegate) (Type)
+                  description: Unique identifier of the delegate user who created the record.
+                  visibility: Advanced
+                  order: 2
+                  type: String
+
+                _modifiedby_value:
+                  displayName: Modified By (Value)
+                  description: Unique identifier of the user who modified the record.
+                  visibility: Advanced
+                  order: 11
+                  type: String
+
+                _modifiedby_value@Microsoft.Dynamics.CRM.lookuplogicalname:
+                  displayName: Modified By (Type)
+                  description: Unique identifier of the user who modified the record.
+                  visibility: Advanced
+                  order: 10
+                  type: String
+
+                _modifiedonbehalfby_value:
+                  displayName: Modified By (Delegate) (Value)
+                  description: Unique identifier of the delegate user who modified the record.
+                  visibility: Advanced
+                  order: 9
+                  type: String
+
+                _modifiedonbehalfby_value@Microsoft.Dynamics.CRM.lookuplogicalname:
+                  displayName: Modified By (Delegate) (Type)
+                  description: Unique identifier of the delegate user who modified the record.
+                  visibility: Advanced
+                  order: 8
+                  type: String
+
+                _ownerid_value:
+                  displayName: Owner (Value)
+                  description: Owner Id
+                  visibility: Advanced
+                  order: 15
+                  type: String
+
+                _ownerid_value@Microsoft.Dynamics.CRM.lookuplogicalname:
+                  displayName: Owner (Type)
+                  description: Owner Id
+                  visibility: Advanced
+                  order: 14
+                  type: String
+
+                _owningbusinessunit_value:
+                  displayName: Owning Business Unit (Value)
+                  description: Unique identifier for the business unit that owns the record
+                  visibility: Advanced
+                  order: 17
+                  type: String
+
+                _owningbusinessunit_value@Microsoft.Dynamics.CRM.lookuplogicalname:
+                  displayName: Owning Business Unit (Type)
+                  description: Unique identifier for the business unit that owns the record
+                  visibility: Advanced
+                  order: 16
+                  type: String
+
+                _owningteam_value:
+                  displayName: Owning Team (Value)
+                  description: Unique identifier for the team that owns the record.
+                  visibility: Advanced
+                  order: 19
+                  type: String
+
+                _owningteam_value@Microsoft.Dynamics.CRM.lookuplogicalname:
+                  displayName: Owning Team (Type)
+                  description: Unique identifier for the team that owns the record.
+                  visibility: Advanced
+                  order: 18
+                  type: String
+
+                _owninguser_value:
+                  displayName: Owning User (Value)
+                  description: Unique identifier for the user that owns the record.
+                  visibility: Advanced
+                  order: 21
+                  type: String
+
+                _owninguser_value@Microsoft.Dynamics.CRM.lookuplogicalname:
+                  displayName: Owning User (Type)
+                  description: Unique identifier for the user that owns the record.
+                  visibility: Advanced
+                  order: 20
+                  type: String
+
+                @odata.id:
+                  displayName: OData Id
+                  description: OData row id
+                  order: 13
+                  type: String
+
+                createdon:
+                  displayName: Created On
+                  description: Date and time when the record was created.
+                  visibility: Advanced
+                  order: 6
+                  type: DateTime
+
+                importsequencenumber:
+                  displayName: Import Sequence Number
+                  description: Sequence number of the import that created this record.
+                  visibility: Advanced
+                  order: 7
+                  type: Number
+
+                modifiedon:
+                  displayName: Modified On
+                  description: Date and time when the record was modified.
+                  visibility: Advanced
+                  order: 12
+                  type: DateTime
+
+                new_category:
+                  displayName: Category
+                  visibility: Advanced
+                  order: 0
+                  dynamicValuesConfig:
+                    capability: List
+
+                  type: Number
+
+                new_categoryandreasonsid:
+                  displayName: Category and Reasons
+                  description: Unique identifier for entity instances
+                  visibility: Advanced
+                  order: 1
+                  type: String
+
+                new_name:
+                  displayName: Reason
+                  order: 22
+                  type: String
+
+                overriddencreatedon:
+                  displayName: Record Created On
+                  description: Date and time that the record was migrated.
+                  visibility: Advanced
+                  order: 23
+                  type: DateTime
+
+                statecode:
+                  displayName: Status
+                  description: Status of the Category and Reasons
+                  visibility: Advanced
+                  order: 24
+                  dynamicValuesConfig:
+                    capability: List
+
+                  type: Number
+
+                statuscode:
+                  displayName: Status Reason
+                  description: Reason for the status of the Category and Reasons
+                  visibility: Advanced
+                  order: 25
+                  dynamicValuesConfig:
+                    capability: List
+
+                  type: Number
+
+                timezoneruleversionnumber:
+                  displayName: Time Zone Rule Version Number
+                  description: For internal use only.
+                  visibility: Advanced
+                  order: 26
+                  type: Number
+
+                utcconversiontimezonecode:
+                  displayName: UTC Conversion Time Zone Code
+                  description: Time zone code that was in use when the record was created.
+                  visibility: Advanced
+                  order: 27
+                  type: Number
+
+                versionnumber:
+                  displayName: Version Number
+                  description: Version Number
+                  visibility: Advanced
+                  order: 28
+                  type: Number
+
+      operationId: ListRecordsWithOrganization
+
+    - kind: Question
+      id: question_igKRHf
+      interruptionPolicy:
+        allowInterruption: true
+
+      variable: init:Topic.Var1
+      prompt: Please select reason...
+      entity:
+        kind: DynamicClosedListEntity
+        items: =Distinct(Global.ListRecordsWithOrganization.value,'new_name')
+
+    - kind: Question
+      id: question_BQBz6y
+      interruptionPolicy:
+        allowInterruption: true
+
+      variable: init:Topic.Var2
+      prompt: Please write your comments...
+      entity: StringPrebuiltEntity
+
+    - kind: InvokeFlowAction
+      id: invokeFlowAction_GsHR6P
+      latencyMessageSettings:
+        allowLatencyMessage: true
+        progressBarContent: Please wait....
+
+      input:
+        binding:
+          date: =Text(Topic.date,"yyyy-MM-dd")
+          email: =System.User.Email
+          text: =Concatenate(Text(Topic.date,"yyyy-MM-dd"),"T",Text(Topic.clockInTime,"hh:mm:ss"),"Z")
+          text_1: =Concatenate(Text(Topic.date,"yyyy-MM-dd"),"T",Text(Topic.clockOutTime,"hh:mm:ss"),"Z")
+          text_2: =Topic.Var1
+          text_3: =Topic.Var2
+
+      output:
+        binding:
+          result: Global.RegularizationResult
+
+      flowId: 92614929-6290-ef11-8a6a-7c1e520e6962
+
+    - kind: SendActivity
+      id: sendActivity_N6DB7d
+      activity: "{Global.RegularizationResult}"
+
+    - kind: BeginDialog
+      id: eED9L9
+      dialog: cr80b_metaorangeCopilot.topic.Untitled

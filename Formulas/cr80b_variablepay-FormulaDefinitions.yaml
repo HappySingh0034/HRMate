@@ -1,0 +1,3 @@
+crbad_variablepay: =Decimal(new_amount)*4
+new_monthfx: =Month(cr80b_variablepaiddate)
+new_year: =Year(cr80b_variablepaiddate)

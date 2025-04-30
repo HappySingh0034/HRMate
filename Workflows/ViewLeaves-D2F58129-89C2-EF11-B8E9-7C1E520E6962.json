@@ -1,0 +1,800 @@
+{
+  "properties": {
+    "connectionReferences": {
+      "shared_commondataserviceforapps": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "cr80b_metaorangeCopilot.cr.KeQrU1hy"
+        },
+        "api": {
+          "name": "shared_commondataserviceforapps"
+        }
+      },
+      "shared_commondataserviceforapps_1": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "new_sharedcommondataserviceforapps_c6dc4"
+        },
+        "api": {
+          "name": "shared_commondataserviceforapps"
+        }
+      },
+      "shared_teams": {
+        "runtimeSource": "invoker",
+        "connection": {
+          "connectionReferenceLogicalName": "mo_sharedteams_1ad06"
+        },
+        "api": {
+          "name": "shared_teams"
+        }
+      }
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$connections": {
+          "defaultValue": {},
+          "type": "Object"
+        },
+        "$authentication": {
+          "defaultValue": {},
+          "type": "SecureObject"
+        }
+      },
+      "triggers": {
+        "manual": {
+          "metadata": {
+            "operationMetadataId": "ee51126c-b4c8-4384-aa9e-b1d081a840d2"
+          },
+          "type": "Request",
+          "kind": "Skills",
+          "inputs": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "text_2": {
+                  "title": "Email",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter your input",
+                  "x-ms-content-hint": "TEXT"
+                },
+                "text": {
+                  "title": "Emp/Intern",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter your input",
+                  "x-ms-content-hint": "TEXT"
+                }
+              },
+              "required": [
+                "text_2",
+                "text"
+              ]
+            }
+          }
+        }
+      },
+      "actions": {
+        "Respond_to_Copilot": {
+          "runAfter": {
+            "Condition_2": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "6c566e2d-0b93-4874-a9ca-4b31a6bcaae5"
+          },
+          "type": "Response",
+          "kind": "Skills",
+          "inputs": {
+            "statusCode": 200,
+            "body": {
+              "output": "test"
+            },
+            "schema": {
+              "type": "object",
+              "properties": {
+                "output": {
+                  "title": "Output",
+                  "x-ms-dynamically-added": true,
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "Initialize_variable": {
+          "runAfter": {
+            "Initialize_variable_3": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "b9044d10-77bb-436e-baac-6bc423e57288"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "ArrayTable",
+                "type": "array"
+              }
+            ]
+          }
+        },
+        "Condition_2": {
+          "actions": {
+            "List_Employees": {
+              "runAfter": {},
+              "metadata": {
+                "operationMetadataId": "eb96ddef-3f8f-47a8-96bb-e3837ba83087"
+              },
+              "type": "OpenApiConnection",
+              "inputs": {
+                "host": {
+                  "connectionName": "shared_commondataserviceforapps",
+                  "operationId": "ListRecords",
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                },
+                "parameters": {
+                  "entityName": "new_enployeeinfos",
+                  "$filter": "new_email eq '@{triggerBody()['text_2']}'  and statecode eq 0"
+                },
+                "authentication": "@parameters('$authentication')"
+              }
+            },
+            "Apply_to_each_3": {
+              "foreach": "@outputs('List_Employees')?['body/value']",
+              "actions": {
+                "List_rows": {
+                  "runAfter": {},
+                  "metadata": {
+                    "operationMetadataId": "1f5bc627-ed3c-47d6-a9b2-9434aafec226"
+                  },
+                  "type": "OpenApiConnection",
+                  "inputs": {
+                    "host": {
+                      "connectionName": "shared_commondataserviceforapps_1",
+                      "operationId": "ListRecords",
+                      "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                    },
+                    "parameters": {
+                      "entityName": "new_leaveses",
+                      "fetchXml": "<fetch>\n\t<!-- Table -->\n\t<entity name=\"new_leaves\">\n\t\t<!-- Columns -->\n\t\t<attribute name=\"new_leavesid\" />\n\t\t<attribute name=\"new_name\" />\n<attribute name=\"new_leavesid\" />\n\t\t<attribute name=\"new_enddate\" />\n\t\t<attribute name=\"new_leavestatus\" />\n\t\t<attribute name=\"new_leavestatusname\" />\n\t\t<attribute name=\"new_name\" />\n\t\t<attribute name=\"new_numberofdays\" />\n\t\t<attribute name=\"new_startdate\" />\n<attribute name=\"new_leavetype\" />\n\t\t<!-- Filter By -->\n\t\t<filter type=\"and\">\n\t\t\t<filter type=\"or\">\n\t\t\t\t\n\t\t\t<condition attribute=\"new_startdate\" operator=\"this-year\" />\n\t\t\t<condition attribute=\"new_enddate\" operator=\"this-year\" />\n\t\t\n\t\t\t</filter>\n\t\t\t<condition attribute=\"new_employee\" operator=\"eq\" value=\"@{items('Apply_to_each_3')?['new_enployeeinfoid']}\" />\n\t\t</filter>\n\t</entity>\n</fetch>"
+                    },
+                    "authentication": "@parameters('$authentication')"
+                  }
+                },
+                "Condition_3": {
+                  "actions": {
+                    "Apply_to_each_4": {
+                      "foreach": "@outputs('List_rows')?['body/value']",
+                      "actions": {
+                        "Compose_2": {
+                          "runAfter": {
+                            "Get_a_row_by_ID": [
+                              "Succeeded"
+                            ]
+                          },
+                          "metadata": {
+                            "operationMetadataId": "39dbc16d-d093-4546-bbc8-ca26a96249a7"
+                          },
+                          "type": "Compose",
+                          "inputs": {
+                            "LeaveType": "@outputs('Get_a_row_by_ID')?['body/new_nameofleave']",
+                            "StartDate": "@formatDateTime(variables('StartDate'),'dd MMM yyyy')",
+                            "EndDate": "@formatDateTime(variables('EndDate'),'dd MMM yyyy')",
+                            "Status": "@variables('Status')"
+                          }
+                        },
+                        "Append_to_array_variable_2": {
+                          "runAfter": {
+                            "Compose_2": [
+                              "Succeeded"
+                            ]
+                          },
+                          "metadata": {
+                            "operationMetadataId": "dbff64e4-e49a-4030-a406-9067e0d5fc0e"
+                          },
+                          "type": "AppendToArrayVariable",
+                          "inputs": {
+                            "name": "ArrayTable",
+                            "value": "@outputs('Compose_2')"
+                          }
+                        },
+                        "Set_variable": {
+                          "runAfter": {
+                            "Switch_2": [
+                              "Succeeded"
+                            ]
+                          },
+                          "metadata": {
+                            "operationMetadataId": "350adaae-6799-4493-a9d5-e686666c90fb"
+                          },
+                          "type": "SetVariable",
+                          "inputs": {
+                            "name": "StartDate",
+                            "value": "@items('Apply_to_each_4')?['new_startdate']"
+                          }
+                        },
+                        "Set_variable_2": {
+                          "runAfter": {
+                            "Set_variable": [
+                              "Succeeded"
+                            ]
+                          },
+                          "metadata": {
+                            "operationMetadataId": "345128b6-43ac-4324-b8cf-9af5af635fe6"
+                          },
+                          "type": "SetVariable",
+                          "inputs": {
+                            "name": "EndDate",
+                            "value": "@items('Apply_to_each_4')?['new_enddate']"
+                          }
+                        },
+                        "Get_a_row_by_ID": {
+                          "runAfter": {
+                            "Set_variable_2": [
+                              "Succeeded"
+                            ]
+                          },
+                          "metadata": {
+                            "operationMetadataId": "25958515-53ce-4337-973d-f72736b65272"
+                          },
+                          "type": "OpenApiConnection",
+                          "inputs": {
+                            "host": {
+                              "connectionName": "shared_commondataserviceforapps_1",
+                              "operationId": "GetItem",
+                              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                            },
+                            "parameters": {
+                              "entityName": "new_leaveruleses",
+                              "recordId": "@items('Apply_to_each_4')?['_new_leavetype_value']"
+                            },
+                            "authentication": "@parameters('$authentication')"
+                          }
+                        },
+                        "Switch_2": {
+                          "runAfter": {},
+                          "cases": {
+                            "Case": {
+                              "case": 1,
+                              "actions": {
+                                "Set_variable_11": {
+                                  "runAfter": {},
+                                  "metadata": {
+                                    "operationMetadataId": "17904614-58a8-44ba-88d2-acf393f599a8"
+                                  },
+                                  "type": "SetVariable",
+                                  "inputs": {
+                                    "name": "Status",
+                                    "value": "Pending"
+                                  }
+                                }
+                              }
+                            },
+                            "Case_2": {
+                              "case": 2,
+                              "actions": {
+                                "Set_variable_12": {
+                                  "runAfter": {},
+                                  "metadata": {
+                                    "operationMetadataId": "204ffa77-e688-4a5d-96f5-43a405909904"
+                                  },
+                                  "type": "SetVariable",
+                                  "inputs": {
+                                    "name": "Status",
+                                    "value": "Approved"
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "default": {
+                            "actions": {
+                              "Set_variable_13": {
+                                "runAfter": {},
+                                "metadata": {
+                                  "operationMetadataId": "4eab53a1-eff7-4eb9-8e9a-1186a94ac97c"
+                                },
+                                "type": "SetVariable",
+                                "inputs": {
+                                  "name": "Status",
+                                  "value": "Rejected"
+                                }
+                              }
+                            }
+                          },
+                          "expression": "@items('Apply_to_each_4')?['new_leavestatus']",
+                          "metadata": {
+                            "operationMetadataId": "693094ce-e772-4974-8466-0731d4c5a8d9"
+                          },
+                          "type": "Switch"
+                        }
+                      },
+                      "runAfter": {},
+                      "metadata": {
+                        "operationMetadataId": "dfe5161c-00f3-4f78-aa9e-2a291a692e5c"
+                      },
+                      "type": "Foreach"
+                    },
+                    "Post_message_in_a_chat_or_channel": {
+                      "runAfter": {
+                        "Create_HTML_table": [
+                          "Succeeded"
+                        ]
+                      },
+                      "metadata": {
+                        "operationMetadataId": "2a146e5a-b895-4414-88ee-dc95632ef7e3"
+                      },
+                      "type": "OpenApiConnection",
+                      "inputs": {
+                        "host": {
+                          "connectionName": "shared_teams",
+                          "operationId": "PostMessageToConversation",
+                          "apiId": "/providers/Microsoft.PowerApps/apis/shared_teams"
+                        },
+                        "parameters": {
+                          "poster": "Power Virtual Agents",
+                          "location": "powerva",
+                          "body/bot": "cr80b_metaorangeCopilot",
+                          "body/recipient": "@{triggerBody()['text_2']};",
+                          "body/messageBody": "<p>@{body('Create_HTML_table')}<br>\n<br>\n<strong>You can also check your leaves in Metaconnect Application.</strong><br>\n1. Open the METACONNECT App<br>\n2. Go to \"My Space\" Section<br>\n3. Check the \"Leaves\" Icon on Home Page<br>\n4. Navigate to the \"Logs\" Section<br>\n5. Check the Status of Your Leave Request<br>\n<br>\n</p>",
+                          "body/attribution": true,
+                          "body/activeChat": "Send",
+                          "body/installedError": "Fail"
+                        },
+                        "authentication": "@parameters('$authentication')"
+                      }
+                    },
+                    "Create_HTML_table": {
+                      "runAfter": {
+                        "Apply_to_each_4": [
+                          "Succeeded"
+                        ]
+                      },
+                      "metadata": {
+                        "operationMetadataId": "d934f897-e640-4231-b0c2-3b8fa234d410"
+                      },
+                      "type": "Table",
+                      "inputs": {
+                        "from": "@variables('ArrayTable')",
+                        "format": "HTML"
+                      }
+                    }
+                  },
+                  "runAfter": {
+                    "List_rows": [
+                      "Succeeded"
+                    ]
+                  },
+                  "else": {
+                    "actions": {
+                      "Post_message_in_a_chat_or_channel_3": {
+                        "runAfter": {},
+                        "metadata": {
+                          "operationMetadataId": "cb7f949e-ae31-4319-adc3-cc491288b32c"
+                        },
+                        "type": "OpenApiConnection",
+                        "inputs": {
+                          "host": {
+                            "connectionName": "shared_teams",
+                            "operationId": "PostMessageToConversation",
+                            "apiId": "/providers/Microsoft.PowerApps/apis/shared_teams"
+                          },
+                          "parameters": {
+                            "poster": "Power Virtual Agents",
+                            "location": "powerva",
+                            "body/bot": "cr80b_metaorangeCopilot",
+                            "body/recipient": "@{triggerBody()['text_2']};",
+                            "body/messageBody": "<p>You dont have any active leave record.<br>\n<br>\n<strong>You can also check your leaves in Metaconnect Application.</strong><br>\n1. Open the METACONNECT App<br>\n2. Go to \"My Space\" Section<br>\n3. Check the \"Leaves\" Icon on Home Page<br>\n4. Navigate to the \"Logs\" Section<br>\n5. Check the Status of Your Leave Request</p>",
+                            "body/attribution": true,
+                            "body/activeChat": "Send",
+                            "body/installedError": "Fail"
+                          },
+                          "authentication": "@parameters('$authentication')"
+                        }
+                      }
+                    }
+                  },
+                  "expression": {
+                    "greaterOrEquals": [
+                      "@length(outputs('List_rows')?['body/value'])",
+                      1
+                    ]
+                  },
+                  "metadata": {
+                    "operationMetadataId": "efae4589-71c1-4c54-bebf-b03fe9e947cc"
+                  },
+                  "type": "If"
+                }
+              },
+              "runAfter": {
+                "List_Employees": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "636b3a8d-7653-4b42-ad97-dfd4f6250e61"
+              },
+              "type": "Foreach"
+            }
+          },
+          "runAfter": {
+            "Initialize_variable_4": [
+              "Succeeded"
+            ]
+          },
+          "else": {
+            "actions": {
+              "List_rows_2": {
+                "runAfter": {},
+                "metadata": {
+                  "operationMetadataId": "da69d767-78b7-45c7-9732-039f5f09a4a0"
+                },
+                "type": "OpenApiConnection",
+                "inputs": {
+                  "host": {
+                    "connectionName": "shared_commondataserviceforapps_1",
+                    "operationId": "ListRecords",
+                    "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                  },
+                  "parameters": {
+                    "entityName": "new_interns",
+                    "$filter": "new_emailid eq '@{triggerBody()['text_2']}'"
+                  },
+                  "authentication": "@parameters('$authentication')"
+                }
+              },
+              "Apply_to_each": {
+                "foreach": "@outputs('List_rows_2')?['body/value']",
+                "actions": {
+                  "List_rows_3": {
+                    "runAfter": {},
+                    "metadata": {
+                      "operationMetadataId": "78a9278f-d18d-4454-a577-c898df86ece5"
+                    },
+                    "type": "OpenApiConnection",
+                    "inputs": {
+                      "host": {
+                        "connectionName": "shared_commondataserviceforapps_1",
+                        "operationId": "ListRecords",
+                        "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                      },
+                      "parameters": {
+                        "entityName": "new_leaveses",
+                        "fetchXml": "<fetch>\n\t<!-- Table -->\n\t<entity name=\"new_leaves\">\n\t\t<!-- Columns -->\n\t\t<attribute name=\"new_leavesid\" />\n\t\t<attribute name=\"new_name\" />\n<attribute name=\"new_leavesid\" />\n\t\t<attribute name=\"new_enddate\" />\n\t\t<attribute name=\"new_leavestatus\" />\n\t\t<attribute name=\"new_leavestatusname\" />\n\t\t<attribute name=\"new_name\" />\n\t\t<attribute name=\"new_numberofdays\" />\n\t\t<attribute name=\"new_startdate\" />\n<attribute name=\"new_leavetype\" />\n\t\t<!-- Filter By -->\n\t\t<filter type=\"and\">\n\t\t\t<filter type=\"or\">\n\t\t\t<condition attribute=\"new_startdate\" operator=\"this-year\" />\n\t\t\t<condition attribute=\"new_enddate\" operator=\"this-year\" />\n\t\t</filter>\n\t\t\t<condition attribute=\"new_intern\" operator=\"eq\" value=\"@{items('Apply_to_each')?['new_internid']}\" />\n\t\t</filter>\n\t</entity>\n</fetch>"
+                      },
+                      "authentication": "@parameters('$authentication')"
+                    }
+                  },
+                  "Condition": {
+                    "actions": {
+                      "Apply_to_each_2": {
+                        "foreach": "@outputs('List_rows_3')?['body/value']",
+                        "actions": {
+                          "Switch": {
+                            "runAfter": {},
+                            "cases": {
+                              "Case": {
+                                "case": 1,
+                                "actions": {
+                                  "Set_variable_4": {
+                                    "runAfter": {},
+                                    "metadata": {
+                                      "operationMetadataId": "17904614-58a8-44ba-88d2-acf393f599a8"
+                                    },
+                                    "type": "SetVariable",
+                                    "inputs": {
+                                      "name": "Status",
+                                      "value": "Pending"
+                                    }
+                                  }
+                                }
+                              },
+                              "Case_2": {
+                                "case": 2,
+                                "actions": {
+                                  "Set_variable_5": {
+                                    "runAfter": {},
+                                    "metadata": {
+                                      "operationMetadataId": "204ffa77-e688-4a5d-96f5-43a405909904"
+                                    },
+                                    "type": "SetVariable",
+                                    "inputs": {
+                                      "name": "Status",
+                                      "value": "Approved"
+                                    }
+                                  }
+                                }
+                              }
+                            },
+                            "default": {
+                              "actions": {
+                                "Set_variable_3": {
+                                  "runAfter": {},
+                                  "metadata": {
+                                    "operationMetadataId": "4eab53a1-eff7-4eb9-8e9a-1186a94ac97c"
+                                  },
+                                  "type": "SetVariable",
+                                  "inputs": {
+                                    "name": "Status",
+                                    "value": "Rejected"
+                                  }
+                                }
+                              }
+                            },
+                            "expression": "@items('Apply_to_each_2')?['new_leavestatus']",
+                            "metadata": {
+                              "operationMetadataId": "693094ce-e772-4974-8466-0731d4c5a8d9"
+                            },
+                            "type": "Switch"
+                          },
+                          "Set_variable_6": {
+                            "runAfter": {
+                              "Switch": [
+                                "Succeeded"
+                              ]
+                            },
+                            "metadata": {
+                              "operationMetadataId": "107afa4b-af77-41e9-b6f4-003e9fbed399"
+                            },
+                            "type": "SetVariable",
+                            "inputs": {
+                              "name": "StartDate",
+                              "value": "@items('Apply_to_each_2')?['new_startdate']"
+                            }
+                          },
+                          "Set_variable_7": {
+                            "runAfter": {
+                              "Set_variable_6": [
+                                "Succeeded"
+                              ]
+                            },
+                            "metadata": {
+                              "operationMetadataId": "4c3925d9-2b3b-4613-9212-6fbae5637aa2"
+                            },
+                            "type": "SetVariable",
+                            "inputs": {
+                              "name": "EndDate",
+                              "value": "@items('Apply_to_each_2')?['new_enddate']"
+                            }
+                          },
+                          "Get_a_row_by_ID_2": {
+                            "runAfter": {
+                              "Set_variable_7": [
+                                "Succeeded"
+                              ]
+                            },
+                            "metadata": {
+                              "operationMetadataId": "d37955eb-08b7-4ea2-8148-09d927f3ce08"
+                            },
+                            "type": "OpenApiConnection",
+                            "inputs": {
+                              "host": {
+                                "connectionName": "shared_commondataserviceforapps_1",
+                                "operationId": "GetItem",
+                                "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                              },
+                              "parameters": {
+                                "entityName": "new_leaveruleses",
+                                "recordId": "@items('Apply_to_each_2')?['_new_leavetype_value']"
+                              },
+                              "authentication": "@parameters('$authentication')"
+                            }
+                          },
+                          "Compose": {
+                            "runAfter": {
+                              "Get_a_row_by_ID_2": [
+                                "Succeeded"
+                              ]
+                            },
+                            "metadata": {
+                              "operationMetadataId": "fbf53bb1-9de3-42f3-a28c-9af4fb4ff6d5"
+                            },
+                            "type": "Compose",
+                            "inputs": {
+                              "LeaveType": "@outputs('Get_a_row_by_ID_2')?['body/new_nameofleave']",
+                              "StartDate": "@formatDateTime(variables('StartDate'),'dd MMM yyyy')",
+                              "EndDate": "@formatDateTime(variables('EndDate'),'dd MMM yyyy')",
+                              "Status": "@variables('Status')"
+                            }
+                          },
+                          "Append_to_array_variable": {
+                            "runAfter": {
+                              "Compose": [
+                                "Succeeded"
+                              ]
+                            },
+                            "metadata": {
+                              "operationMetadataId": "78b14d21-db91-4127-9009-2127b4759c73"
+                            },
+                            "type": "AppendToArrayVariable",
+                            "inputs": {
+                              "name": "ArrayTable",
+                              "value": "@outputs('Compose')"
+                            }
+                          }
+                        },
+                        "runAfter": {},
+                        "metadata": {
+                          "operationMetadataId": "b19d1be9-d845-4b57-aca8-72eaaac3e320"
+                        },
+                        "type": "Foreach"
+                      },
+                      "Post_message_in_a_chat_or_channel_2": {
+                        "runAfter": {
+                          "Create_HTML_table_2": [
+                            "Succeeded"
+                          ]
+                        },
+                        "metadata": {
+                          "operationMetadataId": "9163d237-0d51-4deb-97cb-5f305bf86bc6"
+                        },
+                        "type": "OpenApiConnection",
+                        "inputs": {
+                          "host": {
+                            "connectionName": "shared_teams",
+                            "operationId": "PostMessageToConversation",
+                            "apiId": "/providers/Microsoft.PowerApps/apis/shared_teams"
+                          },
+                          "parameters": {
+                            "poster": "Power Virtual Agents",
+                            "location": "powerva",
+                            "body/bot": "cr80b_metaorangeCopilot",
+                            "body/recipient": "@{triggerBody()['text_2']};",
+                            "body/messageBody": "<p>@{body('Create_HTML_table_2')}<br>\n<br>\n<strong>You can also check your leaves in Metaconnect Application.</strong><br>\n1. Open the METACONNECT App<br>\n2. Go to \"My Space\" Section<br>\n3. Check the \"Leaves\" Icon on Home Page<br>\n4. Navigate to the \"Logs\" Section<br>\n5. Check the Status of Your Leave Request</p>",
+                            "body/attribution": true,
+                            "body/activeChat": "Send",
+                            "body/installedError": "Fail"
+                          },
+                          "authentication": "@parameters('$authentication')"
+                        }
+                      },
+                      "Create_HTML_table_2": {
+                        "runAfter": {
+                          "Apply_to_each_2": [
+                            "Succeeded"
+                          ]
+                        },
+                        "metadata": {
+                          "operationMetadataId": "df037ce4-65aa-4f89-9abb-c5b96e54efe7"
+                        },
+                        "type": "Table",
+                        "inputs": {
+                          "from": "@variables('ArrayTable')",
+                          "format": "HTML"
+                        }
+                      }
+                    },
+                    "runAfter": {
+                      "List_rows_3": [
+                        "Succeeded"
+                      ]
+                    },
+                    "else": {
+                      "actions": {
+                        "Post_message_in_a_chat_or_channel_4": {
+                          "runAfter": {},
+                          "metadata": {
+                            "operationMetadataId": "2d62baed-2e0c-4432-849a-5500217b4b84"
+                          },
+                          "type": "OpenApiConnection",
+                          "inputs": {
+                            "host": {
+                              "connectionName": "shared_teams",
+                              "operationId": "PostMessageToConversation",
+                              "apiId": "/providers/Microsoft.PowerApps/apis/shared_teams"
+                            },
+                            "parameters": {
+                              "poster": "Power Virtual Agents",
+                              "location": "powerva",
+                              "body/bot": "cr80b_metaorangeCopilot",
+                              "body/recipient": "@{triggerBody()['text_2']};",
+                              "body/messageBody": "<p>You dont have any active leave record.<br>\n<br>\n<strong>You can also check your leaves in Metaconnect Application.</strong><br>\n1. Open the METACONNECT App<br>\n2. Go to \"My Space\" Section<br>\n3. Check the \"Leaves\" Icon on Home Page<br>\n4. Navigate to the \"Logs\" Section<br>\n5. Check the Status of Your Leave Request</p>",
+                              "body/attribution": true,
+                              "body/activeChat": "Send",
+                              "body/installedError": "Fail"
+                            },
+                            "authentication": "@parameters('$authentication')"
+                          }
+                        }
+                      }
+                    },
+                    "expression": {
+                      "greaterOrEquals": [
+                        "@length(outputs('List_rows_3')?['body/value'])",
+                        1
+                      ]
+                    },
+                    "metadata": {
+                      "operationMetadataId": "499c4625-0573-44bd-a771-3652399d1184"
+                    },
+                    "type": "If"
+                  }
+                },
+                "runAfter": {
+                  "List_rows_2": [
+                    "Succeeded"
+                  ]
+                },
+                "metadata": {
+                  "operationMetadataId": "357ac051-6d59-4024-9b70-3bc05aecf1ab"
+                },
+                "type": "Foreach"
+              }
+            }
+          },
+          "expression": {
+            "equals": [
+              "@triggerBody()['text']",
+              "Employee"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "86b73abf-58f3-4982-a370-64957b4c2468"
+          },
+          "type": "If"
+        },
+        "Initialize_variable_2": {
+          "runAfter": {},
+          "metadata": {
+            "operationMetadataId": "35de3a5c-f140-4192-8a0c-eebbd500d798"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "StartDate",
+                "type": "string"
+              }
+            ]
+          }
+        },
+        "Initialize_variable_3": {
+          "runAfter": {
+            "Initialize_variable_2": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "7ce40072-5cf9-451c-a6a4-db33f01d4376"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "EndDate",
+                "type": "string"
+              }
+            ]
+          }
+        },
+        "Initialize_variable_4": {
+          "runAfter": {
+            "Initialize_variable": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "76ef05d0-630d-44b2-a878-d9234892181c"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "Status",
+                "type": "string"
+              }
+            ]
+          }
+        }
+      }
+    },
+    "templateName": ""
+  },
+  "schemaVersion": "1.0.0.0"
+}

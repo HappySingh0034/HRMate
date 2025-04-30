@@ -1,0 +1,36 @@
+function SetMilestoneId(executionContext) {
+    var formContext = executionContext.getFormContext();
+    var formType = formContext.ui.getFormType();
+    if (formType == 1) {
+        var Opportunity = formContext.getAttribute("new_rfp").getValue();
+        // var MilestineId = this._formContext.getAttribute("new_milestoneid1").getValue();
+        if (Opportunity != null) {
+            var Oid = Opportunity[0].id;
+            var randomNum = Math.floor((Math.random() * 1000000) + 1);
+            Xrm.WebApi.retrieveRecord("new_rfp", Oid , "?$select=new_rfpenddate,new_opportunityid,new_rfpstartdate").then(
+                function success(result) {
+                    console.log(result);
+                    // Columns
+                    var new_rfpid = result["new_rfpid"]; // Guid
+                    var new_rfpenddate = result["new_rfpenddate"]; // Date Time
+                  //  var new_rfpenddate_formatted = result["new_rfpenddate@OData.Community.Display.V1.FormattedValue"];
+                    var new_opportunityid = result["new_opportunityid"]; // Text
+                    var new_rfpstartdate = result["new_rfpstartdate"]; // Date Time
+                   // var new_rfpstartdate_formatted = result["new_rfpstartdate@OData.Community.Display.V1.FormattedValue"];
+                    if (new_opportunityid != null && new_rfpenddate != null && new_rfpstartdate != null) {
+                        var MilestoneId = new_opportunityid.concat(randomNum);
+                        var startdate = new Date(new_rfpstartdate);
+                        var enddate = new Date(new_rfpenddate);
+                        formContext.getAttribute("new_milestoneid1").setValue(MilestoneId);
+                        formContext.getAttribute("new_milestonestartdate").setValue(startdate);
+                        formContext.getAttribute("new_milestoneenddate").setValue(enddate);
+                    }
+
+                },
+                function (error) {
+                    console.log(error.message);
+                }
+            );
+        }
+    }
+}

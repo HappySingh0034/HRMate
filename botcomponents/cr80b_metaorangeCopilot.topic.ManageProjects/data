@@ -1,0 +1,115 @@
+kind: AdaptiveDialog
+beginDialog:
+  kind: OnRedirect
+  id: main
+  actions:
+    - kind: AdaptiveCardPrompt
+      id: jqSvFR
+      card: |-
+        {
+          "type": "AdaptiveCard",
+          "body": [
+            {
+              "type": "TextBlock",
+              "text": "Please select an option:",
+              "weight": "Bolder",
+              "size": "Medium"
+            },
+            {
+              "type": "ActionSet",
+              "actions": [
+                {
+                  "type": "Action.Submit",
+                  "title": "Create an User Story",
+                  "data": {
+                    "choice": "Create an User Story"
+                  }
+                }
+              ]
+            },
+            {
+              "type": "ActionSet",
+              "actions": [
+                {
+                  "type": "Action.Submit",
+                  "title": "Update an User Story",
+                  "data": {
+                    "choice": "Update an User Story"
+                  }
+                }
+              ]
+            },
+            {
+              "type": "ActionSet",
+              "actions": [
+                {
+                  "type": "Action.Submit",
+                  "title": "Create a Task",
+                  "data": {
+                    "choice": "Create a Task"
+                  }
+                }
+              ]
+            },
+            {
+              "type": "ActionSet",
+              "actions": [
+                {
+                  "type": "Action.Submit",
+                  "title": "Update a Task",
+                  "data": {
+                    "choice": "Update a Task"
+                  }
+                }
+              ]
+            }
+          ],
+          "$schema": "https://adaptivecards.io/schemas/adaptive-card.json",
+          "version": "1.5"
+        }
+      output:
+        binding:
+          actionSubmitId: Topic.actionSubmitId
+          choice: Topic.Var1
+
+      outputType:
+        properties:
+          actionSubmitId: String
+          choice: String
+
+    - kind: ConditionGroup
+      id: conditionGroup_Bti2PC
+      conditions:
+        - id: conditionItem_cVr2Rb
+          condition: =Topic.Var1 = "Create an User Story"
+          actions:
+            - kind: BeginDialog
+              id: GGzyod
+              dialog: cr80b_metaorangeCopilot.topic.CreateUserStory
+
+        - id: conditionItem_hA9srz
+          condition: =Topic.Var1 = "Update an User Story"
+          actions:
+            - kind: BeginDialog
+              id: dPwOSa
+              dialog: cr80b_metaorangeCopilot.topic.UpdateUserStory
+
+        - id: conditionItem_1Djyfh
+          condition: =Topic.Var1 = "Create a Task"
+          actions:
+            - kind: BeginDialog
+              id: vcioce
+              dialog: cr80b_metaorangeCopilot.topic.CreateTask
+
+        - id: conditionItem_a1TWk2
+          condition: =Topic.Var1 = "Update a Task"
+          actions:
+            - kind: BeginDialog
+              id: vjtZOJ
+              dialog: cr80b_metaorangeCopilot.topic.UpdateTask
+
+    - kind: EndDialog
+      id: C8JOR8
+
+inputType: {}
+outputType: {}

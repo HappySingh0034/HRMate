@@ -1,0 +1,237 @@
+kind: AdaptiveDialog
+modelDescription: Create Task
+beginDialog:
+  kind: OnRedirect
+  id: main
+  actions:
+    - kind: SetVariable
+      id: setVariable_mgON2X
+      variable: Topic.Var_PriorityTable
+      value: =[{Key:4,Value:"Low"},{Key:3,Value:"Medium"},{Key:2,Value:"High"},{Key:1,Value:"Critical"}]
+
+    - kind: BeginDialog
+      id: 8dAF4o
+      dialog: cr80b_metaorangeCopilot.topic.GetProjectList
+
+    - kind: ConditionGroup
+      id: conditionGroup_CV4lRk
+      conditions:
+        - id: conditionItem_cM7k6n
+          condition: =!IsBlank(Global.SelectedProjectName)
+          actions:
+            - kind: InvokeFlowAction
+              id: invokeFlowAction_G6rOhB
+              input:
+                binding:
+                  text: =Global.SelectedProjectName
+                  text_1: Product Backlog Item
+
+              output:
+                binding:
+                  listofitems: Topic.ListOfitems
+
+              flowId: e9ee170a-1606-f011-bae2-000d3aca4339
+
+            - kind: ParseValue
+              id: 87zvrL
+              variable: Topic.Var_Json_USList
+              valueType:
+                kind: Table
+                properties:
+                  IterationPath: String
+                  url: String
+                  WorkItemId: String
+                  WorkItemName: String
+
+              value: =Topic.ListOfitems
+
+            - kind: Question
+              id: question_xWUtCW
+              interruptionPolicy:
+                allowInterruption: true
+
+              variable: init:Topic.Var_SelectedUserStory
+              prompt: Select User Story to link task
+              entity:
+                kind: DynamicClosedListEntity
+                items: =Distinct(Topic.Var_Json_USList,WorkItemName)
+
+            - kind: Question
+              id: question_lB3P6c
+              interruptionPolicy:
+                allowInterruption: true
+
+              variable: init:Topic.Var_TaskTitle
+              prompt: Enter title for Task.
+              entity: StringPrebuiltEntity
+
+            - kind: InvokeAIBuilderModelAction
+              id: invokeAIBuilderModelAction_rjCiOf
+              input:
+                binding:
+                  Description: =Topic.Var_TaskTitle
+                  Project_20Name: =Global.SelectedProjectName
+
+              output:
+                binding:
+                  predictionOutput: Topic.Var_TaskDescriptionNew
+
+              aIModelId: d8915fb8-d25d-4215-a14a-873fac6897bc
+
+            - kind: InvokeAIBuilderModelAction
+              id: invokeAIBuilderModelAction_MLg4pa
+              input:
+                binding:
+                  Decription_20: =Topic.Var_TaskDescriptionNew.text
+                  ProjectName: =Global.SelectedProjectName
+
+              output:
+                binding:
+                  predictionOutput: Topic.Var_AcceptanceCriteriaNew
+
+              aIModelId: 478aa949-0e1a-4b3f-8caf-84cff0ba73a9
+
+            - kind: SendActivity
+              id: sendActivity_G1GD1z
+              activity: |-
+                ********* Acceptance Criteria  \*\*_\*\*\*\*_
+                
+                _**{Topic.Var_AcceptanceCriteriaNew.text}**_
+
+            - kind: SetVariable
+              id: setVariable_v7WUli
+              variable: Topic.Var_Final_Acc_Criteria
+              value: =Topic.Var_AcceptanceCriteriaNew.text
+
+            - kind: Question
+              id: question_3ISz9m
+              interruptionPolicy:
+                allowInterruption: true
+
+              variable: init:Topic.Var1
+              prompt: |
+                Do you want to change this **Acceptance Criteria** ?
+              entity: BooleanPrebuiltEntity
+
+            - kind: ConditionGroup
+              id: conditionGroup_ktDizE
+              conditions:
+                - id: conditionItem_HlsehP
+                  condition: =Topic.Var1 = Boolean(true)
+                  actions:
+                    - kind: Question
+                      id: question_dZhKJ2
+                      interruptionPolicy:
+                        allowInterruption: true
+
+                      variable: Topic.Var_UpdatedTask
+                      prompt: Write new Acceptance Criteria .
+                      entity: StringPrebuiltEntity
+
+                    - kind: SetVariable
+                      id: setVariable_Xp6O8u
+                      variable: Topic.Var_Final_Acc_Criteria
+                      value: =Topic.Var_UpdatedTask
+
+            - kind: Question
+              id: question_cer9eR
+              interruptionPolicy:
+                allowInterruption: true
+
+              variable: init:Topic.Var_Task_AssigntoEmail
+              prompt: Enter User Email to assign this Task.
+              entity: EmailPrebuiltEntity
+
+            - kind: Question
+              id: question_twvxkl
+              interruptionPolicy:
+                allowInterruption: true
+
+              variable: init:Topic.Var_TaskEfforts
+              prompt: Enter Efforts.
+              entity: NumberPrebuiltEntity
+
+            - kind: Question
+              id: question_9TBftC
+              interruptionPolicy:
+                allowInterruption: true
+
+              variable: init:Topic.Var_SelectedPriority
+              prompt: Select Priority.
+              entity:
+                kind: DynamicClosedListEntity
+                items: =Distinct(Topic.Var_PriorityTable,Value)
+
+            - kind: Question
+              id: question_DYdqaV
+              interruptionPolicy:
+                allowInterruption: true
+
+              variable: init:Topic.Var_Ex_Date
+              prompt: Enter expected start date
+              entity: DatePrebuiltEntity
+
+            - kind: Question
+              id: question_5MMWiT
+              interruptionPolicy:
+                allowInterruption: true
+
+              variable: init:Topic.Var_DueDate
+              prompt: Enter Due Date
+              entity: DatePrebuiltEntity
+
+            - kind: Question
+              id: question_TTAA8o
+              interruptionPolicy:
+                allowInterruption: true
+
+              variable: init:Topic.Var_BillingHours
+              prompt: Enter billing hours
+              entity: NumberPrebuiltEntity
+
+            - kind: InvokeFlowAction
+              id: invokeFlowAction_BUH8jE
+              input:
+                binding:
+                  date: =Text(Topic.Var_Ex_Date,"yyyy-MM-dd")
+                  date_1: =Text(Topic.Var_DueDate,"yyyy-MM-dd")
+                  email: =Topic.Var_Task_AssigntoEmail
+                  number: =Topic.Var_BillingHours
+                  number_1: 1
+                  text: =Global.SelectedProjectName
+                  text_1: Task
+                  text_2: =Topic.Var_TaskTitle
+                  text_3: =Topic.Var_TaskDescriptionNew.text
+                  text_4: =Text(LookUp(Topic.Var_PriorityTable,Value=Topic.Var_SelectedPriority).Key)
+                  text_5: =Text(Topic.Var_TaskEfforts)
+                  text_6: =Topic.Var_Final_Acc_Criteria
+                  text_7: "0"
+                  text_8: ="https://dev.azure.com/qservicesindia/"&Global.SelectedProjectName&"/_workitems/edit/"&LookUp(Topic.Var_Json_USList,WorkItemName=Topic.Var_SelectedUserStory).WorkItemId
+                  text_9: =LookUp(Topic.Var_Json_USList,WorkItemName=Topic.Var_SelectedUserStory).IterationPath
+
+              output:
+                binding:
+                  id: Topic.ID
+
+              flowId: 8b506cc6-291c-f011-998a-000d3aca4339
+
+            - kind: SendActivity
+              id: sendActivity_SGTwMy
+              activity: |-
+                New Item Link :
+                
+                {"https://dev.azure.com/qservicesindia/"&Global.SelectedProjectName&"/_workitems/edit/"&Topic.ID&"/"}
+
+            - kind: CancelAllDialogs
+              id: YWnkNR
+
+      elseActions:
+        - kind: SendActivity
+          id: sendActivity_93EEF1
+          activity: Something wrong happend
+
+    - kind: EndDialog
+      id: gIWkTM
+
+inputType: {}
+outputType: {}

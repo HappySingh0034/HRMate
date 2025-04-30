@@ -1,0 +1,14 @@
+function SetValidtooValidation(executionContext) {
+    var formContext = executionContext.getFormContext();
+    var Validtoo = formContext.getAttribute("new_validtoo").getValue();
+    if (Validtoo != null) {
+        var length = Validtoo.toString().length;
+        if (length == 4) {
+            formContext.getControl("new_validtoo").clearNotification("UID4");
+        }
+        else {
+            
+            formContext.getControl("new_validtoo").setNotification("Must be 4 digit only", "UID4");
+        }
+    }
+}

@@ -1,0 +1,22 @@
+function YearValidation(executionContext) {
+    var formContext = executionContext.getFormContext();
+    var year = formContext.getAttribute("new_year").getValue();
+    if (year != null) {
+        var length = year.toString().length;
+        const string2digit = String(year).substring(0, 2);
+        var TwodigitNumber = Number(string2digit);
+        if (length == 4) {
+            formContext.getControl("new_year").clearNotification("UID1");
+            if (TwodigitNumber != 20) {
+                formContext.getControl("new_year").setNotification("Value should be  Started from 20 ", "UID2");
+            }
+            else {
+                formContext.getControl("new_year").clearNotification("UID2");
+            }
+        }
+        else {
+
+            formContext.getControl("new_year").setNotification("Value should be 4 digit", "UID1");
+        }
+    }
+}

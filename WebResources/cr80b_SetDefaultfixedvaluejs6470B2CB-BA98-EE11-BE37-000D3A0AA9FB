@@ -1,0 +1,21 @@
+function setDefaultValue(e) {
+    debugger;
+    var formContext = e.getFormContext();
+    var FormType = formContext.ui.getFormType();
+    if (FormType == 1) {
+		Xrm.WebApi.retrieveRecord("new_defaultsetting", "8d583d6c-b198-ee11-be37-000d3a0aa9fb", "?$select=new_fixedsalarydefault,new_name").then(
+			function success(result) {
+				console.log(result);
+				// Columns
+				var new_defaultsettingid = result["new_defaultsettingid"]; // Guid
+				var new_fixedsalarydefault = result["new_fixedsalarydefault"]; // Whole Number
+				var new_fixedsalarydefault_formatted = result["new_fixedsalarydefault@OData.Community.Display.V1.FormattedValue"];
+				var new_name = result["new_name"]; // Text
+				formContext.getAttribute("new_fixedsalary").setValue(new_fixedsalarydefault);
+			},
+			function (error) {
+				console.log(error.message);
+			}
+		);
+    }
+}

@@ -1,0 +1,13 @@
+function PassingValidation(executionContext) {
+    var formContext = executionContext.getFormContext();
+    var P_year = formContext.getAttribute("new_yearofpassingcertification").getValue();
+    if (P_year != null) {
+        var length = P_year.toString().length;
+        if (length == 4) {
+            formContext.getControl("new_yearofpassingcertification").clearNotification("UID3");
+        }
+        else {
+            formContext.getControl("new_yearofpassingcertification").setNotification("Must be 4 digit only", "UID3");
+        }
+    }
+}

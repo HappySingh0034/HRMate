@@ -1,0 +1,743 @@
+{
+  "properties": {
+    "connectionReferences": {
+      "shared_commondataserviceforapps": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "new_sharedcommondataserviceforapps_c6dc4"
+        },
+        "api": {
+          "name": "shared_commondataserviceforapps"
+        }
+      },
+      "shared_teams": {
+        "runtimeSource": "invoker",
+        "connection": {
+          "connectionReferenceLogicalName": "mo_sharedteams_f549a"
+        },
+        "api": {
+          "name": "shared_teams"
+        }
+      }
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$connections": {
+          "defaultValue": {},
+          "type": "Object"
+        },
+        "$authentication": {
+          "defaultValue": {},
+          "type": "SecureObject"
+        }
+      },
+      "triggers": {
+        "manual": {
+          "metadata": {
+            "operationMetadataId": "b8f61c18-7224-4f8a-9c5f-72fbce5df764"
+          },
+          "type": "Request",
+          "kind": "Skills",
+          "inputs": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "title": "Email",
+                  "type": "string",
+                  "format": "email",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter an e-mail address",
+                  "x-ms-content-hint": "EMAIL"
+                },
+                "number": {
+                  "title": "Month",
+                  "type": "number",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter a number",
+                  "x-ms-content-hint": "NUMBER"
+                }
+              },
+              "required": [
+                "email",
+                "number"
+              ]
+            }
+          }
+        }
+      },
+      "actions": {
+        "Respond_to_Copilot": {
+          "runAfter": {
+            "Condition": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "81c94f73-dd52-465c-ad3b-a4686da63cc3"
+          },
+          "type": "Response",
+          "kind": "Skills",
+          "inputs": {
+            "statusCode": 200,
+            "body": {
+              "result": "Done"
+            },
+            "schema": {
+              "type": "object",
+              "properties": {
+                "result": {
+                  "title": "Result",
+                  "x-ms-dynamically-added": true,
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "List_Employee": {
+          "runAfter": {
+            "Initialize_variable": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "b375bc19-0a6e-4542-b35f-645bee055442"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps",
+              "operationId": "ListRecords",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "entityName": "new_enployeeinfos",
+              "$filter": "new_email eq '@{triggerBody()['email']}' and statecode eq 0"
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        },
+        "Condition": {
+          "actions": {
+            "Apply_to_each": {
+              "foreach": "@outputs('List_Employee')?['body/value']",
+              "actions": {
+                "Do_until": {
+                  "actions": {
+                    "Increment_variable": {
+                      "runAfter": {},
+                      "metadata": {
+                        "operationMetadataId": "6db5a17e-3a5d-4760-8ab1-3659a6bcd65a"
+                      },
+                      "type": "IncrementVariable",
+                      "inputs": {
+                        "name": "IncrementalNumber",
+                        "value": 1
+                      }
+                    },
+                    "List_rows": {
+                      "runAfter": {
+                        "Increment_variable": [
+                          "Succeeded"
+                        ]
+                      },
+                      "metadata": {
+                        "operationMetadataId": "03db7324-b799-4dc7-8c23-f9f10c8f2db9"
+                      },
+                      "type": "OpenApiConnection",
+                      "inputs": {
+                        "host": {
+                          "connectionName": "shared_commondataserviceforapps",
+                          "operationId": "ListRecords",
+                          "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                        },
+                        "parameters": {
+                          "entityName": "new_timesheets",
+                          "$filter": "((_new_employee_value eq @{items('Apply_to_each')?['new_enployeeinfoid']} ) and new_date eq @{formatDateTime(addDays(outputs('Compose'),sub(variables('IncrementalNumber'),1)),'yyyy-MM-dd')} and (new_timesheetstatus eq 2 or new_timesheetstatus eq 1))"
+                        },
+                        "authentication": "@parameters('$authentication')"
+                      }
+                    },
+                    "Apply_to_each_2": {
+                      "foreach": "@outputs('List_rows')?['body/value']",
+                      "actions": {
+                        "Increment_variable_2": {
+                          "runAfter": {},
+                          "metadata": {
+                            "operationMetadataId": "a9d61e25-6e96-4bb6-af4a-26d3a66e3596"
+                          },
+                          "type": "IncrementVariable",
+                          "inputs": {
+                            "name": "Total Hours",
+                            "value": "@items('Apply_to_each_2')?['new_totaltimetaken']"
+                          }
+                        },
+                        "Set_variable": {
+                          "runAfter": {
+                            "Increment_variable_2": [
+                              "Succeeded"
+                            ]
+                          },
+                          "metadata": {
+                            "operationMetadataId": "0e2a4f8b-ca37-488a-8986-1167e9256c52"
+                          },
+                          "type": "SetVariable",
+                          "inputs": {
+                            "name": "Date",
+                            "value": "@items('Apply_to_each_2')?['new_date']"
+                          }
+                        }
+                      },
+                      "runAfter": {
+                        "Set_variable_2": [
+                          "Succeeded"
+                        ]
+                      },
+                      "metadata": {
+                        "operationMetadataId": "325cab2e-6b51-4e4e-9679-30dc3499b904"
+                      },
+                      "type": "Foreach"
+                    },
+                    "Create_HTML_table": {
+                      "runAfter": {
+                        "Append_to_array_variable": [
+                          "Succeeded"
+                        ]
+                      },
+                      "metadata": {
+                        "operationMetadataId": "8a1011fd-2349-40ab-b416-0819d8460b4c"
+                      },
+                      "type": "Table",
+                      "inputs": {
+                        "from": "@variables('Array')",
+                        "format": "HTML"
+                      }
+                    },
+                    "Append_to_array_variable": {
+                      "runAfter": {
+                        "Compose_2": [
+                          "Succeeded"
+                        ]
+                      },
+                      "metadata": {
+                        "operationMetadataId": "c710ea2a-782b-438f-9d8d-b2988c737c7c"
+                      },
+                      "type": "AppendToArrayVariable",
+                      "inputs": {
+                        "name": "Array",
+                        "value": "@outputs('Compose_2')"
+                      }
+                    },
+                    "Compose_2": {
+                      "runAfter": {
+                        "Apply_to_each_2": [
+                          "Succeeded"
+                        ]
+                      },
+                      "metadata": {
+                        "operationMetadataId": "7bdf7541-e17f-43c7-a31d-235f61b7d941"
+                      },
+                      "type": "Compose",
+                      "inputs": {
+                        "Date": "@formatDateTime(addDays(outputs('Compose'),sub(variables('IncrementalNumber'),1)),'dd MMM yyyy')",
+                        "Total Hours": "@variables('Total Hours')"
+                      }
+                    },
+                    "Set_variable_2": {
+                      "runAfter": {
+                        "List_rows": [
+                          "Succeeded"
+                        ]
+                      },
+                      "metadata": {
+                        "operationMetadataId": "4b806789-97ef-4e19-93f2-017259082d11"
+                      },
+                      "type": "SetVariable",
+                      "inputs": {
+                        "name": "Total Hours",
+                        "value": 0
+                      }
+                    }
+                  },
+                  "runAfter": {},
+                  "expression": "@greater(variables('IncrementalNumber'), variables('Number of days'))",
+                  "limit": {
+                    "count": 31,
+                    "timeout": "PT1H"
+                  },
+                  "metadata": {
+                    "operationMetadataId": "3c990120-eabe-47f5-a617-651be57a229c"
+                  },
+                  "type": "Until"
+                },
+                "Condition_2": {
+                  "actions": {
+                    "Post_message_in_a_chat_or_channel": {
+                      "runAfter": {},
+                      "metadata": {
+                        "operationMetadataId": "ecfa0936-f480-401b-b82d-1288c6e34481"
+                      },
+                      "type": "OpenApiConnection",
+                      "inputs": {
+                        "host": {
+                          "connectionName": "shared_teams",
+                          "operationId": "PostMessageToConversation",
+                          "apiId": "/providers/Microsoft.PowerApps/apis/shared_teams"
+                        },
+                        "parameters": {
+                          "poster": "Power Virtual Agents",
+                          "location": "powerva",
+                          "body/bot": "cr80b_metaorangeCopilot",
+                          "body/recipient": "@{triggerBody()['email']};",
+                          "body/messageBody": "<p>@{body('Create_HTML_table')}</p>",
+                          "body/attribution": true,
+                          "body/activeChat": "Send",
+                          "body/installedError": "Fail"
+                        },
+                        "authentication": "@parameters('$authentication')"
+                      }
+                    }
+                  },
+                  "runAfter": {
+                    "Do_until": [
+                      "Succeeded"
+                    ]
+                  },
+                  "else": {
+                    "actions": {
+                      "Post_message_in_a_chat_or_channel_3": {
+                        "runAfter": {},
+                        "metadata": {
+                          "operationMetadataId": "b1527936-8f39-43d8-94a9-4b3860636271"
+                        },
+                        "type": "OpenApiConnection",
+                        "inputs": {
+                          "host": {
+                            "connectionName": "shared_teams",
+                            "operationId": "PostMessageToConversation",
+                            "apiId": "/providers/Microsoft.PowerApps/apis/shared_teams"
+                          },
+                          "parameters": {
+                            "poster": "Power Virtual Agents",
+                            "location": "powerva",
+                            "body/bot": "cr80b_metaorangeCopilot",
+                            "body/recipient": "@{triggerBody()['email']};",
+                            "body/messageBody": "<p>No record found !!<br>\n</p>",
+                            "body/attribution": true,
+                            "body/activeChat": "Send",
+                            "body/installedError": "Fail"
+                          },
+                          "authentication": "@parameters('$authentication')"
+                        }
+                      }
+                    }
+                  },
+                  "expression": {
+                    "greaterOrEquals": [
+                      "@length(variables('Array'))",
+                      1
+                    ]
+                  },
+                  "metadata": {
+                    "operationMetadataId": "66949827-e591-4a3f-9dec-e35091ba8f1a"
+                  },
+                  "type": "If"
+                }
+              },
+              "runAfter": {},
+              "metadata": {
+                "operationMetadataId": "94ddacbe-c404-4db1-96e6-efe1ed21d50c"
+              },
+              "type": "Foreach"
+            }
+          },
+          "runAfter": {
+            "List_Employee": [
+              "Succeeded"
+            ]
+          },
+          "else": {
+            "actions": {
+              "List_rows_2": {
+                "runAfter": {},
+                "metadata": {
+                  "operationMetadataId": "086f8878-21f3-4116-9c6f-69cea59b6790"
+                },
+                "type": "OpenApiConnection",
+                "inputs": {
+                  "host": {
+                    "connectionName": "shared_commondataserviceforapps",
+                    "operationId": "ListRecords",
+                    "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                  },
+                  "parameters": {
+                    "entityName": "new_interns",
+                    "$filter": "new_emailid eq '@{triggerBody()['email']}' and statecode eq 0"
+                  },
+                  "authentication": "@parameters('$authentication')"
+                }
+              },
+              "Do_until_2": {
+                "actions": {
+                  "Increment_variable_3": {
+                    "runAfter": {},
+                    "metadata": {
+                      "operationMetadataId": "6db5a17e-3a5d-4760-8ab1-3659a6bcd65a"
+                    },
+                    "type": "IncrementVariable",
+                    "inputs": {
+                      "name": "IncrementalNumber",
+                      "value": 1
+                    }
+                  },
+                  "Apply_to_each_4": {
+                    "foreach": "@outputs('List_rows_2')?['body/value']",
+                    "actions": {
+                      "List_rows_3": {
+                        "runAfter": {},
+                        "metadata": {
+                          "operationMetadataId": "03db7324-b799-4dc7-8c23-f9f10c8f2db9"
+                        },
+                        "type": "OpenApiConnection",
+                        "inputs": {
+                          "host": {
+                            "connectionName": "shared_commondataserviceforapps",
+                            "operationId": "ListRecords",
+                            "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                          },
+                          "parameters": {
+                            "entityName": "new_timesheets",
+                            "$filter": "((_new_intern_value eq @{items('Apply_to_each_4')?['new_internid']} ) and new_date eq @{formatDateTime(addDays(outputs('Compose'), sub(variables('IncrementalNumber'), 1)), 'yyyy-MM-dd')} and (new_timesheetstatus eq 2 or new_timesheetstatus eq 1))"
+                          },
+                          "authentication": "@parameters('$authentication')"
+                        }
+                      },
+                      "Set_variable_3": {
+                        "runAfter": {
+                          "List_rows_3": [
+                            "Succeeded"
+                          ]
+                        },
+                        "metadata": {
+                          "operationMetadataId": "4b806789-97ef-4e19-93f2-017259082d11"
+                        },
+                        "type": "SetVariable",
+                        "inputs": {
+                          "name": "Total Hours",
+                          "value": 0
+                        }
+                      },
+                      "Apply_to_each_3": {
+                        "foreach": "@outputs('List_rows_3')?['body/value']",
+                        "actions": {
+                          "Increment_variable_4": {
+                            "runAfter": {},
+                            "metadata": {
+                              "operationMetadataId": "a9d61e25-6e96-4bb6-af4a-26d3a66e3596"
+                            },
+                            "type": "IncrementVariable",
+                            "inputs": {
+                              "name": "Total Hours",
+                              "value": "@items('Apply_to_each_3')?['new_totaltimetaken']"
+                            }
+                          },
+                          "Set_variable_4": {
+                            "runAfter": {
+                              "Increment_variable_4": [
+                                "Succeeded"
+                              ]
+                            },
+                            "metadata": {
+                              "operationMetadataId": "0e2a4f8b-ca37-488a-8986-1167e9256c52"
+                            },
+                            "type": "SetVariable",
+                            "inputs": {
+                              "name": "Date",
+                              "value": "@items('Apply_to_each_3')?['new_date']"
+                            }
+                          },
+                          "Compose_3": {
+                            "runAfter": {
+                              "Set_variable_4": [
+                                "Succeeded"
+                              ]
+                            },
+                            "metadata": {
+                              "operationMetadataId": "7bdf7541-e17f-43c7-a31d-235f61b7d941"
+                            },
+                            "type": "Compose",
+                            "inputs": {
+                              "Date": "@formatDateTime(addDays(outputs('Compose'), sub(variables('IncrementalNumber'), 1)), 'dd MMM yyyy')",
+                              "Total Hours": "@variables('Total Hours')"
+                            }
+                          },
+                          "Append_to_array_variable_2": {
+                            "runAfter": {
+                              "Compose_3": [
+                                "Succeeded"
+                              ]
+                            },
+                            "metadata": {
+                              "operationMetadataId": "c710ea2a-782b-438f-9d8d-b2988c737c7c"
+                            },
+                            "type": "AppendToArrayVariable",
+                            "inputs": {
+                              "name": "Array",
+                              "value": "@outputs('Compose_3')"
+                            }
+                          }
+                        },
+                        "runAfter": {
+                          "Set_variable_3": [
+                            "Succeeded"
+                          ]
+                        },
+                        "metadata": {
+                          "operationMetadataId": "325cab2e-6b51-4e4e-9679-30dc3499b904"
+                        },
+                        "type": "Foreach"
+                      },
+                      "Create_HTML_table_2": {
+                        "runAfter": {
+                          "Apply_to_each_3": [
+                            "Succeeded"
+                          ]
+                        },
+                        "metadata": {
+                          "operationMetadataId": "8a1011fd-2349-40ab-b416-0819d8460b4c"
+                        },
+                        "type": "Table",
+                        "inputs": {
+                          "from": "@variables('Array')",
+                          "format": "HTML"
+                        }
+                      },
+                      "Condition_3": {
+                        "actions": {
+                          "Post_message_in_a_chat_or_channel_2": {
+                            "runAfter": {},
+                            "metadata": {
+                              "operationMetadataId": "cc2f139e-a7e6-4e2b-b8e2-644d6f04063e"
+                            },
+                            "type": "OpenApiConnection",
+                            "inputs": {
+                              "host": {
+                                "connectionName": "shared_teams",
+                                "operationId": "PostMessageToConversation",
+                                "apiId": "/providers/Microsoft.PowerApps/apis/shared_teams"
+                              },
+                              "parameters": {
+                                "poster": "Power Virtual Agents",
+                                "location": "powerva",
+                                "body/bot": "cr80b_metaorangeCopilot",
+                                "body/recipient": "@{triggerBody()['email']};",
+                                "body/messageBody": "<p>@{body('Create_HTML_table_2')}<br>\n<br>\nYou can view timesheets using Metaconnect App.<br>\n<br>\n1. Open metaconnect application.<br>\n2. Navigate to \"My Space\".<br>\n3. Click on \"Timesheets\" Icon.<br>\n4. Click on \"Apply Timesheet\" icon.<br>\n5. Select date for which you want to view timesheet.</p>",
+                                "body/attribution": true,
+                                "body/activeChat": "Send",
+                                "body/installedError": "Fail"
+                              },
+                              "authentication": "@parameters('$authentication')"
+                            }
+                          }
+                        },
+                        "runAfter": {
+                          "Create_HTML_table_2": [
+                            "Succeeded"
+                          ]
+                        },
+                        "else": {
+                          "actions": {
+                            "Post_message_in_a_chat_or_channel_4": {
+                              "runAfter": {},
+                              "metadata": {
+                                "operationMetadataId": "86c728c9-7016-4e9c-9c15-9ded191170be"
+                              },
+                              "type": "OpenApiConnection",
+                              "inputs": {
+                                "host": {
+                                  "connectionName": "shared_teams",
+                                  "operationId": "PostMessageToConversation",
+                                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_teams"
+                                },
+                                "parameters": {
+                                  "poster": "Power Virtual Agents",
+                                  "location": "powerva",
+                                  "body/bot": "cr80b_metaorangeCopilot",
+                                  "body/recipient": "@{triggerBody()['email']};",
+                                  "body/messageBody": "<p>No record found!!<br>\n<br>\nYou can view timesheets using Metaconnect App.<br>\n<br>\n1. Open metaconnect application.<br>\n2. Navigate to \"My Space\".<br>\n3. Click on \"Timesheets\" Icon.<br>\n4. Click on \"Apply Timesheet\" icon.<br>\n5. Select date for which you want to view timesheet.</p>",
+                                  "body/attribution": true,
+                                  "body/activeChat": "Send",
+                                  "body/installedError": "Fail"
+                                },
+                                "authentication": "@parameters('$authentication')"
+                              }
+                            }
+                          }
+                        },
+                        "expression": {
+                          "greaterOrEquals": [
+                            "@length(variables('Array'))",
+                            1
+                          ]
+                        },
+                        "metadata": {
+                          "operationMetadataId": "8e36c62e-0e8f-4e7b-b7d7-e758beff1fc2"
+                        },
+                        "type": "If"
+                      }
+                    },
+                    "runAfter": {
+                      "Increment_variable_3": [
+                        "Succeeded"
+                      ]
+                    },
+                    "metadata": {
+                      "operationMetadataId": "ecd9d431-1586-467d-bca1-668142807700"
+                    },
+                    "type": "Foreach"
+                  }
+                },
+                "runAfter": {
+                  "List_rows_2": [
+                    "Succeeded"
+                  ]
+                },
+                "expression": "@greater(variables('IncrementalNumber'), variables('Number of days'))",
+                "limit": {
+                  "count": 31,
+                  "timeout": "PT1H"
+                },
+                "metadata": {
+                  "operationMetadataId": "3c990120-eabe-47f5-a617-651be57a229c"
+                },
+                "type": "Until"
+              }
+            }
+          },
+          "expression": {
+            "lessOrEquals": [
+              "@length(outputs('List_Employee')?['body/value'])",
+              1
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "8596bf60-f319-4551-bc54-b1fb8a08938c"
+          },
+          "type": "If"
+        },
+        "Initialize_variable": {
+          "runAfter": {
+            "Initialize_variable_2": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "a6c94e08-9ff7-4ee4-b1bd-1cf5f78c5eb6"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "Date",
+                "type": "string"
+              }
+            ]
+          }
+        },
+        "Initialize_variable_2": {
+          "runAfter": {
+            "Compose": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "5b265f13-a9e0-4d7a-a92d-451e1d3e290b"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "Number of days",
+                "type": "integer",
+                "value": "@int(formatDateTime(addDays(startOfMonth(addDays(outputs('Compose'),32)),-1),'dd'))"
+              }
+            ]
+          }
+        },
+        "Compose": {
+          "runAfter": {
+            "Initialize_variable_3": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "e4f40b6c-da30-4400-bb9c-bfa20024ef8e"
+          },
+          "type": "Compose",
+          "inputs": "@{formatDateTime(utcNow(),'yyyy')}-@{triggerBody()['number']}-01"
+        },
+        "Initialize_variable_3": {
+          "runAfter": {
+            "Initialize_variable_4": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "2ae9c6d2-3a28-45f4-9724-667db17a0fb1"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "IncrementalNumber",
+                "type": "integer",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "Initialize_variable_4": {
+          "runAfter": {
+            "Initialize_variable_5": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "535b41aa-648a-4fe1-a8d6-6e12d7cc3566"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "Total Hours",
+                "type": "float",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "Initialize_variable_5": {
+          "runAfter": {},
+          "metadata": {
+            "operationMetadataId": "0920ccb4-c572-4078-af1c-f5be8e785d55"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "Array",
+                "type": "array"
+              }
+            ]
+          }
+        }
+      },
+      "outputs": {}
+    },
+    "templateName": "8966f0978a80430098d992ce322095e3"
+  },
+  "schemaVersion": "1.0.0.0"
+}

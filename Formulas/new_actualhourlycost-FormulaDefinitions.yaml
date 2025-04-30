@@ -1,0 +1,1 @@
+new_organizationhourlycost: =2*Decimal(new_hourlysalary)

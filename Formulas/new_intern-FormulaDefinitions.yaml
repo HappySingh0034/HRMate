@@ -1,0 +1,2 @@
+new_ageyears: =RoundDown(DateDiff(new_dateofbirth,UTCNow(),TimeUnit.Years),0)
+new_daysafterjoiningdate: =DateAdd(new_dateofjoining,15,TimeUnit.Days)

@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="ClientGlobalContext.js.aspx" type="text/javascript"></script>
+
+</head>
+<style>
+    table,
+    th,
+    td {
+        border: 1px solid black;
+        border-collapse: collapse;
+        margin: 5px;
+    }
+</style>
+
+<body>
+    <table id="myTable">
+        <tr>
+            <th>Leave Name</th>
+            <th>Total</th>
+            <th>Credit</th>
+            <th>Applied</th>
+            <th>Approved</th>
+            <th>Pending</th>
+        </tr>
+
+    </table>
+
+</body>
+
+<script>
+    debugger;
+
+    var InternID = parent.window.Xrm.Page.data.entity.getId().replace("{", "").replace("}", "").toLowerCase();
+    /////////////////////////////////////////////// GET EMPLOYEE  ////////////////////////////////
+    var JoiningDate = null;
+    var ApprovedLeave = 0;
+    var PendingLeaves = 0;
+    var TotalApplied = 0;
+    var req = new XMLHttpRequest();
+    req.open("GET", Xrm.Utility.getGlobalContext().getClientUrl() + "/api/data/v9.2/new_interns?$select=new_internid,new_dateofjoining&$expand=new_LeaveRules_new_Intern_new_Intern($select=new_leaverulesid,new_nameofleave,new_totalleaves)&$filter=new_internid eq "+InternID+"", true);
+    req.setRequestHeader("OData-MaxVersion", "4.0");
+    req.setRequestHeader("OData-Version", "4.0");
+    req.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+    req.setRequestHeader("Accept", "application/json");
+    req.setRequestHeader("Prefer", "odata.include-annotations=*");
+    req.onreadystatechange = function () {
+        if (this.readyState === 4) {
+            //req.onreadystatechange = null;
+            if (this.status === 200) {
+                var results = JSON.parse(this.response);
+                console.log(results);
+                for (var i = 0; i < results.value.length; i++) {
+                    var result = results.value[i];
+                    // Columns
+                    var new_internid = result["new_internid"]; // Guid
+                    var new_dateofjoining = result["new_dateofjoining"]; // Date Time
+                    JoiningDate = result["new_dateofjoining@OData.Community.Display.V1.FormattedValue"];
+
+                    // Many To Many Relationships
+                    for (var j = 0; j < result.new_LeaveRules_new_Intern_new_Intern.length; j++) {
+                        var LeaveID = result.new_LeaveRules_new_Intern_new_Intern[j]["new_leaverulesid"]; // Guid
+                        var LeaveName = result.new_LeaveRules_new_Intern_new_Intern[j]["new_nameofleave"]; // Text
+                        var TotalLeaves = result.new_LeaveRules_new_Intern_new_Intern[j]["new_totalleaves"]; // Decimal
+                        var new_LeaveRules_new_Intern_new_Intern_new_totalleaves_formatted = result.new_LeaveRules_new_Intern_new_Intern[j]["new_totalleaves@OData.Community.Display.V1.FormattedValue"];
+                        let currentDate = new Date(); 
+                        let currentYear = currentDate. getFullYear();
+                        var req = new XMLHttpRequest();
+                        req.open("GET", Xrm.Utility.getGlobalContext().getClientUrl() + "/api/data/v9.2/new_leaveses?$select=new_leavesid,new_leavestatus,new_numberofdays&$filter=((_new_intern_value eq "+InternID+" and _new_leavetype_value eq "+LeaveID+") and (new_leavestatus eq 1 or new_leavestatus eq 2) and new_year eq "+currentYear+" )", true);
+                        req.setRequestHeader("OData-MaxVersion", "4.0");
+                        req.setRequestHeader("OData-Version", "4.0");
+                        req.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+                        req.setRequestHeader("Accept", "application/json");
+                        req.setRequestHeader("Prefer", "odata.include-annotations=*");
+                        req.onreadystatechange = function () {
+                            if (this.readyState === 4) {
+                                //req.onreadystatechange = null;
+                                if (this.status === 200) {
+                                    var results = JSON.parse(this.response);
+                                    console.log(results);
+                                    for (var i = 0; i < results.value.length; i++) {
+                                        var result = results.value[i];
+                                        // Columns
+                                        var new_leavesid = result["new_leavesid"]; // Guid
+                                        var new_leavestatus = result["new_leavestatus"]; // Choice
+                                        var new_leavestatus_formatted = result["new_leavestatus@OData.Community.Display.V1.FormattedValue"];
+                                        var new_numberofdays = result["new_numberofdays"]; // Decimal
+                                        var new_numberofdays_formatted = result["new_numberofdays@OData.Community.Display.V1.FormattedValue"];
+                                        TotalApplied+=new_numberofdays;
+                                        if (new_leavestatus == 1) {
+                                            PendingLeaves += new_numberofdays;
+
+                                        }
+                                        if (new_leavestatus == 2) {
+                                            ApprovedLeave += new_numberofdays;
+
+                                        }
+                                    
+                                    }
+                                } else {
+                                    console.log(this.responseText);
+                                }
+                            }
+                        };
+                        req.send();
+
+                        var table = document.getElementById("myTable");
+
+
+                        var row = table.insertRow();
+
+                        // Insert new cells (<td> elements) at the 1st and 2nd position of the "new" <tr> element:
+                        var cell1 = row.insertCell(0);
+                        var cell2 = row.insertCell(1);
+                        var cell3 = row.insertCell(2);
+                        var cell4 = row.insertCell(3);
+                        var cell5 = row.insertCell(4);
+                        var cell6 = row.insertCell(5);
+                        // Add some text to the new cells:
+                        cell1.innerHTML = LeaveName;
+                        cell2.innerHTML = TotalLeaves;
+                        var CreditLeaves = TotalLeaves;
+                        ////////////////////////// CALCULATE CREDITED LEAVES //////////////////////////////////////////////////
+                        if (LeaveName.toLowerCase() == "casual leave") {
+                            CreditLeaves = 0;
+                            var DateofJoining = new Date(JoiningDate);
+                            var TodayDate = new Date();
+                            if (DateofJoining.getMonth() == TodayDate.getMonth() && DateofJoining.getFullYear() == TodayDate.getFullYear()) {
+                                CreditLeaves = ((TotalLeaves / 12 / 30) * Math.abs(30 - DateofJoining.getDate())).toFixed(2);
+
+                            }
+                            else if (DateofJoining.getFullYear() == TodayDate.getFullYear()) {
+                                CreditLeaves = ((TotalLeaves / 12 / 30) * (Math.abs((TodayDate.getMonth() - DateofJoining.getMonth()) * 30) + Math.abs(30 - DateofJoining.getDate()))).toFixed(2);
+                            }
+                            else {
+                                CreditLeaves = (TotalLeaves / 12 / 30) * (TodayDate.getMonth() * 30)
+
+                            }
+
+
+
+                        }
+
+
+                        //////////////////////////////////////////////////////////////////////////////////////////////////////
+                        cell3.innerHTML = CreditLeaves;
+                        cell4.innerHTML = TotalApplied;
+                        cell5.innerHTML = ApprovedLeave;
+                        cell6.innerHTML = PendingLeaves;
+
+                        ApprovedLeave = 0;
+                        PendingLeaves = 0;
+                        TotalApplied = 0;
+                   
+
+
+                    }
+                }
+            } else {
+                console.log(this.responseText);
+            }
+        }
+    };
+    req.send();
+
+    
+
+                        
+        
+    
+
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+
+</script>
+
+</html>

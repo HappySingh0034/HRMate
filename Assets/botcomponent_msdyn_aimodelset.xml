@@ -1,0 +1,50 @@
+<botcomponent_msdyn_aimodelset>
+  <botcomponent_msdyn_aimodel botcomponentid.schemaname="cr80b_metaorangeCopilot.topic.CreateSubTask" msdyn_aimodelid.msdyn_aimodelid="478aa949-0e1a-4b3f-8caf-84cff0ba73a9">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_msdyn_aimodel>
+  <botcomponent_msdyn_aimodel botcomponentid.schemaname="cr80b_metaorangeCopilot.topic.CreateSubTask" msdyn_aimodelid.msdyn_aimodelid="d8915fb8-d25d-4215-a14a-873fac6897bc">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_msdyn_aimodel>
+  <botcomponent_msdyn_aimodel botcomponentid.schemaname="cr80b_metaorangeCopilot.topic.CreateTask" msdyn_aimodelid.msdyn_aimodelid="478aa949-0e1a-4b3f-8caf-84cff0ba73a9">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_msdyn_aimodel>
+  <botcomponent_msdyn_aimodel botcomponentid.schemaname="cr80b_metaorangeCopilot.topic.CreateTask" msdyn_aimodelid.msdyn_aimodelid="d8915fb8-d25d-4215-a14a-873fac6897bc">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_msdyn_aimodel>
+  <botcomponent_msdyn_aimodel botcomponentid.schemaname="cr80b_metaorangeCopilot.topic.CreateUserStory" msdyn_aimodelid.msdyn_aimodelid="478aa949-0e1a-4b3f-8caf-84cff0ba73a9">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_msdyn_aimodel>
+  <botcomponent_msdyn_aimodel botcomponentid.schemaname="cr80b_metaorangeCopilot.topic.CreateUserStory" msdyn_aimodelid.msdyn_aimodelid="d8915fb8-d25d-4215-a14a-873fac6897bc">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_msdyn_aimodel>
+  <botcomponent_msdyn_aimodel botcomponentid.schemaname="cr80b_metaorangeCopilot.topic.GetPersonalDetailsIntern" msdyn_aimodelid.msdyn_aimodelid="c8dbe6ac-b365-4d7e-a37b-a56a6473ef92">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_msdyn_aimodel>
+  <botcomponent_msdyn_aimodel botcomponentid.schemaname="cr80b_metaorangeCopilot.topic.PersonalDetails" msdyn_aimodelid.msdyn_aimodelid="407d4b8a-f776-4234-92d3-712c732f16d3">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_msdyn_aimodel>
+  <botcomponent_msdyn_aimodel botcomponentid.schemaname="cr80b_metaorangeCopilot.topic.Salary" msdyn_aimodelid.msdyn_aimodelid="407d4b8a-f776-4234-92d3-712c732f16d3">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_msdyn_aimodel>
+  <botcomponent_msdyn_aimodel botcomponentid.schemaname="cr80b_metaorangeCopilot.topic.Salary" msdyn_aimodelid.msdyn_aimodelid="c8dbe6ac-b365-4d7e-a37b-a56a6473ef92">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_msdyn_aimodel>
+  <botcomponent_msdyn_aimodel botcomponentid.schemaname="cr80b_metaorangeCopilot.topic.StartFlow" msdyn_aimodelid.msdyn_aimodelid="64246ca2-2080-4fcb-8b79-5fc9736f17fa">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_msdyn_aimodel>
+  <botcomponent_msdyn_aimodel botcomponentid.schemaname="cr80b_metaorangeCopilot.topic.StartFlow" msdyn_aimodelid.msdyn_aimodelid="9a8acab2-dce8-41e4-9aa1-52a9029b9fbc">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_msdyn_aimodel>
+  <botcomponent_msdyn_aimodel botcomponentid.schemaname="cr80b_metaorangeCopilot.topic.UpdateTask" msdyn_aimodelid.msdyn_aimodelid="478aa949-0e1a-4b3f-8caf-84cff0ba73a9">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_msdyn_aimodel>
+  <botcomponent_msdyn_aimodel botcomponentid.schemaname="cr80b_metaorangeCopilot.topic.UpdateTask" msdyn_aimodelid.msdyn_aimodelid="d8915fb8-d25d-4215-a14a-873fac6897bc">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_msdyn_aimodel>
+  <botcomponent_msdyn_aimodel botcomponentid.schemaname="cr80b_metaorangeCopilot.topic.UpdateUserStory" msdyn_aimodelid.msdyn_aimodelid="478aa949-0e1a-4b3f-8caf-84cff0ba73a9">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_msdyn_aimodel>
+  <botcomponent_msdyn_aimodel botcomponentid.schemaname="cr80b_metaorangeCopilot.topic.UpdateUserStory" msdyn_aimodelid.msdyn_aimodelid="d8915fb8-d25d-4215-a14a-873fac6897bc">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_msdyn_aimodel>
+</botcomponent_msdyn_aimodelset>

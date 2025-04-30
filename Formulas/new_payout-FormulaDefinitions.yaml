@@ -1,0 +1,4 @@
+new_basicsalarydecimal: =Decimal(new_monthlysalarytobepaidm)*0.50
+new_netpay: =(new_totalingrosssalary+ Decimal(new_anyarrearsm))-Decimal(new_incometax)
+new_specialallowance: =Decimal(new_monthlysalarytobepaidm)*0.50
+new_totalingrosssalary: =new_basicsalarydecimal+ new_specialallowance+ Decimal(new_hra)

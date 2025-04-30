@@ -1,0 +1,194 @@
+kind: AdaptiveDialog
+modelDescription: Create Task
+beginDialog:
+  kind: OnRedirect
+  id: main
+  actions:
+    - kind: SetVariable
+      id: setVariable_mgON2X
+      variable: Topic.Var_PriorityTable
+      value: =[{Key:4,Value:"Low"},{Key:3,Value:"Medium"},{Key:2,Value:"High"},{Key:1,Value:"Critical"}]
+
+    - kind: Question
+      id: question_u1mBvX
+      interruptionPolicy:
+        allowInterruption: true
+
+      variable: init:Topic.Var_Title
+      prompt: Enter title for sub task.
+      entity: StringPrebuiltEntity
+
+    - kind: InvokeAIBuilderModelAction
+      id: invokeAIBuilderModelAction_Ha1jSe
+      input:
+        binding:
+          Description: =Topic.Var_Title
+          Project_20Name: =Global.SelectedProjectName
+
+      output:
+        binding:
+          predictionOutput: Topic.Var_TaskDescription
+
+      aIModelId: d8915fb8-d25d-4215-a14a-873fac6897bc
+
+    - kind: InvokeAIBuilderModelAction
+      id: invokeAIBuilderModelAction_JDIXO1
+      input:
+        binding:
+          Decription_20: =Topic.Var_TaskDescription.text
+          ProjectName: =Global.SelectedProjectName
+
+      output:
+        binding:
+          predictionOutput: Topic.Var_AcceptanceCretiria
+
+      aIModelId: 478aa949-0e1a-4b3f-8caf-84cff0ba73a9
+
+    - kind: SetVariable
+      id: setVariable_JYNhsm
+      variable: Topic.Var_FinalAccCrertiria
+      value: =Topic.Var_AcceptanceCretiria.text
+
+    - kind: Question
+      id: question_QJb04v
+      interruptionPolicy:
+        allowInterruption: true
+
+      variable: init:Topic.Var1
+      prompt: |-
+        *****************Acceptance Criteria*****************
+        
+        {Topic.Var_AcceptanceCretiria.text}
+        
+        Do you want to change this Acceptance Criteria??
+      entity: BooleanPrebuiltEntity
+
+    - kind: ConditionGroup
+      id: conditionGroup_5pjTLB
+      conditions:
+        - id: conditionItem_MIExEG
+          condition: =Topic.Var1 = true
+          actions:
+            - kind: Question
+              id: question_mNK95g
+              interruptionPolicy:
+                allowInterruption: true
+
+              variable: Topic.Var_FinalAccCrertiria
+              prompt: Please write updated Acceptance Criteria.
+              entity: StringPrebuiltEntity
+
+    - kind: Question
+      id: question_wxJH25
+      interruptionPolicy:
+        allowInterruption: true
+
+      variable: init:Topic.Var_SelectedPriority
+      prompt: Please select priority
+      entity:
+        kind: DynamicClosedListEntity
+        items: =Distinct(Topic.Var_PriorityTable,Value)
+
+    - kind: Question
+      id: question_YXn1U2
+      interruptionPolicy:
+        allowInterruption: true
+
+      variable: init:Topic.Var_AssignToEmail
+      prompt: Enter user email to assign this task
+      entity: EmailPrebuiltEntity
+
+    - kind: Question
+      id: question_o5zIKW
+      interruptionPolicy:
+        allowInterruption: true
+
+      variable: init:Topic.Var_Ex_Date
+      prompt: Enter expected start date.
+      entity: DatePrebuiltEntity
+
+    - kind: Question
+      id: question_O1HUsf
+      interruptionPolicy:
+        allowInterruption: true
+
+      variable: init:Topic.Var_DueDate
+      prompt: Enter due date.
+      entity: DatePrebuiltEntity
+
+    - kind: Question
+      id: question_rNQzXz
+      interruptionPolicy:
+        allowInterruption: true
+
+      variable: init:Topic.Var_BillableHours
+      prompt: Billable Hours
+      entity: NumberPrebuiltEntity
+
+    - kind: Question
+      id: question_Ma7fiN
+      interruptionPolicy:
+        allowInterruption: true
+
+      variable: init:Topic.Var_efforts
+      prompt: Enter efforts
+      entity: NumberPrebuiltEntity
+
+    - kind: InvokeFlowAction
+      id: invokeFlowAction_hWzgXk
+      input:
+        binding:
+          date: =Text(Topic.Var_Ex_Date,"yyyy-MM-dd")
+          date_1: =Text(Topic.Var_DueDate,"YYYY-MM-DD")
+          email: =Topic.Var_AssignToEmail
+          number: =Topic.Var_BillableHours
+          number_1: 1
+          text: =Global.SelectedProjectName
+          text_1: Task
+          text_2: =Topic.Var_Title
+          text_3: =Topic.Var_TaskDescription.text
+          text_4: =Text(LookUp(Topic.Var_PriorityTable,Value=Topic.Var_SelectedPriority).Key)
+          text_5: =Text(Topic.Var_BillableHours)
+          text_6: =Topic.Var_FinalAccCrertiria
+          text_7: "0"
+          text_8: ="https://dev.azure.com/qservicesindia/"&Global.SelectedProjectName&"/_workitems/edit/"&Global.ID
+          text_9: =Global.Iteration
+
+      output:
+        binding:
+          id: Topic.Task_ID
+
+      flowId: 8b506cc6-291c-f011-998a-000d3aca4339
+
+    - kind: SendActivity
+      id: sendActivity_AlCrJM
+      activity: |-
+        Link to Task:
+        
+        {"https://dev.azure.com/qservicesindia/"&Global.SelectedProjectName&"/_workitems/edit/"&Topic.Task_ID}
+
+    - kind: Question
+      id: question_1Kwb1U
+      interruptionPolicy:
+        allowInterruption: true
+
+      variable: init:Topic.Var2
+      prompt: Do you want to create another sub-task for this user story?
+      entity: BooleanPrebuiltEntity
+
+    - kind: ConditionGroup
+      id: conditionGroup_NhJksL
+      conditions:
+        - id: conditionItem_v36ZLv
+          condition: =Topic.Var2 = true
+          actions:
+            - kind: GotoAction
+              id: dJPS3R
+              actionId: setVariable_mgON2X
+
+    - kind: BeginDialog
+      id: YIfMgt
+      dialog: cr80b_metaorangeCopilot.topic.Untitled
+
+inputType: {}
+outputType: {}

@@ -1,0 +1,51 @@
+kind: AdaptiveDialog
+beginDialog:
+  kind: OnRedirect
+  id: main
+  actions:
+    - kind: InvokeFlowAction
+      id: invokeFlowAction_aSYSPm
+      latencyMessageSettings:
+        allowLatencyMessage: true
+        latencyMessage: please wait
+
+      input:
+        binding:
+          email: =System.User.Email
+
+      output:
+        binding:
+          test: Topic.ProjectList
+
+      flowId: 6c7b7e0c-6d05-f011-bae2-000d3aca4339
+
+    - kind: ParseValue
+      id: tcHdZd
+      variable: Topic.Json_ProjectList
+      valueType:
+        kind: Table
+        properties:
+          id: String
+          name: String
+          url: String
+
+      value: =Topic.ProjectList
+
+    - kind: Question
+      id: question_YvGQ7q
+      interruptionPolicy:
+        allowInterruption: true
+
+      variable: init:Topic.SelectedProject
+      prompt: Please Select Project...
+      entity:
+        kind: DynamicClosedListEntity
+        items: =Distinct(Topic.Json_ProjectList,name)
+
+    - kind: SetVariable
+      id: setVariable_NY4I9C
+      variable: Global.SelectedProjectName
+      value: =LookUp(Topic.Json_ProjectList,name=Topic.SelectedProject).name
+
+inputType: {}
+outputType: {}

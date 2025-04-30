@@ -1,0 +1,787 @@
+kind: AdaptiveDialog
+beginDialog:
+  kind: OnRecognizedIntent
+  id: main
+  condition: =Global.GlobalTrigger = "Salary"
+  intent: {}
+  actions:
+    - kind: AdaptiveCardPrompt
+      id: G24Suf
+      card: |
+        {
+          "type": "AdaptiveCard",
+          "body": [
+            {
+              "type": "TextBlock",
+              "text": "Please select an option:",
+              "weight": "Bolder",
+              "size": "Medium"
+            },
+            {
+              "type": "ActionSet",
+              "actions": [
+                {
+                  "type": "Action.Submit",
+                  "title": "Bank Details",
+                  "data": {
+                    "choice": "BankDetails"
+                  }
+                }
+              ]
+            },
+            {
+              "type": "ActionSet",
+              "actions": [
+                {
+                  "type": "Action.Submit",
+                  "title": "Salary Structure",
+                  "data": {
+                    "choice": "Salary Structure"
+                  }
+                }
+              ]
+            },
+            {
+              "type": "ActionSet",
+              "actions": [
+                {
+                  "type": "Action.Submit",
+                  "title": "PaySlips",
+                  "data": {
+                    "choice": "PaySlips"
+                  }
+                }
+              ]
+            }
+          ],
+          "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+          "version": "1.3"
+        }
+      output:
+        binding:
+          actionSubmitId: Topic.actionSubmitId
+          choice: Topic.choice
+
+      outputType:
+        properties:
+          actionSubmitId: String
+          choice: String
+
+    - kind: ConditionGroup
+      id: conditionGroup_ZHN0jM
+      conditions:
+        - id: conditionItem_TdtRub
+          condition: =Topic.choice = "BankDetails"
+          actions:
+            - kind: ConditionGroup
+              id: conditionGroup_DTltFg
+              conditions:
+                - id: conditionItem_zQ2Hw1
+                  condition: =Global.EmployeeType = 'cr80b_metaorangeCopilot.topic.Untitled.main.question_cLftbf'.Employee
+                  actions:
+                    - kind: InvokeAIBuilderModelAction
+                      id: invokeAIBuilderModelAction_LEziAA
+                      input:
+                        binding:
+                          email: =System.User.Email
+
+                      output:
+                        binding:
+                          predictionOutput: Topic.Var1
+
+                      aIModelId: 407d4b8a-f776-4234-92d3-712c732f16d3
+
+                    - kind: ParseValue
+                      id: y6f0ql
+                      variable: Topic.Var2
+                      valueType:
+                        kind: Record
+                        properties:
+                          AadhaarNumber: String
+                          AccountNo: String
+                          BankName: String
+                          BranchCity: String
+                          BranchName: String
+                          IFSC: String
+                          PANNumber: String
+
+                      value: =Topic.Var1.structuredOutput.EmployeeInfo
+
+                    - kind: SendActivity
+                      id: sendActivity_yuSZpf
+                      activity: |+
+                        - Account No. : {Topic.Var2.AccountNo}
+                        - Bank Name : {Topic.Var2.BankName}
+                        - Branch Name : {Topic.Var2.BranchName}
+                        - City : {Topic.Var2.BranchCity}
+                        - IFSC : {Topic.Var2.IFSC}
+                        - PAN No. : {Topic.Var2.PANNumber}
+                        
+
+
+              elseActions:
+                - kind: InvokeAIBuilderModelAction
+                  id: invokeAIBuilderModelAction_ky9Rsa
+                  input:
+                    binding:
+                      Email: =System.User.Email
+
+                  output:
+                    binding:
+                      predictionOutput: Topic.Var3
+
+                  aIModelId: c8dbe6ac-b365-4d7e-a37b-a56a6473ef92
+
+                - kind: SendActivity
+                  id: sendActivity_hq7v8q
+                  activity: |
+                    - Account No. : {Topic.Var3.structuredOutput.Intern.Account_a53b899abc87085bc4d1c73edfb7a8c5}
+                    - Bank Name : {Topic.Var3.structuredOutput.Intern.Bank_0020f331cb6ab70e276f4b6ad13008baf0d}
+                    - Branch Name : {Topic.Var3.structuredOutput.Intern.Branch_03c320a1d7d4ecc838d90384d90a2e770}
+                    - City : {Topic.Var3.structuredOutput.Intern.Branch_0574eaa30c1c3b62dc97c6829f67d6b9e}
+                    - IFSC : {Topic.Var3.structuredOutput.Intern.IFSC}
+                    - PAN No. :{Topic.Var3.structuredOutput.Intern.PAN_0020461bf0265e27938401910f8aeee775cb}
+                    
+                    
+                    You can check bank detials using Metaconnect App.
+                    
+                    1. Open metaconnect application.
+                    2. Navigate to "My Space".
+                    3. Click on "Salary" Icon.
+                    4. Click on "Bank Details" icon.
+
+        - id: conditionItem_IObocK
+          condition: =Topic.choice = "Salary Structure"
+          actions:
+            - kind: InvokeConnectorAction
+              id: invokeConnectorAction_6p8Fnd
+              input:
+                binding:
+                  $top: 1
+                  entityName: new_salarypackages
+                  fetchXml: |-
+                    ="<fetch>
+                    	<!-- Table -->
+                    	<entity name='new_salarypackage'>
+                    	<attribute name='new_salarypackageid' />
+                    	<attribute name='new_totalctc' />
+                    		<attribute name='new_annualbonus' />
+                    		<attribute name='new_annualbonusm' />
+                    		<attribute name='new_annualbonusm_base' />
+                    		<attribute name='new_annualfixedsalary' />
+                    		<attribute name='new_annualfixedsalarym_base' />
+                    		<attribute name='new_annualfixedsalarym' />
+                    		<attribute name='new_annualvariablesalary' />
+                    		<attribute name='new_annualvariablesalarym' />
+                    		<attribute name='new_annualvariablesalarym_base' />
+                    		<attribute name='new_bonus' />
+                    		<attribute name='createdby' />
+                    		<attribute name='createdbyname' />
+                    		<attribute name='createdonbehalfby' />
+                    		<attribute name='createdonbehalfbyname' />
+                    		<attribute name='createdon' />
+                    		<attribute name='transactioncurrencyid' />
+                    		<attribute name='transactioncurrencyidname' />
+                    		<attribute name='new_effectiveenddate' />
+                    		<attribute name='new_effectivestartdate' />
+                    		<attribute name='new_enployeeinfo' />
+                    		<attribute name='new_enployeeinfoname' />
+                    		<attribute name='exchangerate' />
+                    		<attribute name='new_fixedsalary' />
+                    		<attribute name='new_frequencytodistributebonus' />
+                    		<attribute name='new_frequencytodistributebonusname' />
+                    		<attribute name='new_halfyearlyvariablesalary' />
+                    		<attribute name='new_halfyearlyvariablesalary_base' />
+                    		<attribute name='importsequencenumber' />
+                    		<attribute name='new_intern' />
+                    		<attribute name='new_internname' />
+                    		<attribute name='new_monthlyctc' />
+                    		<attribute name='new_monthlyfixedsalary' />
+                    		<attribute name='new_monthlyfixedsalary_base' />
+                    		<attribute name='new_monthlysal' />
+                    		<attribute name='new_monthlyvariablesalary' />
+                    		<attribute name='new_monthlyvariablesalary_base' />
+                    		<!-- Filter By -->
+                    		<filter type='and'>
+                    			<condition attribute='statecode' operator='eq' value='0' />
+                    			<filter type='or'>
+                    				<condition entityname='new_EnployeeInfo' attribute='new_email' operator='eq' value='"&System.User.Email&"' />
+                    				<condition entityname='new_Intern' attribute='new_emailid' operator='eq' value='"&System.User.Email &"' />
+                    			</filter>
+                    		</filter>
+                    		<!-- Many To One Relationships -->
+                    		<link-entity name='new_enployeeinfo' from='new_enployeeinfoid' to='new_enployeeinfo' alias='new_EnployeeInfo' link-type='outer'>
+                    			<attribute name='new_enployeeinfoid' />
+                    		</link-entity>
+                    		<link-entity name='new_intern' from='new_internid' to='new_intern' alias='new_Intern' link-type='outer'>
+                    			<attribute name='new_internid' />
+                    		</link-entity>
+                    		<!-- Order By -->
+                    		<order attribute='createdon' descending='true' />
+                    	</entity>
+                    </fetch>"
+                  organization: current
+
+              output:
+                binding:
+                  value: Topic.Var4
+
+              connectionReference: cr80b_metaorangeCopilot.shared_commondataserviceforapps.8b14a02db5bc44f09eb442b213487848
+              connectionProperties:
+                mode: Invoker
+
+              dynamicOutputSchema:
+                kind: Record
+                properties:
+                  @odata.nextLink:
+                    displayName: Next link
+                    description: The url to fetch next page data.
+                    visibility: Advanced
+                    order: 1
+                    type: String
+
+                  value:
+                    order: 0
+                    type:
+                      kind: Table
+                      properties:
+                        _createdby_value:
+                          displayName: Created By (Value)
+                          description: Unique identifier of the user who created the record.
+                          visibility: Advanced
+                          order: 15
+                          type: String
+
+                        _createdby_value@Microsoft.Dynamics.CRM.lookuplogicalname:
+                          displayName: Created By (Type)
+                          description: Unique identifier of the user who created the record.
+                          visibility: Advanced
+                          order: 14
+                          type: String
+
+                        _createdonbehalfby_value:
+                          displayName: Created By (Delegate) (Value)
+                          description: Unique identifier of the delegate user who created the record.
+                          visibility: Advanced
+                          order: 13
+                          type: String
+
+                        _createdonbehalfby_value@Microsoft.Dynamics.CRM.lookuplogicalname:
+                          displayName: Created By (Delegate) (Type)
+                          description: Unique identifier of the delegate user who created the record.
+                          visibility: Advanced
+                          order: 12
+                          type: String
+
+                        _modifiedby_value:
+                          displayName: Modified By (Value)
+                          description: Unique identifier of the user who modified the record.
+                          visibility: Advanced
+                          order: 37
+                          type: String
+
+                        _modifiedby_value@Microsoft.Dynamics.CRM.lookuplogicalname:
+                          displayName: Modified By (Type)
+                          description: Unique identifier of the user who modified the record.
+                          visibility: Advanced
+                          order: 36
+                          type: String
+
+                        _modifiedonbehalfby_value:
+                          displayName: Modified By (Delegate) (Value)
+                          description: Unique identifier of the delegate user who modified the record.
+                          visibility: Advanced
+                          order: 35
+                          type: String
+
+                        _modifiedonbehalfby_value@Microsoft.Dynamics.CRM.lookuplogicalname:
+                          displayName: Modified By (Delegate) (Type)
+                          description: Unique identifier of the delegate user who modified the record.
+                          visibility: Advanced
+                          order: 34
+                          type: String
+
+                        _new_enployeeinfo_value:
+                          displayName: Employee (Value)
+                          visibility: Advanced
+                          order: 23
+                          type: String
+
+                        _new_enployeeinfo_value@Microsoft.Dynamics.CRM.lookuplogicalname:
+                          displayName: Employee (Type)
+                          visibility: Advanced
+                          order: 22
+                          type: String
+
+                        _new_intern_value:
+                          displayName: Intern (Value)
+                          visibility: Advanced
+                          order: 33
+                          type: String
+
+                        _new_intern_value@Microsoft.Dynamics.CRM.lookuplogicalname:
+                          displayName: Intern (Type)
+                          visibility: Advanced
+                          order: 32
+                          type: String
+
+                        _ownerid_value:
+                          displayName: Owner (Value)
+                          description: Owner Id
+                          visibility: Advanced
+                          order: 54
+                          type: String
+
+                        _ownerid_value@Microsoft.Dynamics.CRM.lookuplogicalname:
+                          displayName: Owner (Type)
+                          description: Owner Id
+                          visibility: Advanced
+                          order: 53
+                          type: String
+
+                        _owningbusinessunit_value:
+                          displayName: Owning Business Unit (Value)
+                          description: Unique identifier for the business unit that owns the record
+                          visibility: Advanced
+                          order: 56
+                          type: String
+
+                        _owningbusinessunit_value@Microsoft.Dynamics.CRM.lookuplogicalname:
+                          displayName: Owning Business Unit (Type)
+                          description: Unique identifier for the business unit that owns the record
+                          visibility: Advanced
+                          order: 55
+                          type: String
+
+                        _owningteam_value:
+                          displayName: Owning Team (Value)
+                          description: Unique identifier for the team that owns the record.
+                          visibility: Advanced
+                          order: 58
+                          type: String
+
+                        _owningteam_value@Microsoft.Dynamics.CRM.lookuplogicalname:
+                          displayName: Owning Team (Type)
+                          description: Unique identifier for the team that owns the record.
+                          visibility: Advanced
+                          order: 57
+                          type: String
+
+                        _owninguser_value:
+                          displayName: Owning User (Value)
+                          description: Unique identifier for the user that owns the record.
+                          visibility: Advanced
+                          order: 60
+                          type: String
+
+                        _owninguser_value@Microsoft.Dynamics.CRM.lookuplogicalname:
+                          displayName: Owning User (Type)
+                          description: Unique identifier for the user that owns the record.
+                          visibility: Advanced
+                          order: 59
+                          type: String
+
+                        _transactioncurrencyid_value:
+                          displayName: Currency (Value)
+                          description: Unique identifier of the currency associated with the entity.
+                          visibility: Advanced
+                          order: 18
+                          type: String
+
+                        _transactioncurrencyid_value@Microsoft.Dynamics.CRM.lookuplogicalname:
+                          displayName: Currency (Type)
+                          description: Unique identifier of the currency associated with the entity.
+                          visibility: Advanced
+                          order: 17
+                          type: String
+
+                        @odata.id:
+                          displayName: OData Id
+                          description: OData row id
+                          order: 52
+                          type: String
+
+                        crbad_annualctc:
+                          displayName: Annual CTC
+                          visibility: Advanced
+                          order: 3
+                          type: Number
+
+                        crbad_basicsalary:
+                          displayName: Basic Salary
+                          visibility: Advanced
+                          order: 10
+                          type: Number
+
+                        crbad_dedicationtax:
+                          displayName: Dedication Tax %
+                          visibility: Advanced
+                          order: 19
+                          type: Number
+
+                        crbad_fixctc:
+                          displayName: Fix CTC
+                          visibility: Advanced
+                          order: 25
+                          type: Number
+
+                        crbad_fixtax:
+                          displayName: Monthly Tax %
+                          visibility: Advanced
+                          order: 47
+                          type: Number
+
+                        crbad_monthlybasicsalary:
+                          displayName: Monthly Basic Salary
+                          visibility: Advanced
+                          order: 39
+                          type: Number
+
+                        crbad_monthlysalary:
+                          displayName: Monthly Salary
+                          visibility: Advanced
+                          order: 45
+                          type: Number
+
+                        crbad_quarterlypay:
+                          displayName: Quarterly Pay
+                          visibility: Advanced
+                          order: 62
+                          type: Number
+
+                        crbad_specialallowance:
+                          displayName: Special  Allowance
+                          visibility: Advanced
+                          order: 67
+                          type: Number
+
+                        crbad_tax:
+                          displayName: Tax
+                          visibility: Advanced
+                          order: 70
+                          type: Number
+
+                        crbad_totalspecialallowance:
+                          displayName: Total Special Allowance 
+                          visibility: Advanced
+                          order: 74
+                          type: Number
+
+                        createdon:
+                          displayName: Created On
+                          description: Date and time when the record was created.
+                          visibility: Advanced
+                          order: 16
+                          type: DateTime
+
+                        exchangerate:
+                          displayName: Exchange Rate
+                          description: Exchange rate for the currency associated with the entity with respect to the base currency.
+                          visibility: Advanced
+                          order: 24
+                          type: Number
+
+                        importsequencenumber:
+                          displayName: Import Sequence Number
+                          description: Sequence number of the import that created this record.
+                          visibility: Advanced
+                          order: 31
+                          type: Number
+
+                        modifiedon:
+                          displayName: Modified On
+                          description: Date and time when the record was modified.
+                          visibility: Advanced
+                          order: 38
+                          type: DateTime
+
+                        new_annualbonus:
+                          displayName: Annual Bonus
+                          visibility: Advanced
+                          order: 0
+                          type: Number
+
+                        new_annualbonusm:
+                          displayName: Annual Bonus M
+                          visibility: Advanced
+                          order: 1
+                          type: Number
+
+                        new_annualbonusm_base:
+                          displayName: Annual Bonus M (Base)
+                          description: Value of the Annual Bonus M in base currency.
+                          visibility: Advanced
+                          order: 2
+                          type: Number
+
+                        new_annualfixedsalary:
+                          displayName: Annual Fixed Salary
+                          visibility: Advanced
+                          order: 4
+                          type: Number
+
+                        new_annualfixedsalarym:
+                          displayName: Annual Fixed Salary M
+                          visibility: Advanced
+                          order: 6
+                          type: Number
+
+                        new_annualfixedsalarym_base:
+                          displayName: Annual Fixed Salary  (Base)
+                          description: Value of the Annual Fixed Salary  in base currency.
+                          visibility: Advanced
+                          order: 5
+                          type: Number
+
+                        new_annualvariablesalary:
+                          displayName: Annual Variable Salary
+                          visibility: Advanced
+                          order: 7
+                          type: Number
+
+                        new_annualvariablesalarym:
+                          displayName: Annual Variable Salary M
+                          visibility: Advanced
+                          order: 8
+                          type: Number
+
+                        new_annualvariablesalarym_base:
+                          displayName: Annual Variable Salary M (Base)
+                          description: Value of the Annual Variable Salary M in base currency.
+                          visibility: Advanced
+                          order: 9
+                          type: Number
+
+                        new_bonus:
+                          displayName: Bonus %
+                          visibility: Advanced
+                          order: 11
+                          type: Number
+
+                        new_effectiveenddate:
+                          displayName: Effective End Date
+                          visibility: Advanced
+                          order: 20
+                          type: Date
+
+                        new_effectivestartdate:
+                          displayName: Effective Start date
+                          order: 21
+                          type: Date
+
+                        new_fixedsalary:
+                          displayName: Fixed Salary %
+                          order: 26
+                          type: Number
+
+                        new_frequencytodistributebonus:
+                          displayName: Frequency to Distribute Bonus
+                          visibility: Advanced
+                          order: 27
+                          dynamicValuesConfig:
+                            capability: List
+
+                          type: Number
+
+                        new_frequencytodistributevariables:
+                          displayName: Frequency To Distribute Variables
+                          order: 28
+                          dynamicValuesConfig:
+                            capability: List
+
+                          type: Number
+
+                        new_halfyearlyvariablesalary:
+                          displayName: Half yearly Variable Salary
+                          visibility: Advanced
+                          order: 29
+                          type: Number
+
+                        new_halfyearlyvariablesalary_base:
+                          displayName: Half yearly Variable Salary (Base)
+                          description: Value of the Half yearly Variable Salary in base currency.
+                          visibility: Advanced
+                          order: 30
+                          type: Number
+
+                        new_monthlyctc:
+                          displayName: Monthly CTC
+                          visibility: Advanced
+                          order: 40
+                          type: Number
+
+                        new_monthlyctc_base:
+                          displayName: Monthly CTC (Base)
+                          description: Value of the Monthly CTC in base currency.
+                          visibility: Advanced
+                          order: 41
+                          type: Number
+
+                        new_monthlyfixedsalary:
+                          displayName: Monthly Fixed Salary
+                          visibility: Advanced
+                          order: 42
+                          type: Number
+
+                        new_monthlyfixedsalary_base:
+                          displayName: Monthly Fixed Salary (Base)
+                          description: Value of the Monthly Fixed Salary in base currency.
+                          visibility: Advanced
+                          order: 43
+                          type: Number
+
+                        new_monthlysal:
+                          displayName: Monthly sal
+                          visibility: Advanced
+                          order: 44
+                          type: Number
+
+                        new_monthlytax:
+                          displayName: Monthly Tax %
+                          visibility: Advanced
+                          order: 48
+                          type: Number
+
+                        new_monthlytax_new:
+                          displayName: Monthly Tax
+                          visibility: Advanced
+                          order: 46
+                          type: Number
+
+                        new_monthlyvariablesalary:
+                          displayName: Monthly Variable Salary
+                          visibility: Advanced
+                          order: 49
+                          type: Number
+
+                        new_monthlyvariablesalary_base:
+                          displayName: Monthly Variable Salary (Base)
+                          description: Value of the Monthly Variable Salary in base currency.
+                          visibility: Advanced
+                          order: 50
+                          type: Number
+
+                        new_name:
+                          displayName: Name
+                          order: 51
+                          type: String
+
+                        new_package:
+                          displayName: Package?
+                          order: 61
+                          dynamicValuesConfig:
+                            capability: List
+
+                          type: Number
+
+                        new_quarterlyvariablesalary:
+                          displayName: Quarterly variable salary
+                          visibility: Advanced
+                          order: 63
+                          type: Number
+
+                        new_quarterlyvariablesalary_base:
+                          displayName: Quarterly variable salary (Base)
+                          description: Value of the Quarterly variable salary in base currency.
+                          visibility: Advanced
+                          order: 64
+                          type: Number
+
+                        new_salarypackageid:
+                          displayName: Salary Package
+                          description: Unique identifier for entity instances
+                          visibility: Advanced
+                          order: 66
+                          type: String
+
+                        new_totalctc:
+                          displayName: Total CTC
+                          order: 72
+                          type: Number
+
+                        new_totalctc_base:
+                          displayName: Total CTC (Base)
+                          description: Value of the Total CTC in base currency.
+                          visibility: Advanced
+                          order: 73
+                          type: Number
+
+                        new_variablesalary:
+                          displayName: Variable Salary %
+                          visibility: Advanced
+                          order: 76
+                          type: Number
+
+                        overriddencreatedon:
+                          displayName: Record Created On
+                          description: Date and time that the record was migrated.
+                          visibility: Advanced
+                          order: 65
+                          type: DateTime
+
+                        statecode:
+                          displayName: Status
+                          description: Status of the Salary Package
+                          visibility: Advanced
+                          order: 68
+                          dynamicValuesConfig:
+                            capability: List
+
+                          type: Number
+
+                        statuscode:
+                          displayName: Status Reason
+                          description: Reason for the status of the Salary Package
+                          visibility: Advanced
+                          order: 69
+                          dynamicValuesConfig:
+                            capability: List
+
+                          type: Number
+
+                        timezoneruleversionnumber:
+                          displayName: Time Zone Rule Version Number
+                          description: For internal use only.
+                          visibility: Advanced
+                          order: 71
+                          type: Number
+
+                        utcconversiontimezonecode:
+                          displayName: UTC Conversion Time Zone Code
+                          description: Time zone code that was in use when the record was created.
+                          visibility: Advanced
+                          order: 75
+                          type: Number
+
+                        versionnumber:
+                          displayName: Version Number
+                          description: Version Number
+                          visibility: Advanced
+                          order: 77
+                          type: Number
+
+              operationId: ListRecordsWithOrganization
+
+            - kind: SendActivity
+              id: sendActivity_L0iJo4
+              activity: |+
+                - Annual CTC :  Rs. {First(Topic.Var4).new_totalctc}
+                - Fixed CTC :  Rs.{First(Topic.Var4).new_fixedsalary}
+                - Monthly Salary :  Rs.{First(Topic.Var4).new_monthlyctc
+                }
+
+
+      elseActions:
+        - kind: SendActivity
+          id: sendActivity_H6iLw6
+          activity: |-
+            For salary slips, please use MetaConnect Mobile App.
+            
+            1. Open metaconnect application.
+            2. Navigate to "My Space".
+            3. Click on "Salary" Icon.
+            4. Click on "Bank Details" icon.
+
+    - kind: BeginDialog
+      id: EBGrmz
+      dialog: cr80b_metaorangeCopilot.topic.Untitled

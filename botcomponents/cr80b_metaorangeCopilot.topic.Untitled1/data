@@ -1,0 +1,13 @@
+kind: AdaptiveDialog
+beginDialog:
+  kind: OnRecognizedIntent
+  id: main
+  intent: {}
+  actions:
+    - kind: InvokeConnectorAction
+      id: invokeConnectorAction_7xwd5p
+      connectionReference: cr80b_metaorangeCopilot.cr.Yg8vnQPS
+      connectionProperties:
+        mode: Invoker
+
+      operationId: ListRecordsWithOrganization

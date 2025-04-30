@@ -1,0 +1,542 @@
+{
+  "properties": {
+    "connectionReferences": {
+      "shared_commondataserviceforapps": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "cr80b_metaorangeCopilot.cr.2LGI4a8Y"
+        },
+        "api": {
+          "name": "shared_commondataserviceforapps"
+        }
+      },
+      "shared_commondataserviceforapps_1": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "new_sharedcommondataserviceforapps_c6dc4"
+        },
+        "api": {
+          "name": "shared_commondataserviceforapps"
+        }
+      }
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$connections": {
+          "defaultValue": {},
+          "type": "Object"
+        },
+        "$authentication": {
+          "defaultValue": {},
+          "type": "SecureObject"
+        }
+      },
+      "triggers": {
+        "manual": {
+          "metadata": {
+            "operationMetadataId": "b8f61c18-7224-4f8a-9c5f-72fbce5df764"
+          },
+          "type": "Request",
+          "kind": "Skills",
+          "inputs": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "date": {
+                  "title": "Trigger date",
+                  "type": "string",
+                  "format": "date",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter or select a date (YYYY-MM-DD)",
+                  "x-ms-content-hint": "DATE"
+                },
+                "text": {
+                  "title": "clock in Time",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter your input",
+                  "x-ms-content-hint": "TEXT"
+                },
+                "text_1": {
+                  "title": "ClockOutTime",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter your input",
+                  "x-ms-content-hint": "TEXT"
+                },
+                "email": {
+                  "title": "Email",
+                  "type": "string",
+                  "format": "email",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter an e-mail address",
+                  "x-ms-content-hint": "EMAIL"
+                },
+                "text_2": {
+                  "title": "Reason",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter your input",
+                  "x-ms-content-hint": "TEXT"
+                },
+                "text_3": {
+                  "title": "Comments",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter your input",
+                  "x-ms-content-hint": "TEXT"
+                }
+              },
+              "required": [
+                "date",
+                "text",
+                "text_1",
+                "email",
+                "text_2",
+                "text_3"
+              ]
+            }
+          }
+        }
+      },
+      "actions": {
+        "Respond_to_Copilot": {
+          "runAfter": {
+            "Condition": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "81c94f73-dd52-465c-ad3b-a4686da63cc3"
+          },
+          "type": "Response",
+          "kind": "Skills",
+          "inputs": {
+            "statusCode": 200,
+            "body": {
+              "result": "@variables('Result')"
+            },
+            "schema": {
+              "type": "object",
+              "properties": {
+                "result": {
+                  "title": "Result",
+                  "x-ms-dynamically-added": true,
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "List_Employees": {
+          "runAfter": {
+            "Initialize_variable_2": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "392f03cb-93c4-468b-967e-a895c1454565"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps",
+              "operationId": "ListRecords",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "entityName": "new_enployeeinfos",
+              "$filter": "(new_email eq '@{triggerBody()['email']}' and statecode eq 0)"
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        },
+        "Condition": {
+          "actions": {
+            "Apply_to_each_3": {
+              "foreach": "@outputs('List_Employees')?['body/value']",
+              "actions": {
+                "List_rows": {
+                  "runAfter": {},
+                  "metadata": {
+                    "operationMetadataId": "fa3d9ecf-699d-4cd4-821e-6882a92ce1ea"
+                  },
+                  "type": "OpenApiConnection",
+                  "inputs": {
+                    "host": {
+                      "connectionName": "shared_commondataserviceforapps",
+                      "operationId": "ListRecords",
+                      "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                    },
+                    "parameters": {
+                      "entityName": "new_attendanceregularizations",
+                      "$filter": "((new_clockin lt @{variables('ClockInDateTime')} and new_clockout gt @{variables('ClockOutDateTime')})  or (new_clockin lt @{variables('ClockOutDateTime')} and new_clockout gt @{variables('ClockInDateTime')}) or (new_clockin gt @{variables('ClockInDateTime')} and new_clockout lt @{variables('ClockOutDateTime')})) and _new_employeeid_value eq @{items('Apply_to_each_3')?['new_enployeeinfoid']}"
+                    },
+                    "authentication": "@parameters('$authentication')"
+                  }
+                },
+                "Condition_2": {
+                  "actions": {
+                    "Set_variable": {
+                      "runAfter": {},
+                      "metadata": {
+                        "operationMetadataId": "77874f10-28be-446a-afff-4c0a7f12eec9"
+                      },
+                      "type": "SetVariable",
+                      "inputs": {
+                        "name": "Result",
+                        "value": "Regularization is already applied for selected date.\n\n"
+                      }
+                    }
+                  },
+                  "runAfter": {
+                    "List_rows": [
+                      "Succeeded"
+                    ]
+                  },
+                  "else": {
+                    "actions": {
+                      "Apply_to_each_2": {
+                        "foreach": "@outputs('List_Employees')?['body/value']",
+                        "actions": {
+                          "Add_a_new_row": {
+                            "runAfter": {},
+                            "metadata": {
+                              "operationMetadataId": "cdf4816f-8c2d-416e-81d1-5b2362ae16fb"
+                            },
+                            "type": "OpenApiConnection",
+                            "inputs": {
+                              "host": {
+                                "connectionName": "shared_commondataserviceforapps_1",
+                                "operationId": "CreateRecord",
+                                "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                              },
+                              "parameters": {
+                                "entityName": "new_attendanceregularizations",
+                                "item/new_clockin": "@variables('ClockInDateTime')",
+                                "item/new_clockout": "@variables('ClockOutDateTime')",
+                                "item/new_comments": "@triggerBody()['text_3']",
+                                "item/new_EmployeeID@odata.bind": "/new_enployeeinfos(@{items('Apply_to_each_2')?['new_enployeeinfoid']})",
+                                "item/new_Reason@odata.bind": "/new_categoryandreasonses(@{variables('ReasonID')})"
+                              },
+                              "authentication": "@parameters('$authentication')"
+                            }
+                          },
+                          "Set_variable_3": {
+                            "runAfter": {
+                              "Add_a_new_row": [
+                                "Succeeded"
+                              ]
+                            },
+                            "metadata": {
+                              "operationMetadataId": "d34f039d-3112-4c8e-9faf-cd8557899276"
+                            },
+                            "type": "SetVariable",
+                            "inputs": {
+                              "name": "Result",
+                              "value": "you have applied for regularization successfully.\n\n"
+                            }
+                          }
+                        },
+                        "runAfter": {},
+                        "metadata": {
+                          "operationMetadataId": "16bbb603-0541-43e1-9c05-c55d4fbec95b"
+                        },
+                        "type": "Foreach"
+                      }
+                    }
+                  },
+                  "expression": {
+                    "greaterOrEquals": [
+                      "@length(outputs('List_rows')?['body/value'])",
+                      1
+                    ]
+                  },
+                  "metadata": {
+                    "operationMetadataId": "50560819-2a5c-4b66-9c61-fad79c6aba8f"
+                  },
+                  "type": "If"
+                }
+              },
+              "runAfter": {},
+              "metadata": {
+                "operationMetadataId": "6d3304ba-3d8f-4154-89ce-2b69843a0f07"
+              },
+              "type": "Foreach"
+            }
+          },
+          "runAfter": {
+            "List_Employees": [
+              "Succeeded"
+            ]
+          },
+          "else": {
+            "actions": {
+              "List_rows_3": {
+                "runAfter": {},
+                "metadata": {
+                  "operationMetadataId": "7f1d2a95-85ee-4538-88a8-47205135c4c8"
+                },
+                "type": "OpenApiConnection",
+                "inputs": {
+                  "host": {
+                    "connectionName": "shared_commondataserviceforapps_1",
+                    "operationId": "ListRecords",
+                    "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                  },
+                  "parameters": {
+                    "entityName": "new_interns",
+                    "$filter": "new_emailid eq '@{triggerBody()['email']}'"
+                  },
+                  "authentication": "@parameters('$authentication')"
+                }
+              },
+              "Apply_to_each_4": {
+                "foreach": "@outputs('List_rows_3')?['body/value']",
+                "actions": {
+                  "List_rows_4": {
+                    "runAfter": {},
+                    "metadata": {
+                      "operationMetadataId": "e6484947-315d-4d67-aecc-43566f33580d"
+                    },
+                    "type": "OpenApiConnection",
+                    "inputs": {
+                      "host": {
+                        "connectionName": "shared_commondataserviceforapps_1",
+                        "operationId": "ListRecords",
+                        "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                      },
+                      "parameters": {
+                        "entityName": "new_attendanceregularizations",
+                        "$filter": "((new_clockin lt @{variables('ClockInDateTime')} and new_clockout gt @{variables('ClockOutDateTime')})  or (new_clockin lt @{variables('ClockOutDateTime')} and new_clockout gt @{variables('ClockInDateTime')}) or (new_clockin gt @{variables('ClockInDateTime')} and new_clockout lt @{variables('ClockOutDateTime')}))  and _new_internid_value eq @{items('Apply_to_each_4')?['new_internid']}"
+                      },
+                      "authentication": "@parameters('$authentication')"
+                    }
+                  },
+                  "Condition_3": {
+                    "actions": {
+                      "Set_variable_4": {
+                        "runAfter": {},
+                        "metadata": {
+                          "operationMetadataId": "94e5a5f6-0987-45cb-949d-e2500c0e6ea8"
+                        },
+                        "type": "SetVariable",
+                        "inputs": {
+                          "name": "Result",
+                          "value": "Regularization is already applied for selected date."
+                        }
+                      }
+                    },
+                    "runAfter": {
+                      "List_rows_4": [
+                        "Succeeded"
+                      ]
+                    },
+                    "else": {
+                      "actions": {
+                        "Add_a_new_row_2": {
+                          "runAfter": {},
+                          "metadata": {
+                            "operationMetadataId": "19e16b78-b16d-4c13-8aa0-e3524843d6d3"
+                          },
+                          "type": "OpenApiConnection",
+                          "inputs": {
+                            "host": {
+                              "connectionName": "shared_commondataserviceforapps_1",
+                              "operationId": "CreateRecord",
+                              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                            },
+                            "parameters": {
+                              "entityName": "new_attendanceregularizations",
+                              "item/new_clockin": "@variables('ClockInDateTime')",
+                              "item/new_clockout": "@variables('ClockOutDateTime')",
+                              "item/new_comments": "@triggerBody()['text_3']",
+                              "item/new_InternID@odata.bind": "/new_interns(@{items('Apply_to_each_4')?['new_internid']})",
+                              "item/new_Reason@odata.bind": "/new_categoryandreasonses(@{variables('ReasonID')})"
+                            },
+                            "authentication": "@parameters('$authentication')"
+                          }
+                        },
+                        "Set_variable_5": {
+                          "runAfter": {
+                            "Add_a_new_row_2": [
+                              "Succeeded"
+                            ]
+                          },
+                          "metadata": {
+                            "operationMetadataId": "b41267a2-cba9-4884-b25a-27eaaf9f2b7b"
+                          },
+                          "type": "SetVariable",
+                          "inputs": {
+                            "name": "Result",
+                            "value": "Regularization is  applied successfully for selected date."
+                          }
+                        }
+                      }
+                    },
+                    "expression": {
+                      "greaterOrEquals": [
+                        "@length(outputs('List_rows_4')?['body/value'])",
+                        1
+                      ]
+                    },
+                    "metadata": {
+                      "operationMetadataId": "dbf19650-87fa-447d-88cb-a0ad2f3b1b5d"
+                    },
+                    "type": "If"
+                  }
+                },
+                "runAfter": {
+                  "List_rows_3": [
+                    "Succeeded"
+                  ]
+                },
+                "metadata": {
+                  "operationMetadataId": "db85adcb-6862-4cad-bda3-7fd51653ab6b"
+                },
+                "type": "Foreach"
+              }
+            }
+          },
+          "expression": {
+            "greaterOrEquals": [
+              "@length(outputs('List_Employees')?['body/value'])",
+              1
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "72a501ad-ac13-4345-b6cc-6f2ecfbbab36"
+          },
+          "type": "If"
+        },
+        "Initialize_variable": {
+          "runAfter": {
+            "Initialize_variable_3": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "a257a434-a829-443d-bb01-2dfe184d40a0"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "ClockInDateTime",
+                "type": "string",
+                "value": "@triggerBody()['text']"
+              }
+            ]
+          }
+        },
+        "Initialize_variable_2": {
+          "runAfter": {
+            "Initialize_variable": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "0f4799fc-d13f-4a4d-8065-940d438e5234"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "ClockOutDateTime",
+                "type": "string",
+                "value": "@triggerBody()['text_1']"
+              }
+            ]
+          }
+        },
+        "Initialize_variable_3": {
+          "runAfter": {
+            "Apply_to_each": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "d3ecd236-e6a6-4ffd-be1c-b2a86496b1bd"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "Result",
+                "type": "string"
+              }
+            ]
+          }
+        },
+        "List_rows_2": {
+          "runAfter": {
+            "Initialize_variable_4": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "690533c3-4cdf-4ee4-aea4-0ae2984b4f6a"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps_1",
+              "operationId": "ListRecords",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "entityName": "new_categoryandreasonses",
+              "$filter": "new_name eq '@{triggerBody()['text_2']}'"
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        },
+        "Initialize_variable_4": {
+          "runAfter": {},
+          "metadata": {
+            "operationMetadataId": "6c0b8dcd-5523-4f3a-98de-1d3200017ab2"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "ReasonID",
+                "type": "string"
+              }
+            ]
+          }
+        },
+        "Apply_to_each": {
+          "foreach": "@outputs('List_rows_2')?['body/value']",
+          "actions": {
+            "Set_variable_2": {
+              "runAfter": {},
+              "metadata": {
+                "operationMetadataId": "94378c81-99c1-4fba-b883-e25bb2997fd1"
+              },
+              "type": "SetVariable",
+              "inputs": {
+                "name": "ReasonID",
+                "value": "@items('Apply_to_each')?['new_categoryandreasonsid']"
+              }
+            }
+          },
+          "runAfter": {
+            "List_rows_2": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "689c43d7-b555-44dd-b3d3-b3651e2215a2"
+          },
+          "type": "Foreach"
+        }
+      },
+      "outputs": {}
+    },
+    "templateName": "8966f0978a80430098d992ce322095e3"
+  },
+  "schemaVersion": "1.0.0.0"
+}

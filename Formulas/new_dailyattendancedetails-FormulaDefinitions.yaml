@@ -1,0 +1,3 @@
+cr80b_month: =new_month
+new_workhoursfx: =new_workhrs
+new_year: =Year(new_firstclockin)

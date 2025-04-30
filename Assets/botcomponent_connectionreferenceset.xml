@@ -1,0 +1,29 @@
+<botcomponent_connectionreferenceset>
+  <botcomponent_connectionreference botcomponentid.schemaname="cr80b_metaorangeCopilot.topic.Clock" connectionreferenceid.connectionreferencelogicalname="cr80b_metaorangeCopilot.cr.1NNV6STD">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_connectionreference>
+  <botcomponent_connectionreference botcomponentid.schemaname="cr80b_metaorangeCopilot.topic.Clock" connectionreferenceid.connectionreferencelogicalname="cr80b_metaorangeCopilot.shared_commondataserviceforapps.8b14a02db5bc44f09eb442b213487848">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_connectionreference>
+  <botcomponent_connectionreference botcomponentid.schemaname="cr80b_metaorangeCopilot.topic.ClockIN" connectionreferenceid.connectionreferencelogicalname="cr80b_metaorangeCopilot.shared_commondataserviceforapps.8b14a02db5bc44f09eb442b213487848">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_connectionreference>
+  <botcomponent_connectionreference botcomponentid.schemaname="cr80b_metaorangeCopilot.topic.Salary" connectionreferenceid.connectionreferencelogicalname="cr80b_metaorangeCopilot.shared_commondataserviceforapps.8b14a02db5bc44f09eb442b213487848">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_connectionreference>
+  <botcomponent_connectionreference botcomponentid.schemaname="cr80b_metaorangeCopilot.topic.StartFlow" connectionreferenceid.connectionreferencelogicalname="cr80b_metaorangeCopilot.cr.2LGI4a8Y">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_connectionreference>
+  <botcomponent_connectionreference botcomponentid.schemaname="cr80b_metaorangeCopilot.topic.TimeSheet" connectionreferenceid.connectionreferencelogicalname="cr80b_metaorangeCopilot.shared_commondataserviceforapps.8b14a02db5bc44f09eb442b213487848">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_connectionreference>
+  <botcomponent_connectionreference botcomponentid.schemaname="cr80b_metaorangeCopilot.topic.Untitled_9me" connectionreferenceid.connectionreferencelogicalname="cr80b_metaorangeCopilot.shared_commondataserviceforapps.8b14a02db5bc44f09eb442b213487848">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_connectionreference>
+  <botcomponent_connectionreference botcomponentid.schemaname="cr80b_metaorangeCopilot.topic.Untitled1" connectionreferenceid.connectionreferencelogicalname="cr80b_metaorangeCopilot.cr.Yg8vnQPS">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_connectionreference>
+  <botcomponent_connectionreference botcomponentid.schemaname="cr80b_metaorangeCopilot.topic.Untitled2" connectionreferenceid.connectionreferencelogicalname="cr80b_metaorangeCopilot.cr.KeQrU1hy">
+    <iscustomizable>1</iscustomizable>
+  </botcomponent_connectionreference>
+</botcomponent_connectionreferenceset>

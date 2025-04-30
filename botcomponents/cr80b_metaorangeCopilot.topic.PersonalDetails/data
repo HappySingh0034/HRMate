@@ -1,0 +1,65 @@
+kind: AdaptiveDialog
+beginDialog:
+  kind: OnRecognizedIntent
+  id: main
+  intent: {}
+  actions:
+    - kind: InvokeAIBuilderModelAction
+      id: invokeAIBuilderModelAction_QX4RnP
+      input:
+        binding:
+          email: =System.User.Email
+
+      output:
+        binding:
+          predictionOutput: Topic.Output_PersonalDetails
+
+      aIModelId: 407d4b8a-f776-4234-92d3-712c732f16d3
+
+    - kind: ParseValue
+      id: 1K2vP7
+      variable: Topic.Var1
+      valueType:
+        kind: Record
+        properties:
+          AadhaarNumber: String
+          AlternateEmail: String
+          AlternateMobileNo: String
+          DateOfBirth: String
+          DateOfJoining: String
+          Department:
+            type:
+              kind: Record
+              properties:
+                DepartmentName: String
+
+          Email: String
+          EmployeeId: String
+          FullName: String
+          ManagerEmail: String
+          ManagerName: String
+          MobileNumber: String
+          PANNumber: String
+
+      value: =Topic.Output_PersonalDetails.structuredOutput.EmployeeInfo
+
+    - kind: SendActivity
+      id: sendActivity_GQ8j3h
+      activity: |-
+        - {"Name : "&Topic.Var1.FullName}
+        - {"Employee ID : "&Topic.Var1.EmployeeId}
+        - {"Department : "&Topic.Var1.Department.DepartmentName}
+        - {"Email : "&Topic.Var1.Email}
+        - {"Mobile Number : "&Topic.Var1.MobileNumber}
+        - {"Alternate Mobile No. : "&Topic.Var1.AlternateMobileNo}
+        - {"Alternate Email : "&Topic.Var1.AlternateEmail}
+        - {"Date of Joining : "&Topic.Var1.DateOfJoining}
+        - {"Date of Birth : "&Topic.Var1.DateOfBirth}
+        - {"Adhaar Number : "&Topic.Var1.AadhaarNumber}
+        - {"PAN Number : "&Topic.Var1.PANNumber}
+        - {"Manager Name : "&Topic.Var1.ManagerName}
+        - {"Manager Email : "& Topic.Var1.ManagerEmail     }
+
+    - kind: BeginDialog
+      id: TLJNor
+      dialog: cr80b_metaorangeCopilot.topic.Untitled

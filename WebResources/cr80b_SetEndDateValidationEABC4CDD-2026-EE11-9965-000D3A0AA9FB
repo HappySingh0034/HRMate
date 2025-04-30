@@ -1,0 +1,36 @@
+function EndDateValidation(executionContext) {
+    var formContext = executionContext.getFormContext();
+	var Opportunity = formContext.getAttribute("new_rfp").getValue();
+	if (Opportunity != null) {
+		var OpporunityID = Opportunity[0].id;
+		Xrm.WebApi.retrieveRecord("new_rfp", OpporunityID, "?$select=new_rfpenddate,new_rfpstartdate").then(
+			function success(result) {
+				console.log(result);
+				// Columns
+				var new_rfpid = result["new_rfpid"]; // Guid
+				//var new_rfpenddate = result["new_rfpenddate"]; // Date Time
+				var new_rfpenddate_formatted = result["new_rfpenddate@OData.Community.Display.V1.FormattedValue"];
+				let endDate = new Date(new_rfpenddate_formatted).getTime();
+				//var new_rfpstartdate = result["new_rfpstartdate"]; // Date Time
+				var new_rfpstartdate_formatted = result["new_rfpstartdate@OData.Community.Display.V1.FormattedValue"];
+				let Startdate = new Date(new_rfpstartdate_formatted).getTime();
+				if (endDate != null && Startdate != null) {
+					var MEndOBJ = formContext.getAttribute("new_milestoneenddate").getValue();
+					let MilestoneEndDate = new Date(MEndOBJ).getTime();
+
+					if (MilestoneEndDate > Startdate && MilestoneEndDate < endDate) {
+
+						formContext.getControl("new_milestoneenddate").clearNotification("UID2");
+					}
+					else {
+						
+						formContext.getControl("new_milestoneenddate").setNotification("StartDate Should be before or After opportunity start or end date", "UID2");
+                    }
+                }
+			},
+			function (error) {
+				console.log(error.message);
+			}
+		);
+    }
+}
